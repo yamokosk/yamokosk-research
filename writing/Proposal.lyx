@@ -265,7 +265,12 @@ Given a set of models, initial conditions, and ability to sense changes
 \end_layout
 
 \begin_layout Subsection
-Related work 
+Related work
+\end_layout
+
+\begin_layout Standard
+A lot of work has been done for mobile robots.
+ Not much for arms.
 \end_layout
 
 \begin_layout Subsubsection
