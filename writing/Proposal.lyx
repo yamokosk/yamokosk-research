@@ -292,7 +292,7 @@ Artificial potential fields
 \begin_layout Standard
 Artificial potential field (APF) techniques were an attempt to address the
  planning and control problems simultaneously.
- Khatib was the first to propose APF as a technique to achieve real-time
+ Khatib was the first to propose APFs as a technique to achieve real-time
  collision avoidance 
 \begin_inset LatexCommand \cite{Khatib1986-90}
 
@@ -312,7 +312,8 @@ Artificial potential field (APF) techniques were an attempt to address the
  Figure 1) created by the interaction of obstacle fields.
  Subsequent work has sought to achieve global performance by minimizing
  the effect or eliminating the local minima.
- Heuristics have been employed to deal with local minima.
+ For instance, various heuristics have been employed to deal with local
+ minima.
  By applying recently developed Lyapunov design techniques, Mbede et al.
  designed a uniformly, ultimately bounded regulator using a fuzzy rule system
  to reason about the APF output 
@@ -395,6 +396,23 @@ Specific aim 1 - Theoretical development of a real-time planning system
 
 \begin_layout Subsection
 Specific aim 2 - Implentation and evaluation on the GatorRay Imaging System
+\end_layout
+
+\begin_layout Standard
+Experimental evaluation of any robotic system which,
+\end_layout
+
+\begin_layout Enumerate
+Provably small chance, with an adequate confidence level, of failure.
+\end_layout
+
+\begin_layout Enumerate
+In the unlikely event of failure, the control system will minimize injuries
+ to the person.
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard
