@@ -394,6 +394,42 @@ An APF generates virtual forces on the manipulator, Tsuji and Kaneko extended
 \end_layout
 
 \begin_layout Standard
+APF techniques also does not immediately consider the limitations of the
+ robotic system.
+ 
+\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
+
+\end_inset
+
+ Problem they tried to address was that APF do not define a velocity profile
+ nor do they reveal the movement time.
+ They introduced a time-varying potential field of whose qualities they
+ could manipulate to control the time of arrival as well as the velocity
+ profile.
+ In essence they had more control over the manipulator response (including
+ transient) by developing a time-varying field.
+ Interestingly, their work looked a lot like Lyapunov functions.
+ Are they really manipulating transient performance of non-linear systems?
+ If so, this could be a huge contribution if recast into a more generalized
+ non-linear control framework.
+ Their work relies on earlier work done by Sampei and Furuta with time scaling
+ nonlinear systems.
+ 
+\begin_inset LatexCommand \cite{Sugie2003}
+
+\end_inset
+
+ Used the time-scaling approach of Tsuji to enforce joint velocity limits.
+ Also used a coordinate transformation proposed by Fujimoto et al.
+ They also track a reference trajectory.
+ One drawback is that their example was only implemented for a 2 DOF planar
+ arm.
+ This might be due to the fact that their method requires that obstacles
+ be bounded by analytical surfaces.
+ The final control term looks complicated to implement.
+\end_layout
+
+\begin_layout Standard
 Moving on from the local minima problem, APF methods only address the pre-collis
 ion problem.
  Very recent work by Kulic and Croft, have begun to extended the APF method
@@ -526,23 +562,7 @@ artificial potential field
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \cite{Sugie2003}
-
-\end_inset
-
- YTR
-\end_layout
-
-\begin_layout Standard
 \begin_inset LatexCommand \cite{Tanner2003}
-
-\end_inset
-
- YTR
-\end_layout
-
-\begin_layout Standard
-\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
 
 \end_inset
 
