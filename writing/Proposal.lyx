@@ -356,17 +356,45 @@ Khatib was the first to propose APFs as a technique to achieve real-time
  terminate since the net force on the end effector will be zero and the
  arm will not reache the goal location.
  Various heuristics and other methods have been proposed to deal with the
- local minima problem.
- Few attempts have been made to apply modern non-linear control design technique
-s to APF-based or even impedance controllers.
- By applying recently developed Lyapunov design techniques, Mbede et al.
- designed a uniformly, ultimately bounded regulator using a fuzzy rule system
- to reason about the APF output 
+ local minima problem including backtracking, random walks 
+\begin_inset LatexCommand \cite{Barraquand1990}
+
+\end_inset
+
+, switching between points on the robot to calculate and apply the control
+ effort 
+\begin_inset LatexCommand \cite{Chang1996}
+
+\end_inset
+
+, behaviour/agent based approaches 
+\begin_inset LatexCommand \cite{Hamilton1998}
+
+\end_inset
+
+, fuzzy logic 
+\begin_inset LatexCommand \cite{Mbede2003-249}
+
+\end_inset
+
+, and potential functions with unique extrema 
+\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423}
+
+\end_inset
+
+.
+ Of primary interest in this research is the work done by Mbede et al.
+ 
 \begin_inset LatexCommand \cite{Mbede2003-249}
 
 \end_inset
 
 .
+ Before their work, few attempts were made to apply modern non-linear control
+ design techniques to APF-based or even impedance controllers.
+ By applying recently developed Lyapunov design techniques, Mbede et al.
+ designed a uniformly, ultimately bounded regulator using a fuzzy rule system
+ to reason about the APF output.
  They combined this with a neural network to deal with any other dynamic
  model uncertainties.
  Hybrid force/velocity method, switching system, desired velocity signal
@@ -405,7 +433,12 @@ APF techniques also does not immediately consider the limitations of the
  nor do they reveal the movement time.
  They introduced a time-varying potential field of whose qualities they
  could manipulate to control the time of arrival as well as the velocity
- profile.
+ profile (
+\begin_inset LatexCommand \cite{Sampei1986}
+
+\end_inset
+
+ time scaling which their work is dependent on).
  In essence they had more control over the manipulator response (including
  transient) by developing a time-varying field.
  Interestingly, their work looked a lot like Lyapunov functions.
@@ -419,8 +452,14 @@ APF techniques also does not immediately consider the limitations of the
 
 \end_inset
 
- Used the time-scaling approach of Tsuji to enforce joint velocity limits.
- Also used a coordinate transformation proposed by Fujimoto et al.
+ Builds upon earlier work done by some of the same authors in a coordinate
+ transformation technqiue 
+\begin_inset LatexCommand \cite{fujimoto98obstacle}
+
+\end_inset
+
+ and combined this with the time-scaling approach of Tsuji to enforce joint
+ velocity limits.
  They also track a reference trajectory.
  One drawback is that their example was only implemented for a 2 DOF planar
  arm.
@@ -614,11 +653,45 @@ Still to do, Web of Science literature review for same topics.
 \end_layout
 
 \begin_layout Subsubsection
-Other
+Motion strategies and elastic strips
 \end_layout
 
 \begin_layout Standard
-Elastic stips, strategy-based.
+Elastic stips
+\end_layout
+
+\begin_layout Standard
+Mediavilla et al.
+ introduced what they have termed a strategy-based method 
+\begin_inset LatexCommand \cite{Mediavilla2003}
+
+\end_inset
+
+.
+ It starts by reducing the size of the configuration space through something
+ akin to principle component analysis performed on various motion strategies.
+ A motion strategy is a basic robotic movement such as 
+\begin_inset Quotes eld
+\end_inset
+
+go up
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+fold up
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This analysis is performed off-line and requires a priori knowledge of
+ the tasks the robots are to perform.
+ Then in the on-line stage of their technique, the robots search for feasible
+ paths in the reduced configuration spaces using potential field methods.
+ 
 \end_layout
 
 \begin_layout Section
@@ -671,6 +744,13 @@ In the unlikely event of failure, the control system will minimize injuries
 \end_layout
 
 \begin_layout Standard
+Statistical analysis will be similar to that done in the comparitive study
+ by Fraile et al.
+ 
+\begin_inset LatexCommand \cite{Fraile2006}
+
+\end_inset
+
 
 \end_layout
 
