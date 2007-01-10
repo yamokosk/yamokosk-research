@@ -87,6 +87,48 @@ Better integration of planning and control has been recognized as a frontier
  area of robotics research [ref].
 \end_layout
 
+\begin_layout Standard
+Objectives and approaches: The objective of this research is to create 
+\emph on
+a real-time robotic control system which is inherently safe
+\emph default
+.
+ The proposed framework exploits and unifies three concepts: reproducing
+ kernel Hilbert spaces, nonparametric kernel density estimation, and information
+ theoretic optimality measures.
+ Developed techniques will be illustrated in a brain interface, in which
+ high dimensional spatiotemporal electroencelaphogram activity will be translate
+d to intended commands for a robot.
+ This interface will be designed to facilitate fusion with myoelectrically
+ controlled neural prostheses.
+\end_layout
+
+\begin_layout Standard
+Intellectual merit: Conventional techniques relying on nonlinear programming
+ of semiparametric models with low-order statistical criteria, which is
+ prone to various difficulties including model complexity selection and
+ existence of suboptimal solutions, cannot cope with the challenges of increasin
+gly complex engineering problems.
+ Proposed work facilitates the adaptation of nonlinear models exploiting
+ smooth generalized linear models and principled information processing
+ in a novel unified framework.
+ This will advance the state-of-the-art in nonlinear adaptive signal processing
+ and machine learning.
+ The brain interface testbed will facilitate future collaboration between
+ two currently disconnected neural prostheses communities.
+\end_layout
+
+\begin_layout Standard
+Broader impacts: The theoretical framework will impact signal processing
+ and machine learning, thus will have immediate influence on fields that
+ rely heavily on statistical modeling, data analysis, and processing techniques.
+ Specifically, contributions to the emerging neural engineering field will
+ impact the design of future neural prostheses, as well as fundamental brain
+ and cognition research.
+ The project will help educate graduate engineers with mathematical rigor
+ and an interdisciplinary focus.
+\end_layout
+
 \begin_layout Section
 Problem definition and related work 
 \end_layout
@@ -265,7 +307,7 @@ Given a set of models, initial conditions, and ability to sense changes
 \end_layout
 
 \begin_layout Subsection
-Related work
+Relationship of Proposed Activities to Current State of Knowledge
 \end_layout
 
 \begin_layout Standard
