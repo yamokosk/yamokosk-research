@@ -1,0 +1,219 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Describe the research design conceptual or clinical framework, procedures,
+ and analyses to be used to accomplish the specific aims of the project.
+ Unless addressed separately in Item 17, include how the data will be collected,
+ analyzed, and interpreted as well as the data-sharing plan as appropriate.
+ Describe any new methodology and its advantage over existing methodologies.
+ Describe any novel concepts, approaches, tools, or technologies for the
+ proposed studies.
+ Discuss the potential difficulties and limitations of the proposed procedures
+ and alternative approaches to achieve the aims.
+ As part of this section, provide a tentative sequence or timetable for
+ the project.
+ Point out any procedures, situations, or materials that may be hazardous
+ to personnel and the precautions to be exercised.
+\end_layout
+
+\begin_layout Standard
+Although no specific number of pages is recommended for the Research Design
+ and Methods section, be as succinct as possible.
+ There is no requirement that all 25 pages allotted for items 2-5 be used.
+ 
+\end_layout
+
+\begin_layout Standard
+Describe the experimental design and procedures in detail and give a rationale
+ for their use.
+ Organize this section so each experiment or set of experiments corresponds
+ to one of your specific aims and is stated in the same order.
+ Even holding to this structure, the experiments still must follow a logical
+ sequence.
+ They must have a clear direction or priority, i.e., the experiments should
+ follow from one another and have a clear starting or finishing point.
+ 
+\end_layout
+
+\begin_layout Standard
+Convince reviewers that the methods you chose are appropriate to your specific
+ aims, that you are familiar with them, and that, unless innovative, they
+ are well established.
+ If your methods are innovative, show how you have changed existing, proven
+ methods while avoiding technical problems.
+ Also, describe why the new methods are advantageous to the research you
+ propose to do.
+ 
+\end_layout
+
+\begin_layout Standard
+More and more applicants are including colored charts, graphs, and photographs
+ in their applications.
+ If you must use color to get your point across, it is wise to also place
+ a copy of the item in an appendix, noting this in the body of the text.
+ (However, do not put important figures only in the appendix, or overly-reduced
+ figures in the body of the application with enlargements in the appendix.
+ The Research Plan must be self-contained.
+ The appendix should not be used to circumvent the Research Plan page limits.)
+ Many applicants are not aware that most of the study section members receive
+ only black and white photocopies of their original application.
+ However, assigned reviewers do receive originals of the appendices (which
+ is why five copies are requested) and usually receive original copies of
+ the application as well.
+ 
+\end_layout
+
+\begin_layout Standard
+Approach
+\end_layout
+
+\begin_layout Standard
+? State why you chose your approach(es) as opposed to others.
+\end_layout
+
+\begin_layout Standard
+? If you are choosing a nonstandard approach, explain why it is more advantageou
+s than a conventional one.
+ Ask yourself whether the innovative procedures are feasible and within
+ your competence.
+ 
+\end_layout
+
+\begin_layout Standard
+? Call attention to potential difficulties you may encounter with each approach.
+ Reviewers will be aware of possible problems; convince them you can handle
+ such circumstances.
+ Propose alternatives that would circumvent potential limitations.
+ 
+\end_layout
+
+\begin_layout Standard
+? Consider the limitations of each approach and how it may affect your results
+ and the data generated.
+\end_layout
+
+\begin_layout Standard
+? Spell it out in detail.
+ While you may assume reviewers are experts in the field and familiar with
+ current methodology, they will not make the same assumption about you.
+ It is not sufficient to state, "We will grow a variety of viruses in cells
+ using standard in vitro tissue culture techniques." Reviewers want to know
+ which viruses, cells, and techniques; the rationale for using the particular
+ system; and exactly how the techniques will be used.
+ Details show you understand and can handle the research.
+ 
+\end_layout
+
+\begin_layout Standard
+? Make sure any proposed model systems are appropriate to address the research
+ questions and are highly relevant to the medical problem being modeled.
+ 
+\end_layout
+
+\begin_layout Standard
+Results
+\end_layout
+
+\begin_layout Standard
+? Show you are aware of the limits to - and value of - the kinds of results
+ you can expect based on current knowledge of the subject.
+ State the conditions under which the data would support or contradict the
+ hypothesis and the limits you will observe in interpreting the results.
+ 
+\end_layout
+
+\begin_layout Standard
+? Show reviewers you will be able to interpret your results by revealing
+ your understanding of the complexities of the subject.
+\end_layout
+
+\begin_layout Standard
+? Many applications benefit from statistical analysis.
+ The early involvement of a statistician to determine the amount of data
+ to collect and the methods for analyses will favorably impress reviewers.
+ 
+\end_layout
+
+\begin_layout Standard
+? Describe your proposed statistical methods for analyzing the data you
+ plan to collect.
+ Define the criteria for evaluating the success or failure of a specific
+ test.
+ 
+\end_layout
+
+\begin_layout Standard
+Other pointers
+\end_layout
+
+\begin_layout Standard
+? Read the PHS 398 carefully for specific requirements, especially those
+ involving human subjects.
+\end_layout
+
+\begin_layout Standard
+? Estimate how much you expect to accomplish each year of the grant and
+ state any potential delays you can anticipate.
+\end_layout
+
+\begin_layout Standard
+? Describe sources of reagents, animals or equipment not generally available.
+ If collaborators will provide them, include letters from the sources in
+ your application.
+ 
+\end_layout
+
+\begin_layout Standard
+? Describe any procedures, situations, or materials that may be hazardous
+ and precautions you will take.
+\end_layout
+
+\begin_layout Standard
+? Include supporting data.
+ Where appropriate, include well-designed tables and figures.
+ Use titles that are accurate and informative.
+ Label the axes and include legends.
+ Reviewers will look for discrepancies between your data and text.
+ 
+\end_layout
+
+\begin_layout Standard
+? Include relevant publications.
+ If you (or your collaborators) have publications showing your use of the
+ proposed methods, put them in the appendix.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document

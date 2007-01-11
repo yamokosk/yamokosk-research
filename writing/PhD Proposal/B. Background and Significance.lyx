@@ -1,0 +1,115 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass report
+\language english
+\inputencoding auto
+\fontscheme times
+\graphics default
+\paperfontsize 12
+\spacing single
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+B.
+ Background and Significance
+\end_layout
+
+\begin_layout Standard
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services ranging from advanced surgery, such as image-guided
+ surgery, minimal invasive surgery, and telesurgery, to a variety of home
+ healthcare services, including remote health monitoring, telenursing, mobility
+ assistance and rehabilitation.
+ This effort has also been endorsed by groups such as the American Academy
+ of Orthopaedic Surgeons' (AAOS).
+ In their Unified Research Agenda, one research focus is to 
+\begin_inset Quotes eld
+\end_inset
+
+explore the role of novel imaging technologies on joint arthroplasty, including
+ RSA, DEXA, surgical navigation, minimally invasive and robotic surgery
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In 2005, more than 20 percent of U.S.
+ prostatectomies were done with a robot.
+ This year, expect that figure to double.
+ Robotic surgery should also gain new ground in advanced laparoscopic procedures
+, along with esophageal, pancreatic, colon and rectal surgeries, Curet said.
+ Since Intuitive Surgical?s da Vinci system was approved by the U.S.
+ Food and Drug Administration in July 2000 (the only robotic system to get
+ FDA approval) about 350 of the units have been purchased at about $1.3 million
+ each.
+ The system places the surgeon in front of a console where he or she uses
+ knobs to maneuver tiny surgical instruments with cameras attached to adjustable
+ robotic arms.
+ It has been used in a variety of surgeries from kidney transplants to hysterect
+omies.
+ About 36,600 robotic surgeries were done in 2005, up nearly 50 percent
+ from 2004.
+ Analysts predict the figure will grow at a similar rate in the coming months.
+\end_layout
+
+\begin_layout Standard
+Despite the appeal of robotics technology, issues of personal safety arise
+ when robots are expected to move autonomously in close proximity to people.
+ The Robotics Industries Association (RIA), the only trade group in North
+ America organized specifically to serve the robotics industry, recommends
+ safety standards by which to install and operate robotic systems.
+ These safety standards [ref], however, assume only highly controlled industrial
+ settings.
+ Not surprisingly, their safety recommendations have been developed accordingly.
+ While industrial defined standards have lagged recent trends, for the last
+ two decades, researchers have been proposing various methodologies and
+ designs for creating safe autonomous robots.
+ For instance, there is a community of researchers concerned with creating
+ more human-friendly robots through mechanical design.
+ While proposals have varied, these human-friendly versions typically share
+ the same set of characteristics including, being built from light weight
+ materials, low maximum torque/velocity actuators, and/or flexible or compliant
+ links and joints.
+ These designs are well conceived, but often the resultant robot becomes
+ too weak or inaccurate to perform any real task.
+ A second problem is that currently these human-friendly designs are not
+ mass produced like their industrial counterparts.
+ Therefore, they are more expensive and more difficult to obtain.
+\end_layout
+
+\begin_layout Standard
+A slightly different approach has sought to make commercially available
+ robots more safe through intelligent software control.
+\end_layout
+
+\end_body
+\end_document
