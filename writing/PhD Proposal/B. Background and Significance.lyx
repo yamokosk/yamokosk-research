@@ -38,6 +38,15 @@ B.
  Background and Significance
 \end_layout
 
+\begin_layout Subsection
+Significance
+\end_layout
+
+\begin_layout Subsubsection
+Dr.
+ Robot by 2050?
+\end_layout
+
 \begin_layout Standard
 To fight soaring health care costs and simultaneously increase the quality
  of health care, many researchers are turning to the technologies of robotics
@@ -81,24 +90,60 @@ omies.
  Analysts predict the figure will grow at a similar rate in the coming months.
 \end_layout
 
+\begin_layout Subsubsection
+Are there significant problems with motion planning algorithms?
+\end_layout
+
 \begin_layout Standard
-Despite the appeal of robotics technology, issues of personal safety arise
- when robots are expected to move autonomously in close proximity to people.
- The Robotics Industries Association (RIA), the only trade group in North
- America organized specifically to serve the robotics industry, recommends
- safety standards by which to install and operate robotic systems.
- These safety standards [ref], however, assume only highly controlled industrial
- settings.
- Not surprisingly, their safety recommendations have been developed accordingly.
- While industrial defined standards have lagged recent trends, for the last
- two decades, researchers have been proposing various methodologies and
- designs for creating safe autonomous robots.
- For instance, there is a community of researchers concerned with creating
- more human-friendly robots through mechanical design.
- While proposals have varied, these human-friendly versions typically share
- the same set of characteristics including, being built from light weight
- materials, low maximum torque/velocity actuators, and/or flexible or compliant
- links and joints.
+Given the increasing adoption of robotics technology in health care, is
+ there reason for concern? There are in fact, two important reasons.
+ The first reason...
+\end_layout
+
+\begin_layout Standard
+The second reason...
+\end_layout
+
+\begin_layout Standard
+These reasons should be related to the specific aims of the proposal.
+ The objective of this research is to develop an inherently safe, real-time
+ motion planning algorithm to make robotic technology to improve something.
+ An inherently safe, real-time algorithm will require the development of
+ new control algorithms which consider a performance as well as safety objective.
+ (Control algorith should be safe from the control loop).
+ Keep talking about the specific aims.
+\end_layout
+
+\begin_layout Subsection
+Background
+\end_layout
+
+\begin_layout Subsubsection
+What is being done to make robots safer?
+\end_layout
+
+\begin_layout Standard
+Traditional methods to ensure the safety of robot users are derived from
+ industrial guidelines set forth by the Robotics Industries Association
+ (RIA).
+ The RIA, the only trade group in North America organized specifically to
+ serve the robotics industry, recommends safety standards by which to install
+ and operate robotic systems.
+ These recommendations, which include measures such as cages, light curtains,
+ and pressure pads, ensure safety by isolating the robot from humans during
+ autonomous operation.
+ Such measures are too conservative for use in a medical setting where the
+ robot's close proximity to humans is dicated by the application.
+\end_layout
+
+\begin_layout Standard
+Operating under the assumption that collisions between robot and human are
+ inevatable, a community of researchers have sought through mechanical design
+ to make such it impossible for a robot to harm a person.
+ While proposals have varied, in general these designs share the same set
+ of characteristics including, constructed from light weight materials,
+ actuated by low maximum torque/velocity actuators, or constructed of flexible
+ or compliant links and joints.
  These designs are well conceived, but often the resultant robot becomes
  too weak or inaccurate to perform any real task.
  A second problem is that currently these human-friendly designs are not
@@ -106,9 +151,260 @@ Despite the appeal of robotics technology, issues of personal safety arise
  Therefore, they are more expensive and more difficult to obtain.
 \end_layout
 
+\begin_layout Subsubsection
+What is being done to make robots more autonomous?
+\end_layout
+
+\begin_layout Standard
+Autonomy in robotics is a tough problem.
+ With non-autonomous systems, we must specify exactly how to do a particular
+ task which is often laborious and error-prone.
+ In contrast, complete autonomy would allow us to simply specify what needs
+ to be done and the system would intelligently fill in the missing steps.
+ There are still many outstanding problems yet to be solved on the road
+ to autonomous systems.
+ One in particular, known as the motion planning problem, has received a
+ lot of attention over the years.
+ Its is concerned with finding algorithms which provide robots the ability
+ to plan their own movements given a few conditions or constraints by the
+ user.
+ All current solutions can be categorized as being either global or local
+ methods, or either exact or approximate methods respectively.
+\end_layout
+
+\begin_layout Standard
+Global or exact methodologies are guaranteed to find a solution to the motion
+ planning problem if one exists.
+ Usually these methods attempt to explicitly represent the free configuration
+ space of the manipulator system.
+ First introduced by Lozano-Pérez 
+\begin_inset LatexCommand \cite{Lozano-Perez1983a}
+
+\end_inset
+
+, the configuration space 
+\begin_inset Formula $\mathcal{C}$
+\end_inset
+
+ abstracts the motion planning problem by encoding the robot's 
+\begin_inset Formula $n$
+\end_inset
+
+ degree of freedom as independent parameters of an 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional manifold.
+ The free configuration space 
+\begin_inset Formula $\mathcal{C}_{free}$
+\end_inset
+
+ is simply the subset 
+\begin_inset Formula $\mathcal{C}_{free}\subseteq\mathcal{C}$
+\end_inset
+
+ which is void of any obstacles lifted into
+\begin_inset Formula $\mathcal{C}$
+\end_inset
+
+.
+ However, they have several disadvantages.
+ The algorithms necessary for global methods are computationally intensive.
+ Also, the computational cost increases quickly as a function of the degree
+ of freedom of the system in question.
+ In fact, the theoretical complexity of exact methods is exponential in
+ the number of degrees of freedom of the robot, making these methods intractable
+ for real-time planning or collision avoidance 
+\begin_inset LatexCommand \cite{de2000-Computational}
+
+\end_inset
+
+.
+ The alternative is vast number of local or approximate methods {ref}.
+ These are less computationally demanding and have been integrated into
+ a real-time robotic control system {ref}.
+ However, what makes these methods computationally efficient also becomes
+ their main disadvantage: unlike exact or global methods, these can not
+ guarantee to find a solution if one exists.
+ Examples of seemingly simple yet practical workspaces can be constructed
+ to demonstrate where each local method can fail {ref}.
+ 
+\end_layout
+
+\begin_layout Standard
+Despite this major shortcoming, local and approximate methods have thus
+ far provided the best answer to real-time planning and control.
+ Is it impractical to demand optimal or exact solutions from a real-time
+ system? It depends on the time scale involved.
+ Consider a chess playing robot such as Deep Blue.
+ Each turn it must formulate an action or plan based on the current positions
+ of the pieces on the chess board.
+ The game-tree complexity of chess is now evaluated at approximately 10123.
+ (As a comparison, the number of atoms in the Universe is estimated to be
+ between 4x1079 and 1081.) Computing an optimal series of actions, which
+ equates to finding an optimal path in this tree, is simply not possible.
+ 
+\end_layout
+
 \begin_layout Standard
 A slightly different approach has sought to make commercially available
  robots more safe through intelligent software control.
+ Several algorithms have seen partial success.
+ 
+\end_layout
+
+\begin_layout Standard
+Artificial potential field (APF) techniques attempt to address the planning
+ and control problems simultaneously.
+ Obstacles and a goal location are assigned user designed repulsive and
+ attractive potentials, respectively.
+ A virtual control force, normally applied to the manipulator's end-effector,
+ is generated by summing the negative gradient of each potential field.
+ By following the negative gradient of each field, the end-effector will
+ be repulsed from obstacles and attracted towards the goal location.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Figure idea: 3D view of a robot arm in a 
+\begin_inset Quotes eld
+\end_inset
+
+cloudy
+\begin_inset Quotes erd
+\end_inset
+
+ environment.
+ The darkness or absence of the clouds idicates the repulsive or attractive
+ strength of the artificial potential field.
+\end_layout
+
+\end_inset
+
+Placed in a discrete control system, the composite potential field can be
+ updated in every control cycle to account for not only static but also
+ dynamic obstacles and yields real-time collision avoidance and regulation
+ behavior.
+ APF methods can be better understood as a subset of impedance control or
+ more generally, force control.
+ Conventional impedance control is a well studied techique for controlling
+ the response a manipulator to an external force normally generated from
+ contact with the environment.
+ APF methods substitute the external forces associated with contact forces
+ for those generated by the virtual potential.
+\end_layout
+
+\begin_layout Standard
+Khatib was the first to propose APFs as a technique to achieve real-time
+ collision avoidance 
+\begin_inset LatexCommand \cite{Khatib1986-90}
+
+\end_inset
+
+.
+ While his contribution was significant, it also revealed the primary drawback
+ of all APF techniques.
+ Naive constuction of the function defining the potential fields can lead
+ to the creation of local minima in the workspace of the robot.
+ Local minima are created when the virtual forces cancel each other.
+ If a local minima occurs on the path of the end effector, its motion will
+ terminate since the net force on the end effector will be zero and the
+ arm will not reache the goal location.
+ Significant effort has been devoted to the elimination of local minima.
+ A small sampling of this work reveals a large variety of the approaches
+ that have been attempted.
+ These include backtracking, random walks 
+\begin_inset LatexCommand \cite{Barraquand1990}
+
+\end_inset
+
+, switching between points on the robot to calculate and apply the control
+ effort 
+\begin_inset LatexCommand \cite{Chang1996}
+
+\end_inset
+
+, behaviour/agent based approaches 
+\begin_inset LatexCommand \cite{Hamilton1998}
+
+\end_inset
+
+, fuzzy logic 
+\begin_inset LatexCommand \cite{Mbede2003-249,Merchan-Cruz2006}
+
+\end_inset
+
+, sliding mode control 
+\begin_inset LatexCommand \cite{Cardiel2004}
+
+\end_inset
+
+, better potential functions 
+\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423,Cardiel2004,Tanner2003}
+
+\end_inset
+
+.
+ Some of these works deserve further discussion.
+ Of primary interest in this research is the work done by Mbede et al.
+ 
+\begin_inset LatexCommand \cite{Mbede2003-249}
+
+\end_inset
+
+.
+ Before their work, few attempts were made to apply modern non-linear control
+ design techniques to APF-based or even impedance controllers.
+ By applying recently developed Lyapunov design techniques, Mbede et al.
+ designed a uniformly, ultimately bounded regulator using a fuzzy rule system
+ to reason about the APF output.
+ They combined this with a neural network to deal with any other dynamic
+ model uncertainties.
+ By employing Lyapunov stability analysis, Galicki developed a trajectory
+ generator which obeyed dynamic constraints of the manipulator and kept
+ the manipulator away from dynamic obstacle through the use of an external
+ penalty function 
+\begin_inset LatexCommand \cite{Galicki2004}
+
+\end_inset
+
+.
+ Despite claims as a real-time method, his algorithm relied on a priori
+ knowledge of the obstacles locations in the worksapce.
+ Hybrid force/velocity method, switching system, desired velocity signal
+ generated by the negative gradient of a potential field function 
+\begin_inset LatexCommand \cite{Palejiya2006-745}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Does this study address an important problem?
+\end_layout
+
+\begin_layout Standard
+If the aims of the application are achieved, how will scientific knowledge
+ be advanced?
+\end_layout
+
+\begin_layout Standard
+What will be the effect of these studies on the concepts or methods that
+ drive this field?
+\end_layout
+
+\begin_layout Subsubsection
+How are these advances being disseminated?
+\end_layout
+
+\begin_layout Standard
+Educational outreach
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \end_body

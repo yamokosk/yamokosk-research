@@ -39,18 +39,71 @@ A.
 \end_layout
 
 \begin_layout Standard
-The objective of this research is to develop an inherently safe, real-time
- motion planning system for manipulator systems in medical or clinical environme
-nts.
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services ranging from advanced surgery, such as image-guided
+ surgery, minimal invasive surgery, and telesurgery, to a variety of home
+ healthcare services, including remote health monitoring, telenursing, mobility
+ assistance and rehabilitation.
+ Unfortunately, the impact of robotics technology on costs and quality of
+ health care is debatable.
+ One reason for the lack of significant impact is that many current applications
+ employ robots in passive modes of operation or merely enhance a surgeon's
+ dexterity or manipulation.
+ Passive systems don't actually replace an expert surgeon or well-trained
+ nurse but simply add to the over-head of hospital operation.
+ In essence, current robotic systems are just another expensive tool.
+ The answer is to endow next-generation robotic systems with increasing
+ amounts of autonomy.
+ Then robotic system will transform from a passive tool to a true member
+ of the team.
 \end_layout
 
 \begin_layout Standard
-Fundamentally, no safeguarding system can ever be perfect, that is, risk
- free.
+Autonomy in robotics is a tough problem.
+ There are many outstanding problems yet to be solved on the road to autonomous
+ systems.
+ One in particular, known as the motion planning problem, has received a
+ lot of attention over the years.
+ Its is concerned with finding algorithms which provide robots the ability
+ to plan their own movements given a few conditions or constraints by the
+ user.
+ A sub-problem, motivated by robotic systems in health care applications,
+ is the extra requirement of human safety as a priority during planning.
+ The objective of this research is to develop and evaluate an inherently
+ safe, real-time motion planning system for manipulator systems in medical
+ or clinical environments.
+ This goal will be accomplished through several technical and experimental
+ several specific aims:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Enumerate
+System development - Develop an inherently safe real-time motion planning
+ algorithm which is applicable to a wide range of robotic systems.
+ 
+\end_layout
 
+\begin_layout Enumerate
+Failure assessment - Fundamentally, no safeguarding system can ever be perfect,
+ that is, risk free.
+ A framework for assessing the relative safety of autonomous systems will
+ be developed and illustrated on the system proposed in this research.
+\end_layout
+
+\begin_layout Enumerate
+Experimental assessment - Illustrate the developed motion planning system
+ on a novel, robotically actuated X-Ray imaging platform being developed
+ in parrallel here at the University of Florida.
+\end_layout
+
+\begin_layout Enumerate
+Pilot study data - A hypothesis is the patients alter their behavior to
+ compensate for poorly behaved robotic systems.
+ Data data gathered from a small sample of participants during clinically
+ relevant applications with autonomous systems will be gathered to examine
+ the possibility of a large scale human subject testing.
 \end_layout
 
 \end_body

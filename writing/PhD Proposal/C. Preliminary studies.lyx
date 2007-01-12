@@ -2,19 +2,24 @@
 \lyxformat 245
 \begin_document
 \begin_header
-\textclass article
+\textclass report
 \language english
 \inputencoding auto
-\fontscheme default
+\fontscheme times
 \graphics default
-\paperfontsize default
+\paperfontsize 12
+\spacing single
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_amsmath 1
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
-\secnumdepth 3
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 0
 \tocdepth 3
 \paragraph_separation indent
 \defskip medskip
@@ -28,7 +33,7 @@
 
 \begin_body
 
-\begin_layout Standard
+\begin_layout Section
 Preliminary studies
 \end_layout
 
