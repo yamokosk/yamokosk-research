@@ -56,7 +56,18 @@ To fight soaring health care costs and simultaneously increase the quality
  surgery, minimal invasive surgery, and telesurgery, to a variety of home
  healthcare services, including remote health monitoring, telenursing, mobility
  assistance and rehabilitation.
- This effort has also been endorsed by groups such as the American Academy
+ The Food and Drug Administration, who reviews data on the safety and effectiven
+ess of robotic software and hardware, estimates that 36,600 robotic surgeries
+ were done in 2005, up nearly 50 percent from 2004.
+ Analysts predict the figure will grow at a similar rate in the coming months
+ as the general public becomes informed about the advantages of robotically
+ assissted surgeries.
+ Similarly, robotics technology is becoming more popular in rehabilitation
+ and assissted living.
+\end_layout
+
+\begin_layout Standard
+This effort has also been endorsed by groups such as the American Academy
  of Orthopaedic Surgeons' (AAOS).
  In their Unified Research Agenda, one research focus is to 
 \begin_inset Quotes eld
@@ -70,26 +81,6 @@ explore the role of novel imaging technologies on joint arthroplasty, including
 .
 \end_layout
 
-\begin_layout Standard
-In 2005, more than 20 percent of U.S.
- prostatectomies were done with a robot.
- This year, expect that figure to double.
- Robotic surgery should also gain new ground in advanced laparoscopic procedures
-, along with esophageal, pancreatic, colon and rectal surgeries, Curet said.
- Since Intuitive Surgical?s da Vinci system was approved by the U.S.
- Food and Drug Administration in July 2000 (the only robotic system to get
- FDA approval) about 350 of the units have been purchased at about $1.3 million
- each.
- The system places the surgeon in front of a console where he or she uses
- knobs to maneuver tiny surgical instruments with cameras attached to adjustable
- robotic arms.
- It has been used in a variety of surgeries from kidney transplants to hysterect
-omies.
- About 36,600 robotic surgeries were done in 2005, up nearly 50 percent
- from 2004.
- Analysts predict the figure will grow at a similar rate in the coming months.
-\end_layout
-
 \begin_layout Subsubsection
 Are there significant problems with motion planning algorithms?
 \end_layout
@@ -97,20 +88,32 @@ Are there significant problems with motion planning algorithms?
 \begin_layout Standard
 Given the increasing adoption of robotics technology in health care, is
  there reason for concern? There are in fact, two important reasons.
- The first reason...
+ The first reason is that, with few exceptions, most research focus on either
+ the complexity of the environment (and assume that the robots have trivial
+ dynamics or kinematics) or on the detailed robot dynamics (while assuming
+ trivial environments).
+ Motion planning for a manipulator system in close proximity to humans requires
+ both a detailed robot model as well as a complex environment.
+ Real-time algorithm.
+ Inherently safe.
 \end_layout
 
 \begin_layout Standard
-The second reason...
+The second reason is that algorithm verification typically relies on benchmarkin
+g against a handful of toy problems or engineered environments.
+ 
 \end_layout
 
 \begin_layout Standard
 These reasons should be related to the specific aims of the proposal.
- The objective of this research is to develop an inherently safe, real-time
+\end_layout
+
+\begin_layout Standard
+The objective of this research is to develop an inherently safe, real-time
  motion planning algorithm to make robotic technology to improve something.
  An inherently safe, real-time algorithm will require the development of
  new control algorithms which consider a performance as well as safety objective.
- (Control algorith should be safe from the control loop).
+ (Control algorithm should be safe from the control loop).
  Keep talking about the specific aims.
 \end_layout
 
@@ -157,10 +160,10 @@ What is being done to make robots more autonomous?
 
 \begin_layout Standard
 Autonomy in robotics is a tough problem.
- With non-autonomous systems, we must specify exactly how to do a particular
- task which is often laborious and error-prone.
- In contrast, complete autonomy would allow us to simply specify what needs
- to be done and the system would intelligently fill in the missing steps.
+ With non-autonomous systems, a task must be specified in exact steps which
+ is often laborious and error-prone.
+ In contrast, complete autonomy allows one to simply specify what needs
+ to be done and the system intelligently fills in the missing steps.
  There are still many outstanding problems yet to be solved on the road
  to autonomous systems.
  One in particular, known as the motion planning problem, has received a
@@ -168,8 +171,14 @@ Autonomy in robotics is a tough problem.
  Its is concerned with finding algorithms which provide robots the ability
  to plan their own movements given a few conditions or constraints by the
  user.
- All current solutions can be categorized as being either global or local
- methods, or either exact or approximate methods respectively.
+ The IEEE Robotics and Automation's Technical Committee on Algorithms for
+ Planning and Control of Robot Motion, who promotes algorithms research,
+ identifies several areas of research priority including, development of
+ representations and motion strategies capable of incorporating feedback
+ signals; motion subject to constraints, arising from kinematics, dynamics,
+ and nonholonomic systems; addressing the characteristics of dynamic environment
+s; and encouraging the application of planning algorithms in novel application
+ areas.
 \end_layout
 
 \begin_layout Standard
@@ -250,6 +259,47 @@ Despite this major shortcoming, local and approximate methods have thus
 A slightly different approach has sought to make commercially available
  robots more safe through intelligent software control.
  Several algorithms have seen partial success.
+\end_layout
+
+\begin_layout Itemize
+Artificial potential field (APF) techniques attempt to address the planning
+ and control problems simultaneously.
+ Obstacles and a goal location are assigned user designed repulsive and
+ attractive potentials, respectively.
+ A virtual control force, normally applied to the manipulator's end-effector,
+ is generated by summing the negative gradient of each potential field.
+ By following the negative gradient of each field, the end-effector will
+ be repulsed from obstacles and attracted towards the goal location.
+ Placed in a discrete control system, the composite potential field can
+ be updated in every control cycle to account for not only static but also
+ dynamic obstacles and yields real-time collision avoidance and regulation
+ behavior.
+ 
+\end_layout
+
+\begin_layout Itemize
+Naive construction of the potential field functions can lead to local minima.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Local minima problem has been heavily investigated and a few good solutions
+ have been proposed.
+ But are these solutions applicable to real-time implementation? To real
+ world environments? 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+APF techniques also does not immediately consider the limitations of the
+ robotic system.
+ 
+\end_layout
+
+\begin_layout Itemize
+Moving on from the local minima problem, APF methods only address the pre-collis
+ion problem.
  
 \end_layout
 

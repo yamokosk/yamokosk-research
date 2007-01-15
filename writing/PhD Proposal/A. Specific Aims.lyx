@@ -82,12 +82,23 @@ Autonomy in robotics is a tough problem.
 \begin_layout Enumerate
 System development - Develop an inherently safe real-time motion planning
  algorithm which is applicable to a wide range of robotic systems.
- 
+\begin_inset Marginal
+status collapsed
+
+\begin_layout Standard
+Should I split this into two sub goals? One for a real-time, near-global
+ planning algorithm.
+ And a second to make it safe? 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
-Failure assessment - Fundamentally, no safeguarding system can ever be perfect,
- that is, risk free.
+Failure assessment framework - Fundamentally, no safeguarding system can
+ ever be perfect, that is, risk free.
  A framework for assessing the relative safety of autonomous systems will
  be developed and illustrated on the system proposed in this research.
 \end_layout
