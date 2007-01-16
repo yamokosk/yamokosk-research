@@ -39,90 +39,18 @@ B.
 \end_layout
 
 \begin_layout Subsection
-Significance
-\end_layout
-
-\begin_layout Subsubsection
-Dr.
- Robot by 2050?
-\end_layout
-
-\begin_layout Standard
-To fight soaring health care costs and simultaneously increase the quality
- of health care, many researchers are turning to the technologies of robotics
- and intelligent systems to find solutions.
- Over the last decade, there has been an explosion of robotic applications
- in health services ranging from advanced surgery, such as image-guided
- surgery, minimal invasive surgery, and telesurgery, to a variety of home
- healthcare services, including remote health monitoring, telenursing, mobility
- assistance and rehabilitation.
- The Food and Drug Administration, who reviews data on the safety and effectiven
-ess of robotic software and hardware, estimates that 36,600 robotic surgeries
- were done in 2005, up nearly 50 percent from 2004.
- Analysts predict the figure will grow at a similar rate in the coming months
- as the general public becomes informed about the advantages of robotically
- assissted surgeries.
- Similarly, robotics technology is becoming more popular in rehabilitation
- and assissted living.
-\end_layout
-
-\begin_layout Standard
-This effort has also been endorsed by groups such as the American Academy
- of Orthopaedic Surgeons' (AAOS).
- In their Unified Research Agenda, one research focus is to 
-\begin_inset Quotes eld
-\end_inset
-
-explore the role of novel imaging technologies on joint arthroplasty, including
- RSA, DEXA, surgical navigation, minimally invasive and robotic surgery
-\begin_inset Quotes erd
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Subsubsection
-Are there significant problems with motion planning algorithms?
-\end_layout
-
-\begin_layout Standard
-Given the increasing adoption of robotics technology in health care, is
- there reason for concern? There are in fact, two important reasons.
- The first reason is that, with few exceptions, most research focus on either
- the complexity of the environment (and assume that the robots have trivial
- dynamics or kinematics) or on the detailed robot dynamics (while assuming
- trivial environments).
- Motion planning for a manipulator system in close proximity to humans requires
- both a detailed robot model as well as a complex environment.
- Real-time algorithm.
- Inherently safe.
-\end_layout
-
-\begin_layout Standard
-The second reason is that algorithm verification typically relies on benchmarkin
-g against a handful of toy problems or engineered environments.
- 
-\end_layout
-
-\begin_layout Standard
-These reasons should be related to the specific aims of the proposal.
-\end_layout
-
-\begin_layout Standard
-The objective of this research is to develop an inherently safe, real-time
- motion planning algorithm to make robotic technology to improve something.
- An inherently safe, real-time algorithm will require the development of
- new control algorithms which consider a performance as well as safety objective.
- (Control algorithm should be safe from the control loop).
- Keep talking about the specific aims.
-\end_layout
-
-\begin_layout Subsection
 Background
 \end_layout
 
-\begin_layout Subsubsection
-What is being done to make robots safer?
+\begin_layout Standard
+There are still many outstanding problems yet to be solved on the road to
+ complete autonomous systems.
+ One in particular, known as the motion planning problem, has received a
+ lot of attention over the years.
+ Its is concerned with finding algorithms which provide robots the ability
+ to plan their own movements given a few conditions or constraints by the
+ user.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -152,33 +80,6 @@ Operating under the assumption that collisions between robot and human are
  A second problem is that currently these human-friendly designs are not
  mass produced like their industrial counterparts.
  Therefore, they are more expensive and more difficult to obtain.
-\end_layout
-
-\begin_layout Subsubsection
-What is being done to make robots more autonomous?
-\end_layout
-
-\begin_layout Standard
-Autonomy in robotics is a tough problem.
- With non-autonomous systems, a task must be specified in exact steps which
- is often laborious and error-prone.
- In contrast, complete autonomy allows one to simply specify what needs
- to be done and the system intelligently fills in the missing steps.
- There are still many outstanding problems yet to be solved on the road
- to autonomous systems.
- One in particular, known as the motion planning problem, has received a
- lot of attention over the years.
- Its is concerned with finding algorithms which provide robots the ability
- to plan their own movements given a few conditions or constraints by the
- user.
- The IEEE Robotics and Automation's Technical Committee on Algorithms for
- Planning and Control of Robot Motion, who promotes algorithms research,
- identifies several areas of research priority including, development of
- representations and motion strategies capable of incorporating feedback
- signals; motion subject to constraints, arising from kinematics, dynamics,
- and nonholonomic systems; addressing the characteristics of dynamic environment
-s; and encouraging the application of planning algorithms in novel application
- areas.
 \end_layout
 
 \begin_layout Standard
@@ -432,17 +333,18 @@ Khatib was the first to propose APFs as a technique to achieve real-time
 \end_layout
 
 \begin_layout Standard
-Does this study address an important problem?
-\end_layout
-
-\begin_layout Standard
-If the aims of the application are achieved, how will scientific knowledge
- be advanced?
-\end_layout
-
-\begin_layout Standard
-What will be the effect of these studies on the concepts or methods that
- drive this field?
+To realize this promise, advances in robotics technology must reach several
+ milestones including: Given the increasing adoption of robotics technology
+ in health care, is there reason for concern? There are in fact, two important
+ reasons.
+ The first reason is that, with few exceptions, most research focus on either
+ the complexity of the environment (and assume that the robots have trivial
+ dynamics or kinematics) or on the detailed robot dynamics (while assuming
+ trivial environments).
+ Motion planning for a manipulator system in close proximity to humans requires
+ both a detailed robot model as well as a complex environment.
+ Real-time algorithm.
+ Inherently safe.
 \end_layout
 
 \begin_layout Subsubsection
@@ -453,7 +355,57 @@ How are these advances being disseminated?
 Educational outreach
 \end_layout
 
+\begin_layout Subsection
+Significance
+\end_layout
+
 \begin_layout Standard
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services ranging from advanced surgery, such as image-guided
+ surgery, minimal invasive surgery, and telesurgery, to a variety of home
+ healthcare services, including remote health monitoring, telenursing, mobility
+ assistance and rehabilitation.
+ The Food and Drug Administration, who reviews data on the safety and effectiven
+ess of robotic software and hardware, estimates that 36,600 robotic surgeries
+ were done in 2005, up nearly 50 percent from 2004.
+ Analysts predict the figure will grow at a similar rate in the coming months
+ as the general public becomes informed about the advantages of robotically
+ assissted surgeries.
+ Similarly, robotics technology is becoming more popular in rehabilitation
+ and assissted living.
+\end_layout
+
+\begin_layout Standard
+The impact of robotics technology on health care costs and quality are still
+ debatable.
+ To fully realize the potential of robotics technology, advances in the
+ robotics disciplines must achieve several milestones including: 1) new
+ robotic control systems to allow the development of a robotic system that
+ performs clinically relevant tasks while interacting in a safe manner with
+ the patient (
+\series bold
+Aim 1 and 2
+\series default
+), 2) validation of system performance for particular task specification
+ (
+\series bold
+Aim 3 and Aim 4
+\series default
+), and 3) something else (
+\series bold
+Aim 5
+\series default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \bibtex[plain]{Proposal_Library}
+
+\end_inset
+
 
 \end_layout
 
