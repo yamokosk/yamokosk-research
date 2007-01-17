@@ -64,7 +64,8 @@ Should I split this into two sub goals? One for a real-time, near-global
 \end_layout
 
 \begin_layout Enumerate
-Fault models - Develop fault models and non-linear estimation methods.
+Develop fault models and nonlinear estimation methods to detect and quantify/ide
+ntify unexpected behaviors from the human and robotic system.
 \end_layout
 
 \begin_layout Enumerate
@@ -110,16 +111,12 @@ n areas.
 \end_layout
 
 \begin_layout Enumerate
-A previously unexplored class of robotic controllers will be developed and
- tested in Aim 2 that yields limb tracking of a desired trajectory (determined
- from Outcome 1) through the application of intermittent contacts.
- A continuous controller will be developed based on the robot dynamics in
- free motion, at the moment of impact with the limb, and when the manipulator
- and limb dynamics are coupled.
- The development of these impact controllers will also make a contribution
- to general robot control theory and could have pervasive influence for
- other applications that require a robot to exert planned collisions with
- another dynamic system.
+A new failure model will result from Aim 3 that will provide a foundation
+ for model-based fault detection methods.
+ Based on the model development, a dynamics based residual generating fault
+ detection, identification, and characterization scheme will be developed
+ to elicit a desired robot response to unexpected events (e.g., muscle spasticity,
+ patient fall).
 \end_layout
 
 \begin_layout Enumerate
