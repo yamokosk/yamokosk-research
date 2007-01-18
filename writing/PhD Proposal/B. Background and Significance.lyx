@@ -82,6 +82,19 @@ Operating under the assumption that collisions between robot and human are
  Therefore, they are more expensive and more difficult to obtain.
 \end_layout
 
+\begin_layout Itemize
+Global planners are nice because a solution is found if one exists.
+ The bad is that they are computationally intensive.
+ The robot's interaction with the environment and its ability to react intellige
+ntly to human movement is dictated by the slowest module of the control
+ and planning system.
+\end_layout
+
+\begin_layout Itemize
+Local planning algorithms are computationally efficient but can become stuck
+ or fail to complete the original performance objective.
+\end_layout
+
 \begin_layout Standard
 Global or exact methodologies are guaranteed to find a solution to the motion
  planning problem if one exists.
@@ -204,6 +217,33 @@ ion problem.
  
 \end_layout
 
+\begin_layout Itemize
+In the past decade, great advances have been made in the control of non-linear
+ systems through the application of Lyapunov design techniques.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some of these advances have been made by co-investigator Dixon (preliminary
+ results?)
+\end_layout
+
+\begin_layout Itemize
+Preliminary investigations by other research groups have laid the initial
+ ground work for this approach and prove its feasability.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Cite work that marries PF techniques and Lyapunov control design.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This work proposes to expand on the limitations of the previous attempts.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 Artificial potential field (APF) techniques attempt to address the planning
  and control problems simultaneously.
