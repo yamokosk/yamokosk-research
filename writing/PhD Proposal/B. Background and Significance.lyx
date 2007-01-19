@@ -43,8 +43,10 @@ Background
 \end_layout
 
 \begin_layout Standard
-There are still many outstanding problems yet to be solved on the road to
- complete autonomous systems.
+A recent trend in robotics research is the design of algorithms and hardware
+ systems for the purpose of human-friendly robots.
+ There are still many outstanding problems yet to be solved on the road
+ to complete autonomous systems.
  One in particular, known as the motion planning problem, has received a
  lot of attention over the years.
  Its is concerned with finding algorithms which provide robots the ability
