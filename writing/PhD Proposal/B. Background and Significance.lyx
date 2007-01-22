@@ -43,16 +43,65 @@ Background
 \end_layout
 
 \begin_layout Standard
-A recent trend in robotics research is the design of algorithms and hardware
- systems for the purpose of human-friendly robots.
- There are still many outstanding problems yet to be solved on the road
- to complete autonomous systems.
- One in particular, known as the motion planning problem, has received a
- lot of attention over the years.
+Human friendly robots in the health care environment are expected to augment
+ current human capabilites [minimially invasive surgeries], assist with
+ rehabilitation tasks 
+\begin_inset LatexCommand \cite{Jezernik2003,Hesse2000}
+
+\end_inset
+
+, and automate mundane yet critical tasks [perscription filling].
+ Specific instances of these systems are already operational [DaVinci, etc]
+ 
+\begin_inset LatexCommand \cite{Jezernik2003}
+
+\end_inset
+
+ and many more exist as prototypes in research labs across the world [research
+ examples, unpublished GatorRay paper].
+ However, despite the success of these early systems, they typically lack
+ any significant level of autonomy.
+ To ensure patient and operator safety, these systems are usually just sophistic
+ated mechanical extensions of the operator.
+ Furthermore, automatic fault or anomoly detection is primarily concerned
+ with the hardware anomolys (e.g.
+ a corrupt sensor or failed brake circuit).
+ More global faults, such as unplanned collisions with a person or the environme
+nt are the responsibility of the operator.
+ Addressing these and other shortcomings of human-friendly robots is the
+ subject current research.
+ The aims of this project are focused on developing safe, autonomous motion
+ planning algorithms as well as better fault detection algorithms.
+\end_layout
+
+\begin_layout Standard
+The motion planning problem, has received a lot of attention over the years.
  Its is concerned with finding algorithms which provide robots the ability
  to plan their own movements given a few conditions or constraints by the
  user.
  
+\end_layout
+
+\begin_layout Standard
+Safer robots means they can be operated in close proximity Operating under
+ the assumption that collisions between robot and human are inevatable,
+ a community of researchers have sought through mechanical design to make
+ such it impossible for a robot to harm a person.
+ While proposals have varied, in general these designs share the same set
+ of characteristics including, constructed from light weight materials,
+ actuated by low maximum torque/velocity actuators, or constructed of flexible
+ or compliant links and joints.
+ These designs are well conceived, but often the resultant robot becomes
+ too weak or inaccurate to perform any real task.
+ A second problem is that currently these human-friendly designs are not
+ mass produced like their industrial counterparts.
+ Therefore, they are more expensive and more difficult to obtain.
+\end_layout
+
+\begin_layout Standard
+There are many outstanding problems yet to be solved before truly human-friendly
+ robotson the road to complete autonomous systems.
+ One in particular, known as 
 \end_layout
 
 \begin_layout Standard
@@ -67,21 +116,6 @@ Traditional methods to ensure the safety of robot users are derived from
  autonomous operation.
  Such measures are too conservative for use in a medical setting where the
  robot's close proximity to humans is dicated by the application.
-\end_layout
-
-\begin_layout Standard
-Operating under the assumption that collisions between robot and human are
- inevatable, a community of researchers have sought through mechanical design
- to make such it impossible for a robot to harm a person.
- While proposals have varied, in general these designs share the same set
- of characteristics including, constructed from light weight materials,
- actuated by low maximum torque/velocity actuators, or constructed of flexible
- or compliant links and joints.
- These designs are well conceived, but often the resultant robot becomes
- too weak or inaccurate to perform any real task.
- A second problem is that currently these human-friendly designs are not
- mass produced like their industrial counterparts.
- Therefore, they are more expensive and more difficult to obtain.
 \end_layout
 
 \begin_layout Itemize
