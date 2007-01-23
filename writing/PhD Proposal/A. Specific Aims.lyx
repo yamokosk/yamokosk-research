@@ -7,7 +7,7 @@
 \inputencoding auto
 \fontscheme times
 \graphics default
-\paperfontsize 12
+\paperfontsize 11
 \spacing single
 \papersize letterpaper
 \use_geometry true
@@ -15,10 +15,10 @@
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
-\leftmargin 1in
-\topmargin 1in
-\rightmargin 1in
-\bottommargin 1in
+\leftmargin 0.5in
+\topmargin 0.5in
+\rightmargin 0.5in
+\bottommargin 0.5in
 \secnumdepth 0
 \tocdepth 3
 \paragraph_separation indent

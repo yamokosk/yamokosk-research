@@ -43,27 +43,7 @@ Research details for Aim 1
 \end_layout
 
 \begin_layout Standard
-Fundamentally, no safeguarding system can ever be perfect, that is, risk
- free.
- This fact has been widely recognized by many other industries who employ
- various failure analysis methodologies to both categorize the failure modes
- as well as determine the probabilities associated with each failure mode.
- Dhillon has reviewed these methods and reported which are most suitable
- for analyzing robotic systems 
-\begin_inset LatexCommand \cite{Dhillon1997}
 
-\end_inset
-
-.
- Besides his introduction of these methods to the robotics community, only
- a few research groups 
-\begin_inset LatexCommand \cite{fei2001sim,Korb2005,Yamada:1996,Walker:1996,Choi:2006,Khodabandehloo1996,Leuschen1998}
-
-\end_inset
-
- have employed these methods to analyze robotic systems.
- No group to date has embraced these methods to guide the design and development
- process.
 \end_layout
 
 \begin_layout Standard
@@ -76,8 +56,38 @@ We are proposing the use of both qualitative and quantitative safety analysis
 \end_layout
 
 \begin_layout Standard
-To apply these methodologies, Monte carlo simulations will be conducted
- to assess the reliability of common motion planning algorithms.
+From basic failure analysis, the most common failure distribution is the
+ exponential distribution,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+F(t)=1-e^{-\lambda t}\label{eq:1}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the probability of failure.
+ Conventional methods for determining a value for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ includes historical data, government and commercial failure rate data,
+ and finally testing.
+ However, none of these methods are adequate or safe for human/robotic systems.
+ Therefore one goal of Aim 1 is to determine a methodology to safely estimate
+ values for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection

@@ -38,55 +38,161 @@ B.
  Background and Significance
 \end_layout
 
+\begin_layout Standard
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services.
+ The Food and Drug Administration, who reviews data on the safety and effectiven
+ess of robotic software and hardware, estimates that 36,600 robotic surgeries
+ were done in 2005, up nearly 50 percent from 2004 [ref?].
+ Analysts predict the figure will grow at a similar rate as the general
+ public becomes informed about the advantages of robotically assissted surgeries
+ [ref?].
+ Beyond surgical applications 
+\begin_inset LatexCommand \cite{Lanfranco2004}
+
+\end_inset
+
+, robotics technology is also being applied to assist with rehabilitation
+ tasks 
+\begin_inset LatexCommand \cite{Hillman2003,Krebs2000}
+
+\end_inset
+
+, automate repetitive yet critical tasks such as prescription filling 
+\begin_inset LatexCommand \cite{Pedersen2006}
+
+\end_inset
+
+, and develop better diagnostic tools 
+\begin_inset LatexCommand \cite{Yamokoski2006}
+
+\end_inset
+
+.
+ Specific instances of these systems are already operational 
+\begin_inset LatexCommand \cite{Jezernik2003,Sung2001}
+
+\end_inset
+
+ and countless more exist as prototypes in research labs across the world.
+\end_layout
+
+\begin_layout Standard
+Given the increasing adoption of robotics technology in health care, is
+ there reason for concern? There are in fact two reasons.
+ The first involves the safety associated with autonomous robots.
+ According to FDA records, current commercial surgical robotic systems have
+ not caused a patient undue injury [ref].
+ However, the reason for this good fortune is not necessarily due to exceptional
+ safety measures, even though current systems do employ an impressive array
+ of stop-gaps and safety measures.
+ Rather current surgical robotic systems are safe due to the design of their
+ control system.
+ Similar to a vehicle or airplane, current robotic systems are based on
+ what called a human-in-the-loop control system.
+ They are not autonomous and only move by real-time commands sent by a surgeon.
+ Similar to non-robotically assisted surgeries, this control methodology
+ simply responds to the surgeon's actions as if they were the surgeon's
+ own hands.
+ Future systems, however, will yield more autonomous control to the robotic
+ system.
+ Starting with routine tasks such as suturing, future systems may be capable
+ of completeing full procedures [ref].
+ Early indications of this trend already exist.
+ The ROBODOC
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+textregistered
+\end_layout
+
+\end_inset
+
+ Surgical System (Integrated Surgical Systems, Inc., Sacramento, CA) allows
+ a surgeon to input a series of movements off-line which are then executed
+ by the robot.
+ ROBODOC makes no autonomous judgements about its programmed actions, yet
+ this demonstrates the desire to semi-automate routine tasks.
+ Beyond surgical applications, for other health care applications the human-in-t
+he-loop control methodology is simply not practical.
+ For example, the speed or complexity of some rehabilitation or diagnostic
+ applications necessitate more autonomy.
+ The concern is that when robots are required to perform autonomous actions
+ in close proximity to humans, serious issues of operator and patient safety
+ arise.
+\end_layout
+
+\begin_layout Standard
+The second reason for concern is that all mechatronic systems are subject
+ to failure.
+ Current commercial surgical systems have tried to reduce component failure
+ before an operation by careful bookkeeping of the number of hours components
+ have been in use (e.g.
+ da Vinci
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+textregistered
+\end_layout
+
+\end_inset
+
+ Surgical System, Intuitive Surgical, Inc., Sunnyvale, CA).
+ However this method does not address issues of patient or operator safety
+ if a component was to fail 
+\emph on
+during
+\emph default
+ use.
+ Minimizing mean time to failure can also be achieved by designing a robotic
+ system from scratch with high reliability components, but this extra design
+ effort can exponentially increases the final cost of the system.
+ The alternative is to rely on off-the-shelf robots developed for industrial
+ uses.
+ Unfortunately, the recorded mean time to failure for an industrial robotic
+ system is only 500 to 2500 hours 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The research objective of this study is to systematically address both of
+ these concerns, thereby creating safer and more capable robotic systems.
+ This in turn will improve to quality of life for millions who could benefit
+ from application of robotic technologies in healthcare.
+ Beyond the impacts in healthcare, in accomplishing these tasks a number
+ of theoretical, computational and experimental activities are proposed
+ that will be of high interest to the general robotics and controls communities.
+ It is expected that the proposed work will find interest and application
+ outside the specific focus area of the investigators.
+\end_layout
+
 \begin_layout Subsection
-Background
+Prior research
 \end_layout
 
 \begin_layout Standard
-Human friendly robots in the health care environment are expected to augment
- current human capabilites [minimially invasive surgeries], assist with
- rehabilitation tasks 
-\begin_inset LatexCommand \cite{Jezernik2003,Hesse2000}
-
-\end_inset
-
-, and automate mundane yet critical tasks [perscription filling].
- Specific instances of these systems are already operational [DaVinci, etc]
- 
-\begin_inset LatexCommand \cite{Jezernik2003}
-
-\end_inset
-
- and many more exist as prototypes in research labs across the world [research
- examples, unpublished GatorRay paper].
- However, despite the success of these early systems, they typically lack
- any significant level of autonomy.
- To ensure patient and operator safety, these systems are usually just sophistic
-ated mechanical extensions of the operator.
- Furthermore, automatic fault or anomoly detection is primarily concerned
- with the hardware anomolys (e.g.
- a corrupt sensor or failed brake circuit).
- More global faults, such as unplanned collisions with a person or the environme
-nt are the responsibility of the operator.
- Addressing these and other shortcomings of human-friendly robots is the
- subject current research.
- The aims of this project are focused on developing safe, autonomous motion
- planning algorithms as well as better fault detection algorithms.
-\end_layout
-
-\begin_layout Standard
-The motion planning problem, has received a lot of attention over the years.
- Its is concerned with finding algorithms which provide robots the ability
- to plan their own movements given a few conditions or constraints by the
- user.
- 
-\end_layout
-
-\begin_layout Standard
-Safer robots means they can be operated in close proximity Operating under
- the assumption that collisions between robot and human are inevatable,
- a community of researchers have sought through mechanical design to make
- such it impossible for a robot to harm a person.
+Attempts to address the safety concerns involved with autonomous robots
+ spans across several areas of traditional robotics and controls research
+ including, motion planning, collision avoidance, and fault characterization
+ and detection.
+ Operating under the assumption that collisions between robot and human
+ are inevatable, a community of researchers have sought through mechanical
+ design to make such it impossible for a robot to harm a person.
  While proposals have varied, in general these designs share the same set
  of characteristics including, constructed from light weight materials,
  actuated by low maximum torque/velocity actuators, or constructed of flexible
@@ -99,21 +205,39 @@ Safer robots means they can be operated in close proximity Operating under
 \end_layout
 
 \begin_layout Standard
+The first reason is that, with few exceptions, most research focus on either
+ the complexity of the environment (and assume that the robots have trivial
+ dynamics or kinematics) or on the detailed robot dynamics (while assuming
+ trivial environments).
+ Motion planning for a manipulator system in close proximity to humans requires
+ both a detailed robot model as well as a complex environment.
+ Real-time algorithm.
+ Inherently safe.
+ 
+\end_layout
+
+\begin_layout Standard
+The motion planning problem, has received a lot of attention over the years.
+ Its is concerned with finding algorithms which provide robots the ability
+ to plan their own movements given a few conditions or constraints by the
+ user.
+ 
+\end_layout
+
+\begin_layout Standard
+Safer robots means they can be operated in close proximity 
+\end_layout
+
+\begin_layout Standard
 There are many outstanding problems yet to be solved before truly human-friendly
- robotson the road to complete autonomous systems.
+ robots on the road to complete autonomous systems.
  One in particular, known as 
 \end_layout
 
 \begin_layout Standard
-Traditional methods to ensure the safety of robot users are derived from
- industrial guidelines set forth by the Robotics Industries Association
- (RIA).
- The RIA, the only trade group in North America organized specifically to
- serve the robotics industry, recommends safety standards by which to install
- and operate robotic systems.
- These recommendations, which include measures such as cages, light curtains,
- and pressure pads, ensure safety by isolating the robot from humans during
- autonomous operation.
+Traditional recommendations, which include measures such as cages, light
+ curtains, and pressure pads, ensure safety by isolating the robot from
+ humans during autonomous operation.
  Such measures are too conservative for use in a medical setting where the
  robot's close proximity to humans is dicated by the application.
 \end_layout
@@ -408,19 +532,37 @@ Khatib was the first to propose APFs as a technique to achieve real-time
 .
 \end_layout
 
+\begin_layout Subsubsection
+Fault detection
+\end_layout
+
 \begin_layout Standard
-To realize this promise, advances in robotics technology must reach several
- milestones including: Given the increasing adoption of robotics technology
- in health care, is there reason for concern? There are in fact, two important
- reasons.
- The first reason is that, with few exceptions, most research focus on either
- the complexity of the environment (and assume that the robots have trivial
- dynamics or kinematics) or on the detailed robot dynamics (while assuming
- trivial environments).
- Motion planning for a manipulator system in close proximity to humans requires
- both a detailed robot model as well as a complex environment.
- Real-time algorithm.
- Inherently safe.
+Factors that must be considered to ensure the safety of the human abnormal
+ operating conditions include: detection of abnormal behavior (i.e., fault
+ detection 
+\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+
+\end_inset
+
+) by either the robot or the human; characterization, quantification, and
+ identification of the fault 
+\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+
+\end_inset
+
+; and then response to the fault 
+\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+
+\end_inset
+
+ such as emergency stop, altering the control objective, or accommodating
+ for the fault through redundancy.
+ Previous literature has focused on fault detection and tolerance in robotic
+ systems, but little attention has focused on modeling the set of faults
+ that can arise from a human-in-the-loop.
+ In this project we are focused on dynamics-based events rather than human
+ factors events (e.g., teleoperator fatigue) that have been previously investigate
+d.
 \end_layout
 
 \begin_layout Subsubsection
@@ -431,50 +573,32 @@ How are these advances being disseminated?
 Educational outreach
 \end_layout
 
-\begin_layout Subsection
-Significance
+\begin_layout Standard
+Fundamentally, no safeguarding system can ever be perfect, that is, risk
+ free.
+ This fact has been widely recognized by many other industries who employ
+ various failure analysis methodologies to both categorize the failure modes
+ as well as determine the probabilities associated with each failure mode.
+ Dhillon has reviewed these methods and reported which are most suitable
+ for analyzing robotic systems 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+.
+ Besides his introduction of these methods to the robotics community, only
+ a few research groups 
+\begin_inset LatexCommand \cite{fei2001sim,Korb2005,Yamada:1996,Walker:1996,Choi:2006,Khodabandehloo1996,Leuschen1998}
+
+\end_inset
+
+ have employed these methods to analyze robotic systems.
+ No group to date has embraced these methods to guide the design and development
+ process.
 \end_layout
 
 \begin_layout Standard
-To fight soaring health care costs and simultaneously increase the quality
- of health care, many researchers are turning to the technologies of robotics
- and intelligent systems to find solutions.
- Over the last decade, there has been an explosion of robotic applications
- in health services ranging from advanced surgery, such as image-guided
- surgery, minimal invasive surgery, and telesurgery, to a variety of home
- healthcare services, including remote health monitoring, telenursing, mobility
- assistance and rehabilitation.
- The Food and Drug Administration, who reviews data on the safety and effectiven
-ess of robotic software and hardware, estimates that 36,600 robotic surgeries
- were done in 2005, up nearly 50 percent from 2004.
- Analysts predict the figure will grow at a similar rate in the coming months
- as the general public becomes informed about the advantages of robotically
- assissted surgeries.
- Similarly, robotics technology is becoming more popular in rehabilitation
- and assissted living.
-\end_layout
 
-\begin_layout Standard
-The impact of robotics technology on health care costs and quality are still
- debatable.
- To fully realize the potential of robotics technology, advances in the
- robotics disciplines must achieve several milestones including: 1) new
- robotic control systems to allow the development of a robotic system that
- performs clinically relevant tasks while interacting in a safe manner with
- the patient (
-\series bold
-Aim 1 and 2
-\series default
-), 2) validation of system performance for particular task specification
- (
-\series bold
-Aim 3 and Aim 4
-\series default
-), and 3) something else (
-\series bold
-Aim 5
-\series default
-).
 \end_layout
 
 \begin_layout Standard
