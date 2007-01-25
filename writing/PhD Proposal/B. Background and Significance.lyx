@@ -186,22 +186,82 @@ Prior research
 \end_layout
 
 \begin_layout Standard
-Attempts to address the safety concerns involved with autonomous robots
- spans across several areas of traditional robotics and controls research
- including, motion planning, collision avoidance, and fault characterization
- and detection.
- Operating under the assumption that collisions between robot and human
- are inevatable, a community of researchers have sought through mechanical
- design to make such it impossible for a robot to harm a person.
- While proposals have varied, in general these designs share the same set
- of characteristics including, constructed from light weight materials,
- actuated by low maximum torque/velocity actuators, or constructed of flexible
- or compliant links and joints.
- These designs are well conceived, but often the resultant robot becomes
- too weak or inaccurate to perform any real task.
- A second problem is that currently these human-friendly designs are not
- mass produced like their industrial counterparts.
- Therefore, they are more expensive and more difficult to obtain.
+For a robot to operate autonomously, it must rely on efficient algorithms
+ to provide a plan of movements given a few conditions or constraints by
+ the operator.
+ However, developing such an algorithm becomes much more difficult when
+ the robot's environment is not well structured and contains many dynamically
+ moving obstacles.
+ Recent studies have begun to make progress towards safer, autonomous robots
+ by combining methodologies from several research areas including, motion
+ planning, fault characterization and detection, and mechanical design.
+ Specifically research has focused on collision avoidance [ref], ensuring
+ safe robot dynamics [ref], and passive and active compliance [ref].
+\end_layout
+
+\begin_layout Standard
+The limitations of existing approaches for skeletal kinematic analysis are
+ clear: 
+\end_layout
+
+\begin_layout Standard
+Factors that must be considered to ensure the safety of the human abnormal
+ operating conditions include: detection of abnormal behavior (i.e., fault
+ detection 
+\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+
+\end_inset
+
+) by either the robot or the human; characterization, quantification, and
+ identification of the fault 
+\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+
+\end_inset
+
+; and then response to the fault 
+\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+
+\end_inset
+
+ such as emergency stop, altering the control objective, or accommodating
+ for the fault through redundancy.
+ Previous literature has focused on fault detection and tolerance in robotic
+ systems, but little attention has focused on modeling the set of faults
+ that can arise from a human-in-the-loop.
+ In this project we are focused on dynamics-based events rather than human
+ factors events (e.g., teleoperator fatigue) that have been previously investigate
+d.
+\end_layout
+
+\begin_layout Standard
+The traditional approach to real-time robot planning and control follows
+ the plan-action-re-plan paradigm.
+ Typical solution times for planning algorithms vary greatly depending on
+ the dimension and complexity of the problem domain, but they can range
+ anywhere from a few seconds to a few minutes.
+ In a well-behaved or highly structured environment, such as an industrial
+ setting, this performance limitation can be tolerated.
+ However, in the highly unstructured and dynamic environment of human interactio
+n, a slow re-planning cycle becomes problematic.
+ Previous literature [ref] has focused on combining local reactive control
+ schemes with global planning algorithms.
+ These approaches have redistributed the computational burden from the planning
+ module to a real-time, reactive controller.
+ 
+\end_layout
+
+\begin_layout Standard
+Design of the reactive controller has taken several forms.
+ One form, introduced by Khatib et al.
+ [12], utilizes artificial potential fields (APFs) embedded in the task-space
+ of the manipulators.
+ There are several drawbacks to APFs, some of which have been partially
+ solved.
+ Naïve application of APFs in cluttered environments leads to local minima
+ in which the manipulator can become stuck.
+ Several groups have attempted to increase the robustness of APFs either
+ by minimizing or eliminating the local extrema they create [13, 14] or
+ tightly coupling APFs with global planners [15].
 \end_layout
 
 \begin_layout Standard
@@ -217,10 +277,40 @@ The first reason is that, with few exceptions, most research focus on either
 \end_layout
 
 \begin_layout Standard
-The motion planning problem, has received a lot of attention over the years.
+Assuming that a collision between robots and human are inevatable, a community
+ of researchers have sought through mechanical design to make such it impossible
+ for a robot to harm a person.
+ While proposals have varied, in general these designs share the same set
+ of characteristics including, constructed from light weight materials [ref],
+ actuated by low maximum torque/velocity actuators [ref], or constructed
+ of flexible or compliant links and joints [ref].
+ These designs are well conceived, but often the resultant robot becomes
+ too weak or inaccurate to perform any real task [ref].
+\end_layout
+
+\begin_layout Standard
+The motion planning problem has received a lot of attention over the years.
  Its is concerned with finding algorithms which provide robots the ability
  to plan their own movements given a few conditions or constraints by the
  user.
+\end_layout
+
+\begin_layout Standard
+Under the constraints All current solutions can be categorized as being
+ either global or local methods, or either exact or approximate methods
+ respectively.
+ Global or exact methodologies are guaranteed to find a solution to the
+ motion planning problem if one exists.
+ However, they are computationally intensive with the theoretical complexity
+ exponential in the number of degrees of freedom of the robot, making these
+ methods intractable for real-time planning or collision avoidance 
+\begin_inset LatexCommand \cite{de2000-Computational}
+
+\end_inset
+
+.
+ The alternative is local or approximate methods {ref} which are less computatio
+nally demanding but are not guarunteed to find a path if one exists.
  
 \end_layout
 
@@ -253,65 +343,6 @@ ntly to human movement is dictated by the slowest module of the control
 \begin_layout Itemize
 Local planning algorithms are computationally efficient but can become stuck
  or fail to complete the original performance objective.
-\end_layout
-
-\begin_layout Standard
-Global or exact methodologies are guaranteed to find a solution to the motion
- planning problem if one exists.
- Usually these methods attempt to explicitly represent the free configuration
- space of the manipulator system.
- First introduced by Lozano-Pérez 
-\begin_inset LatexCommand \cite{Lozano-Perez1983a}
-
-\end_inset
-
-, the configuration space 
-\begin_inset Formula $\mathcal{C}$
-\end_inset
-
- abstracts the motion planning problem by encoding the robot's 
-\begin_inset Formula $n$
-\end_inset
-
- degree of freedom as independent parameters of an 
-\begin_inset Formula $n$
-\end_inset
-
--dimensional manifold.
- The free configuration space 
-\begin_inset Formula $\mathcal{C}_{free}$
-\end_inset
-
- is simply the subset 
-\begin_inset Formula $\mathcal{C}_{free}\subseteq\mathcal{C}$
-\end_inset
-
- which is void of any obstacles lifted into
-\begin_inset Formula $\mathcal{C}$
-\end_inset
-
-.
- However, they have several disadvantages.
- The algorithms necessary for global methods are computationally intensive.
- Also, the computational cost increases quickly as a function of the degree
- of freedom of the system in question.
- In fact, the theoretical complexity of exact methods is exponential in
- the number of degrees of freedom of the robot, making these methods intractable
- for real-time planning or collision avoidance 
-\begin_inset LatexCommand \cite{de2000-Computational}
-
-\end_inset
-
-.
- The alternative is vast number of local or approximate methods {ref}.
- These are less computationally demanding and have been integrated into
- a real-time robotic control system {ref}.
- However, what makes these methods computationally efficient also becomes
- their main disadvantage: unlike exact or global methods, these can not
- guarantee to find a solution if one exists.
- Examples of seemingly simple yet practical workspaces can be constructed
- to demonstrate where each local method can fail {ref}.
- 
 \end_layout
 
 \begin_layout Standard
@@ -534,35 +565,6 @@ Khatib was the first to propose APFs as a technique to achieve real-time
 
 \begin_layout Subsubsection
 Fault detection
-\end_layout
-
-\begin_layout Standard
-Factors that must be considered to ensure the safety of the human abnormal
- operating conditions include: detection of abnormal behavior (i.e., fault
- detection 
-\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
-
-\end_inset
-
-) by either the robot or the human; characterization, quantification, and
- identification of the fault 
-\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
-
-\end_inset
-
-; and then response to the fault 
-\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
-
-\end_inset
-
- such as emergency stop, altering the control objective, or accommodating
- for the fault through redundancy.
- Previous literature has focused on fault detection and tolerance in robotic
- systems, but little attention has focused on modeling the set of faults
- that can arise from a human-in-the-loop.
- In this project we are focused on dynamics-based events rather than human
- factors events (e.g., teleoperator fatigue) that have been previously investigate
-d.
 \end_layout
 
 \begin_layout Subsubsection
