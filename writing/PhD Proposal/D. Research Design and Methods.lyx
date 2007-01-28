@@ -39,30 +39,177 @@ D.
 \end_layout
 
 \begin_layout Subsection
-Research details for Aim 1
+Overview
 \end_layout
+
+\begin_layout Subsection
+Collaborative Structure
+\end_layout
+
+\begin_layout Standard
+The project will be directed by the P.I.
+ and the principle performance site will be the Prof.
+ Banks' laboratory at the University of Florida.
+ The P.I.
+ will hire two graduate students for three years to work on the activities
+ described in Aims 1-4.
+ The roles of the co-investigators, all at the University of Florida, will
+ be as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Aims
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Duty
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Prof.
+ S.
+ Banks
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
 
 \begin_layout Standard
 
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
 \begin_layout Standard
-We are proposing the use of both qualitative and quantitative safety analysis
- techniques as design tools during development of the real-time motion planning
- algorithms.
- Despite a few examples of these methods applied to robotic systems, we
- propose the application of these methodologies to design and evaluate motion
- planning algorithms.
+Prof.
+ W.
+ Dixon
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2,3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Work with P.I.
+ and graduate student to implement robot tracking control algorithms and
+ perform experimental assessments of robot tracking performance.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Timetable
 \end_layout
 
 \begin_layout Standard
-From basic failure analysis, the most common failure distribution is the
- exponential distribution,
+The proposed work will be completed in three years.
+\end_layout
+
+\begin_layout Subsection
+Aim 1: Development of a safe, real-time planning algorithm
+\end_layout
+
+\begin_layout Subsubsection
+Overview 
+\end_layout
+
+\begin_layout Standard
+To operate autonomous robotic systems in close proximity to humans, our
+ algorithm must ensure the saftey of operator and patients while simultaneously
+ achieving a high level or robotic performance.
+ A proven technique for real-time collision avoidance and local motion planning
+ is potential field techniques.
+ Similarly, there have been great advancements, some made by co-PI Prof.
+ W.
+ Dixon, in the control of highly non-linear dynamic systems, such as robots,
+ using Lyapunov control design techniques.
+ Combining these two techniques should be valid starting point to develop
+ an inherently safe, real-time motion planning algorithm.
+ In fact, a survey of recent literature shows promise in combining these
+ methodologies.
+ We also are proposing the use of safety engineering methods as a design
+ tool during the iterative process of the design of this algorithm.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+The standard dynamic model for a robotic system operating in an artificial
+ potential field can be expressed as,
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula \begin{equation}
-F(t)=1-e^{-\lambda t}\label{eq:1}\end{equation}
+M(q)\ddot{q}(t)+N(q,\dot{q})+F(q,\dot{q},t)=\tau(t)\label{eq:1}\end{equation}
 
 \end_inset
 
@@ -70,41 +217,46 @@ F(t)=1-e^{-\lambda t}\label{eq:1}\end{equation}
 \end_layout
 
 \begin_layout Standard
-where 
-\begin_inset Formula $\lambda$
+In 
+\begin_inset LatexCommand \eqref{eq:1}
+
 \end_inset
 
- is the probability of failure.
- Conventional methods for determining a value for 
-\begin_inset Formula $\lambda$
+, 
+\begin_inset Formula $q(t)$
 \end_inset
 
- includes historical data, government and commercial failure rate data,
- and finally testing.
- However, none of these methods are adequate or safe for human/robotic systems.
- Therefore one goal of Aim 1 is to determine a methodology to safely estimate
- values for 
-\begin_inset Formula $\lambda$
+, 
+\begin_inset Formula $\dot{q}(t)$
 \end_inset
 
-.
-\end_layout
+, 
+\begin_inset Formula $\ddot{q}(t)$
+\end_inset
 
-\begin_layout Subsection
-Research details for Aim 2
-\end_layout
+ denote the joint position, velocity, and acceleration, respectively, 
+\begin_inset Formula $\tau(t)$
+\end_inset
 
-\begin_layout Standard
-The real-time planning and control of any robotic system in close proximity
- to humans presents several open challenges.
- The control system, coupled with an adequate method of sensing obstacles
- in the environment, must avoid collisions or dangerous situations.
- The control system should also protect people from excessive forces if
- a collision occurs.
- Admist these requirements, the robot must carry out the desired task in
- a fast and efficient manner, which is usually a conflicting requirement.
- Motivated by these challenges, many researchers have investigated potential
- field techniques.
+ represents the torque input vector, and 
+\begin_inset Formula $F(q,\dot{q},t)$
+\end_inset
+
+ represents the forces exerted on the robot by an artificial potential field.
+ Previous literature has employed variable structure 
+\begin_inset LatexCommand \cite{Cardiel2004}
+
+\end_inset
+
+ and non-model based Lyapunov 
+\begin_inset LatexCommand \cite{Mbede2003-249}
+
+\end_inset
+
+ control design techniques to compensate for the potential field term.
+ Yet other groups have focused designing potential field which reseOther
+ studies have focused These studies However, prior attempts have either
+ utilized variable structure controllers or non-model based control techniques.
  Several drawbacks are associated with potential field techniques.
  First naive construction of the potential field functions can lead to local
  minima.
@@ -136,6 +288,24 @@ In the past decade, great advances have been made in the control of non-linear
  To address the open issues for Aim 1, 
 \end_layout
 
+\begin_layout Subsubsection
+Expected outcome
+\end_layout
+
+\begin_layout Standard
+Developing a safe, real-time planning and control algorithm (Aim 1) will
+ contribute to general motion planning research.
+ The IEEE Robotics and Automation's Technical Committee on Algorithms for
+ Planning and Control of Robot Motion, who promotes algorithm research,
+ has identified several areas of priority research.
+ Of these topics, three will be addressed by Aim 1, including, 1) development
+ of representations and motion strategies capable of incorporating feedback
+ signals; 2) motion subject to constraints, arising from kinematics, dynamics,
+ and nonholonomic systems; addressing the characteristics of dynamic environment
+s; and 3) encouraging the application of planning algorithms in novel applicatio
+n areas.
+\end_layout
+
 \begin_layout Standard
 All the strategies proposed for investigation have some precedent in simpler
  motion planning contexts with much simpler mechanisms.
@@ -154,8 +324,24 @@ All the strategies proposed for investigation have some precedent in simpler
  other stages of this study.
 \end_layout
 
+\begin_layout Standard
+propose to address the planning challenges by extending previous The control
+ system, coupled with an adequate method of sensing obstacles in the environment
+, must avoid collisions or dangerous situations.
+ The control system should also protect people from excessive forces if
+ a collision occurs.
+ Admist these requirements, the robot must carry out the desired task in
+ a fast and efficient manner, which is usually a conflicting requirement.
+ Motivated by these challenges, many researchers have investigated potential
+ field techniques.
+\end_layout
+
 \begin_layout Subsection
-Research details for Aim 3
+Aim 2: Novel model-based fault detection methods
+\end_layout
+
+\begin_layout Subsubsection
+Overview
 \end_layout
 
 \begin_layout Standard
@@ -199,7 +385,14 @@ The research details of Aim 2 are primarily concerned with human safety
 d.
  A core scientific question for Aim 2 is how can a dynamics-based fault
  model be developed to capture the effects of an unexpected event.
- Typical models for faults occurring in a dynamic system are expressed as
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+Typical models for faults occurring in a dynamic system are expressed as
  
 \begin_inset LatexCommand \cite{Dixon2000}
 
@@ -255,8 +448,8 @@ In
  This type of fault model will be insufficient for human-robot systems because
  the human may exhibit a failure (e.g., fall down or stumble) but the failure
  will not impact the dynamics of the robot.
- Efforts in Aim 2 will focus on developing a new fault model (Outcome 2)
- that is based on the closed-loop error system for the robotic 
+ Efforts in Aim 2 will focus on developing a new fault model that is based
+ on the closed-loop error system for the robotic 
 \emph on
 gait training system
 \emph default
@@ -268,8 +461,8 @@ gait training system
  unexpected limb motion due to muscle spasticity) that do not have a direct
  effect on the dynamics of the robot.
  Based on the development of a fault model, efforts in Aim 2 will also focus
- on the development of a fault identification method (Outcome 2) that can
- be used for quantifying faults.
+ on the development of a fault identification method that can be used for
+ quantifying faults.
  Efforts to develop the fault identification method will focus on the constructi
 on of an error system estimate which can be compared to the actual error
  system (i.e., comparing the learned intent of the human robot interaction
@@ -331,12 +524,16 @@ where
  quality of the identified fault signature.
 \end_layout
 
-\begin_layout Standard
- 
+\begin_layout Subsubsection
+Expected outcome
 \end_layout
 
 \begin_layout Subsection
-Research details for Aim 4
+Aim 3: Experimental assessment
+\end_layout
+
+\begin_layout Subsubsection
+Overview
 \end_layout
 
 \begin_layout Standard
@@ -345,8 +542,16 @@ Experimental assessment - Illustrate the developed motion planning system
  in parrallel here at the University of Florida.
 \end_layout
 
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
+\end_layout
+
 \begin_layout Subsection
-Research details for Aim 5
+Aim 4: 
 \end_layout
 
 \begin_layout Standard
@@ -357,12 +562,71 @@ Pilot study data - A hypothesis is the patients alter their behavior to
  the possibility of a large scale human subject testing.
 \end_layout
 
+\begin_layout Subsection
+Aim 3: Failure assessment
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
 \begin_layout Standard
-\begin_inset LatexCommand \bibtex[plain]{Proposal_Library}
+Fundamentally, no safeguarding system can ever be perfect, that is, risk
+ free.
+ Methods for assessing the relative safety of autonomous systems will be
+ developed.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+We propose the application of pre-existing qualitative and quantitative
+ safety analysis techniques as design tools during development of the real-time
+ motion planning algorithms.
+ Despite a few examples of these methods applied to robotic systems, we
+ propose the application of these methodologies to design and evaluate motion
+ planning algorithms.
+\end_layout
+
+\begin_layout Standard
+From basic failure analysis, the most common failure distribution is the
+ exponential distribution,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+F(t)=1-e^{-\lambda t}\label{eq:1}\end{equation}
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the probability of failure.
+ Conventional methods for determining a value for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ includes historical data, government and commercial failure rate data,
+ and finally testing.
+ However, none of these methods are adequate or safe for human/robotic systems.
+ Therefore one goal of Aim 1 is to determine a methodology to safely estimate
+ values for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
 \end_layout
 
 \end_body
