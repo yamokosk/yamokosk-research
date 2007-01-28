@@ -2,15 +2,15 @@
 \lyxformat 245
 \begin_document
 \begin_header
-\textclass report
+\textclass nih
 \language english
 \inputencoding auto
-\fontscheme times
+\fontscheme default
 \graphics default
-\paperfontsize 12
+\paperfontsize default
 \spacing single
 \papersize default
-\use_geometry true
+\use_geometry false
 \use_amsmath 1
 \cite_engine basic
 \use_bibtopic false
@@ -234,7 +234,8 @@ In
 \begin_inset Formula $\ddot{q}(t)$
 \end_inset
 
- denote the joint position, velocity, and acceleration, respectively, 
+ denote the actual position, velocity, and acceleration of the robot, respective
+ly, 
 \begin_inset Formula $\tau(t)$
 \end_inset
 
@@ -243,21 +244,98 @@ In
 \end_inset
 
  represents the forces exerted on the robot by an artificial potential field.
- Previous literature has employed variable structure 
+ Avoiding specific implementations, the torque input vector, 
+\begin_inset Formula $\tau(t)$
+\end_inset
+
+, can be designed as,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+\tau(t)=\hat{F}(q,\dot{q},t)+D(q,\dot{q},q_{d},\dot{q}_{d},\ddot{q_{d}})\label{eq:2}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In 
+\begin_inset LatexCommand \ref{eq:2}
+
+\end_inset
+
+, 
+\begin_inset Formula $q_{d}(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\dot{q_{d}}(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\ddot{q_{d}}(t)$
+\end_inset
+
+ denote the desired position, velocity, and acceleration, respectively,
+ 
+\begin_inset Formula $D$
+\end_inset
+
+ is designed to compensate for the robot's dynamics, and 
+\begin_inset Formula $\hat{F}$
+\end_inset
+
+ is an approximation of the potential field.
+ Previous literature has either focused on designing 
+\begin_inset Formula $D$
+\end_inset
+
+ using modern non-linear control design methods (e.g.
+ variable structure control 
 \begin_inset LatexCommand \cite{Cardiel2004}
 
 \end_inset
 
- and non-model based Lyapunov 
+, or non-model based Lyapunov methods 
 \begin_inset LatexCommand \cite{Mbede2003-249}
 
 \end_inset
 
- control design techniques to compensate for the potential field term.
- Yet other groups have focused designing potential field which reseOther
- studies have focused These studies However, prior attempts have either
- utilized variable structure controllers or non-model based control techniques.
- Several drawbacks are associated with potential field techniques.
+) combined with simple formulations for 
+\begin_inset Formula $\hat{F}$
+\end_inset
+
+, while others have designed 
+\begin_inset Formula $\hat{F}$
+\end_inset
+
+ to yield safe robot dynamics [ref] but employed linear control design technique
+s to formulate 
+\begin_inset Formula $D$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+We are proposing to combine the advantages of these approaches by first
+ finding a formulation for 
+\begin_inset Formula $\hat{F}$
+\end_inset
+
+ which will ensure safe robot dynamics when in close proximity to people.
+ Unlike many previous approaches, this may require 
+\begin_inset Formula $\hat{F}$
+\end_inset
+
+ to be time varying or dependent on the robot's velocity as well as position.
+\end_layout
+
+\begin_layout Standard
+Several drawbacks are associated with potential field techniques.
  First naive construction of the potential field functions can lead to local
  minima.
  Local minima become false goal locations and can terminate the robot's

@@ -2,15 +2,15 @@
 \lyxformat 245
 \begin_document
 \begin_header
-\textclass report
+\textclass nih
 \language english
 \inputencoding auto
-\fontscheme times
+\fontscheme default
 \graphics default
-\paperfontsize 12
+\paperfontsize default
 \spacing single
-\papersize letterpaper
-\use_geometry true
+\papersize default
+\use_geometry false
 \use_amsmath 1
 \cite_engine basic
 \use_bibtopic false
@@ -209,6 +209,61 @@ For a robot to operate autonomously, it must rely on efficient algorithms
  planning, fault characterization and detection, and mechanical design.
  Specifically research has focused on collision avoidance [ref], ensuring
  safe robot dynamics [ref], and passive and active compliance [ref].
+\end_layout
+
+\begin_layout Standard
+For mobile robotics, Fox et al.
+ developed the dynamic window approach (DWA) 
+\begin_inset LatexCommand \cite{fox95dynamic}
+
+\end_inset
+
+ whose convergent properties have been proved 
+\begin_inset LatexCommand \cite{Ogren2005}
+
+\end_inset
+
+ and been extended to mobile robots with more complex kinematic constraints
+ [Fox97, Brock and Khatib99].
+ Similar in nature to receding horizon control (RHC) [ref] or model predictive
+ control (MPC) [ref], the DW approach searches the admissible velocity space
+ for a command which maximizes some utility function.
+ While this method can account for the velocity and acceleration limits
+ as well as dynamics of the robot, it requires discretization 
+\begin_inset LatexCommand \cite{fox95dynamic,Ogren2005}
+
+\end_inset
+
+ + [Fox97, Brock and Khatib99] or random sampling 
+\begin_inset LatexCommand \cite{bruce06}
+
+\end_inset
+
+ of the robot's workspace.
+ However, for higher dimensional systems, such as redundant manipulator
+ systems, the computational complexity might become intractable.
+\end_layout
+
+\begin_layout Standard
+Need a section on control Lyapunov functions.
+ [Dixon's paper] Smells of the control Lyapunov function which they called
+ the velocity field control.
+ Looks like it required analytic expressions for obstacle boundaries which
+ limited the results in their paper to circular objects.
+ Also their methodology was developed for n-DOF systems, illustration was
+ limited to a 2-D planar manipulator.
+ Why? Furthermore their theoretic result only guarunteed asymptotic convergence.
+ Could this be improved via time scaling? 
+\begin_inset LatexCommand \cite{krishna06}
+
+\end_inset
+
+ illustrated in a real-time control system only for holonomic robots.
+\end_layout
+
+\begin_layout Standard
+Lyapunov theory is the most successful and widely used tool for stabilization
+ and control of non-linear dynamic systems.
 \end_layout
 
 \begin_layout Standard
