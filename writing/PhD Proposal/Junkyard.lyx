@@ -337,5 +337,40 @@ Khatib was the first to propose APFs as a technique to achieve real-time
 Fault detection
 \end_layout
 
+\begin_layout Standard
+From basic failure analysis, the most common failure distribution is the
+ exponential distribution,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+F(t)=1-e^{-\lambda t}\label{eq:3}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the probability of failure.
+ Conventional methods for determining a value for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ includes historical data, government and commercial failure rate data,
+ and finally testing.
+ However, none of these methods are adequate or safe for human/robotic systems.
+ Therefore one goal of Aim 1 is to determine a methodology to safely estimate
+ values for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
 \end_body
 \end_document
