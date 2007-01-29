@@ -1,0 +1,88 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme palatino
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 0.5in
+\topmargin 0.5in
+\rightmargin 0.5in
+\bottommargin 0.5in
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Project summary
+\end_layout
+
+\begin_layout Standard
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services.
+ Given the increasing adoption of robotics technology in health care, is
+ there reason for concern? There are in fact two reasons.
+ The first involves the safety associated with autonomous robots.
+ Future systems, will yield more autonomous control to the robotic system.
+ Starting with routine tasks such as suturing, future systems may be capable
+ of completeing full procedures [ref].
+ The concern is that when robots are required to perform autonomous actions
+ in close proximity to humans, serious issues of operator and patient safety
+ arise.
+ The second reason for concern is that all  systems are subject to failure.
+ Current systems notify the operator when a component nears the end of it
+ reliable lifetime.
+ However, there are no methods employed in practice which address issues
+ of patient or operator safety if a component was to fail 
+\emph on
+during
+\emph default
+ use.
+\end_layout
+
+\begin_layout Standard
+The objective of this research is to address these concerns through several
+ technical and experimental specific aims.
+ To make robots safer during autonomous operation, we propose to develop
+ an inherently safe, real-time control and planning algorithm based on novel
+ velocity field control algorithms which will avoid collisions with people
+ in the workspace of the robot.
+ We understand that no safeguarding system can ever be perfect, that is,
+ risk free.
+ Therefore we will also apply qualitative and quantitative methods from
+ safety engineering to fully characterize the relative safety of the control
+ and planning algorithms we develop.
+ To make robots more robust to component failure during operation, we are
+ proposing the development of novel fault models and nonlinear estimation
+ methods to detect and quantify/identify unexpected behaviors from the human
+ and robotic system.
+ Finally we will experimentally assess all developed algorithms on a novel,
+ roboticly actuated X-Ray imaging platform being developed in parallel at
+ the University of Florida.
+\end_layout
+
+\end_body
+\end_document

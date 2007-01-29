@@ -1,0 +1,1259 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass nih
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+A.
+ Specific Aims
+\end_layout
+
+\begin_layout Standard
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services.
+ Given the increasing adoption of robotics technology in health care, is
+ there reason for concern? There are in fact two reasons.
+ The first involves the safety associated with autonomous robots.
+ Future systems, will yield more autonomous control to the robotic system.
+ Starting with routine tasks such as suturing, future systems may be capable
+ of completeing full procedures [ref].
+ The concern is that when robots are required to perform autonomous actions
+ in close proximity to humans, serious issues of operator and patient safety
+ arise.
+ The second reason for concern is that all  systems are subject to failure.
+ Current systems notify the operator when a component nears the end of it
+ reliable lifetime.
+ However, there are no methods employed in practice which address issues
+ of patient or operator safety if a component was to fail 
+\emph on
+during
+\emph default
+ use.
+\end_layout
+
+\begin_layout Standard
+The objective of this research is to address these concerns through several
+ technical and experimental specific aims:
+\end_layout
+
+\begin_layout Enumerate
+Safe, autonomous robots - Develop an inherently safe, real-time control
+ and planning algorithm which will avoid collisions with people in the workspace
+ of the robot
+\end_layout
+
+\begin_layout Enumerate
+Failure assessment - Fundamentally, no safeguarding system can ever be perfect,
+ that is, risk free.
+ Therefore we will fully characterize the relative safety of the control
+ and planning algorithms we develop.
+\end_layout
+
+\begin_layout Enumerate
+Robust to component and human failure - Develop fault models and nonlinear
+ estimation methods to detect and quantify/identify unexpected behaviors
+ from the human and robotic system.
+\end_layout
+
+\begin_layout Enumerate
+Experimental assessment - Illustrate the developed motion planning system
+ on a novel, robotically actuated X-Ray imaging platform being developed
+ in parrallel here at the University of Florida.
+\end_layout
+
+\begin_layout Enumerate
+Pilot study data - A hypothesis is the patients alter their behavior to
+ compensate for poorly behaved robotic systems.
+ Data data gathered from a small sample of participants during clinically
+ relevant applications with autonomous systems will be gathered to examine
+ the possibility of a large scale human subject testing.
+\end_layout
+
+\begin_layout Standard
+Accomplishing these aims will result in improved safety for robotic systems
+ in health care environments as well as advance the state-of-art in robotics
+ technology.
+ The specific outcomes of the project are as follows:
+\end_layout
+
+\begin_layout Enumerate
+Developing a safe, real-time planning and control algorithm (Aim 1) will
+ contribute to general motion planning research.
+ The IEEE Robotics and Automation's Technical Committee on Algorithms for
+ Planning and Control of Robot Motion, who promotes algorithm research,
+ has identified several areas of priority research.
+ Of these topics, three will be addressed by Aim 1, including, 1) development
+ of representations and motion strategies capable of incorporating feedback
+ signals; 2) motion subject to constraints, arising from kinematics, dynamics,
+ and nonholonomic systems; addressing the characteristics of dynamic environment
+s; and 3) encouraging the application of planning algorithms in novel applicatio
+n areas.
+\end_layout
+
+\begin_layout Enumerate
+A new failure model will result from Aim 3 that will provide a foundation
+ for model-based fault detection methods.
+ Based on the model development, a dynamics based residual generating fault
+ detection, identification, and characterization scheme will be developed
+ to elicit a desired robot response to unexpected events (e.g., muscle spasticity,
+ patient fall).
+\end_layout
+
+\begin_layout Enumerate
+An assessment framework of the neural control primitives of walking will
+ be developed in Aim 4 to quantify adapted walking post-injury, compensated
+ walking post-injury (with assistive devices and braces), and walking under
+ permissive conditions afforded via stepwise algorithm of provision of trunk
+ posture, pelvic rotation, limb trajectory, and coordination.
+\end_layout
+
+\begin_layout Enumerate
+The performance of the robotic assist system will be assessed in Aim 4 in
+ a neurologically impaired cohort of subjects.
+ This evaluation will provide an enhanced C-2 understanding of the biomechanical
+ response to assistance and perturbations, and allow development of new
+ training progression guidelines to optimize specific functions of walking.
+\newpage
+
+\end_layout
+
+\begin_layout Section
+B.
+ Background and Significance
+\end_layout
+
+\begin_layout Standard
+To fight soaring health care costs and simultaneously increase the quality
+ of health care, many researchers are turning to the technologies of robotics
+ and intelligent systems to find solutions.
+ Over the last decade, there has been an explosion of robotic applications
+ in health services.
+ The Food and Drug Administration, who reviews data on the safety and effectiven
+ess of robotic software and hardware, estimates that 36,600 robotic surgeries
+ were done in 2005, up nearly 50 percent from 2004 [ref?].
+ Analysts predict the figure will grow at a similar rate as the general
+ public becomes informed about the advantages of robotically assissted surgeries
+ [ref?].
+ Beyond surgical applications 
+\begin_inset LatexCommand \cite{Lanfranco2004}
+
+\end_inset
+
+, robotics technology is also being applied to assist with rehabilitation
+ tasks 
+\begin_inset LatexCommand \cite{Hillman2003,Krebs2000}
+
+\end_inset
+
+, automate repetitive yet critical tasks such as prescription filling 
+\begin_inset LatexCommand \cite{Pedersen2006}
+
+\end_inset
+
+, and develop better diagnostic tools 
+\begin_inset LatexCommand \cite{Yamokoski2006}
+
+\end_inset
+
+.
+ Specific instances of these systems are already operational 
+\begin_inset LatexCommand \cite{Jezernik2003,Sung2001}
+
+\end_inset
+
+ and countless more exist as prototypes in research labs across the world.
+\end_layout
+
+\begin_layout Standard
+Given the increasing adoption of robotics technology in health care, is
+ there reason for concern? There are in fact two reasons.
+ The first involves the safety associated with autonomous robots.
+ According to FDA records, current commercial surgical robotic systems have
+ not caused a patient undue injury [ref].
+ However, the reason for this good fortune is not necessarily due to exceptional
+ safety measures, even though current systems do employ an impressive array
+ of stop-gaps and safety measures.
+ Rather current surgical robotic systems are safe due to the design of their
+ control system.
+ Similar to a vehicle or airplane, current robotic systems are based on
+ what called a human-in-the-loop control system.
+ They are not autonomous and only move by real-time commands sent by a surgeon.
+ Similar to non-robotically assisted surgeries, this control methodology
+ simply responds to the surgeon's actions as if they were the surgeon's
+ own hands.
+ Future systems, however, will yield more autonomous control to the robotic
+ system.
+ Starting with routine tasks such as suturing, future systems may be capable
+ of completeing full procedures [ref].
+ Early indications of this trend already exist.
+ The ROBODOC
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+textregistered
+\end_layout
+
+\end_inset
+
+ Surgical System (Integrated Surgical Systems, Inc., Sacramento, CA) allows
+ a surgeon to input a series of movements off-line which are then executed
+ by the robot.
+ ROBODOC makes no autonomous judgements about its programmed actions, yet
+ this demonstrates the desire to semi-automate routine tasks.
+ Beyond surgical applications, for other health care applications the human-in-t
+he-loop control methodology is simply not practical.
+ For example, the speed or complexity of some rehabilitation or diagnostic
+ applications necessitate more autonomy.
+ The concern is that when robots are required to perform autonomous actions
+ in close proximity to humans, serious issues of operator and patient safety
+ arise.
+\end_layout
+
+\begin_layout Standard
+The second reason for concern is that all mechatronic systems are subject
+ to failure.
+ Current commercial surgical systems have tried to reduce component failure
+ before an operation by careful bookkeeping of the number of hours components
+ have been in use (e.g.
+ da Vinci
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+textregistered
+\end_layout
+
+\end_inset
+
+ Surgical System, Intuitive Surgical, Inc., Sunnyvale, CA).
+ However this method does not address issues of patient or operator safety
+ if a component was to fail 
+\emph on
+during
+\emph default
+ use.
+ Minimizing mean time to failure can also be achieved by designing a robotic
+ system from scratch with high reliability components, but this extra design
+ effort can exponentially increases the final cost of the system.
+ The alternative is to rely on off-the-shelf robots developed for industrial
+ uses.
+ Unfortunately, the recorded mean time to failure for an industrial robotic
+ system is only 500 to 2500 hours 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The research objective of this study is to systematically address both of
+ these concerns, thereby creating safer and more capable robotic systems.
+ This in turn will improve to quality of life for millions who could benefit
+ from application of robotic technologies in healthcare.
+ Beyond the impacts in healthcare, in accomplishing these tasks a number
+ of theoretical, computational and experimental activities are proposed
+ that will be of high interest to the general robotics and controls communities.
+ It is expected that the proposed work will find interest and application
+ outside the specific focus area of the investigators.
+\end_layout
+
+\begin_layout Standard
+1.
+ demonstrate the feasibility of new technologies that could have a major
+ impact in a specific area.
+\end_layout
+
+\begin_layout Standard
+2.
+ generate pilot data to assess the feasibility of a novel avenue of investigatio
+n
+\end_layout
+
+\begin_layout Subsection
+Prior research
+\end_layout
+
+\begin_layout Standard
+Research which begins to address the concerns outlined above spans across
+ several established areas of robotics and control research.
+ Of considerable interest to this proposal are algorithms and methods which
+ 1) provide real-time collision avoidance and 2) automatic identification,
+ characterization, and response to an unexpected fault in the system.
+ Other methods by which to make robots inherently safe are also being explored.
+ For instance, a community of researchers have sought, through mechanical
+ design, to make it impossible for a robot to harm a person.
+ While proposals have varied, these designs share the same set of characteristic
+s including, constructed from light weight materials [ref], actuated by
+ low maximum torque/velocity actuators [ref], or constructed of flexible
+ or compliant links and joints [ref].
+ These designs are well conceived, but often the resultant robot becomes
+ too weak or inaccurate to perform any real task [ref].
+ While this research fulfills a necessary and important niche of robotic
+ applications, it is too focused for the large variety of tasks required
+ by health care applications.
+\end_layout
+
+\begin_layout Subsubsection
+Real-time collision avoidance
+\end_layout
+
+\begin_layout Standard
+For mobile robotics, Fox et al.
+ developed the dynamic window approach (DWA) 
+\begin_inset LatexCommand \cite{fox95dynamic}
+
+\end_inset
+
+ whose convergent properties have been proved 
+\begin_inset LatexCommand \cite{Ogren2005}
+
+\end_inset
+
+ and been extended to mobile robots with more complex kinematic constraints
+ 
+\begin_inset LatexCommand \cite{Brock1997}
+
+\end_inset
+
+.
+ Similar in nature to receding horizon control (RHC) 
+\begin_inset LatexCommand \cite{Mayne1990}
+
+\end_inset
+
+ or model predictive control (MPC) 
+\begin_inset LatexCommand \cite{Garcia1989}
+
+\end_inset
+
+, the dynamic window approach searches the admissible velocity space for
+ a command which maximizes some utility function.
+ This method provides reactive collision avoidance while accounting for
+ the velocity and acceleration limits as well as dynamics of the robot.
+ However, it requires discretization 
+\begin_inset LatexCommand \cite{fox95dynamic,Ogren2005,Brock1997}
+
+\end_inset
+
+ or random sampling 
+\begin_inset LatexCommand \cite{bruce06}
+
+\end_inset
+
+ of the robot's workspace.
+ For higher dimensional systems, such as redundant manipulator systems,
+ the computational complexity might become intractable.
+\end_layout
+
+\begin_layout Standard
+One the most successful collision avoidance techniques has been potential
+ field based methods.
+ Also known more generally as velocity field control (VFC) techniques (e.g.
+ 
+\begin_inset LatexCommand \cite{Li1999,McIntyre2005,MorenoValenzuela2006,Suh2004}
+
+\end_inset
+
+), the potential field technique was first introduced by Khatib 
+\begin_inset LatexCommand \cite{Khatib1986-90}
+
+\end_inset
+
+ for real-time collision avoidance and local planning.
+ Obstacles and goal location are assigned repulsive and attractive potentials,
+ respectively.
+ A virtual control force, normally applied to the manipulator's end-effector,
+ is generated by summing the negative gradient of each potential field.
+ By following the negative gradient of the combined fields, the end-effector
+ will be repulsed from obstacles and attracted towards the goal location.
+ Previous literature has primarily focused on addressing one of two major
+ drawbacks associated with potential field techniques.
+ The first is the possibility of local minima created in the workspace of
+ the robot.
+ These local minima appear as false goal locations and can terminate the
+ motion of the arm prematurely.
+ A small sampling of this work reveals a large variety of the approaches
+ have been attempted.
+ These include backtracking, random walks 
+\begin_inset LatexCommand \cite{Barraquand1990}
+
+\end_inset
+
+, behaviour/agent based approaches 
+\begin_inset LatexCommand \cite{Hamilton1998}
+
+\end_inset
+
+, fuzzy logic 
+\begin_inset LatexCommand \cite{Mbede2003-249,Merchan-Cruz2006}
+
+\end_inset
+
+, variable structure control 
+\begin_inset LatexCommand \cite{Cardiel2004,Chang1996}
+
+\end_inset
+
+, and more mathematically complex potential functions 
+\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423,Cardiel2004,Tanner2003}
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The other drawback, which has recieved less attention, is that potential
+ field techniques do not immediately consider or attempt to control the
+ dynamics of the robotic system.
+ In the worse case, naive constuction the potential field might generate
+ control signals out side the actuator limits of the robot.
+ Tsuji et al.
+ attempted to address these problems for applications in industrial control
+ by intelligently constructing a time varying potential field of whose qualities
+ they could manipulate to control the time of travel as well as the velocity
+ profile of the robot 
+\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
+
+\end_inset
+
+.
+ Recent work by Kulic and Croft 
+\begin_inset LatexCommand \cite{Kulic2006-1}
+
+\end_inset
+
+ included a factor related to the Head Injury Criterion (HIC) into the definitio
+n of their potential field.
+ But their work still suffers from local minima problems and has not been
+ demonstrated on a real-time platform.
+\end_layout
+
+\begin_layout Subsubsection
+Automatic identification, characterization, and repose to faults
+\end_layout
+
+\begin_layout Standard
+Factors that must be considered to ensure the safety of the human abnormal
+ operating conditions include: detection of abnormal behavior (i.e., fault
+ detection 
+\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+
+\end_inset
+
+) by either the robot or the human; characterization, quantification, and
+ identification of the fault 
+\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+
+\end_inset
+
+; and then response to the fault 
+\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+
+\end_inset
+
+ such as emergency stop, altering the control objective, or accommodating
+ for the fault through redundancy.
+ Previous literature has focused on fault detection and tolerance in robotic
+ systems, but little attention has focused on modeling the set of faults
+ that can arise from a human-in-the-loop.
+ In this project we are focused on dynamics-based events rather than human
+ factors events (e.g., teleoperator fatigue) that have been previously investigate
+d.
+\end_layout
+
+\begin_layout Subsubsection
+How are these advances being disseminated?
+\end_layout
+
+\begin_layout Standard
+Educational outreach
+\end_layout
+
+\begin_layout Standard
+Fundamentally, no safeguarding system can ever be perfect, that is, risk
+ free.
+ This fact has been widely recognized by many other industries who employ
+ various failure analysis methodologies to both categorize the failure modes
+ as well as determine the probabilities associated with each failure mode.
+ Dhillon has reviewed these methods and reported which are most suitable
+ for analyzing robotic systems 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+.
+ Besides his introduction of these methods to the robotics community, only
+ a few research groups 
+\begin_inset LatexCommand \cite{fei2001sim,Korb2005,Yamada:1996,Walker:1996,Choi:2006,Khodabandehloo1996,Leuschen1998}
+
+\end_inset
+
+ have employed these methods to analyze robotic systems.
+ No group to date has embraced these methods to guide the design and development
+ process.
+\newpage
+
+\end_layout
+
+\begin_layout Section
+C.
+ Preliminary studies
+\end_layout
+
+\begin_layout Subsection
+Real-time collision avoidance
+\end_layout
+
+\begin_layout Standard
+Co-PI Prof.
+ W.
+ Dixon 
+\end_layout
+
+\begin_layout Standard
+Real-time planning algorithms require information about obstacles in the
+ environment.
+ Usually this information is the Euclidean distance from the robot to obstacles
+ in the workspace.
+ Computing this distance in a fast and efficient manner is of paramout importanc
+e to any real-time motion planning algorithm.
+ The P.I.
+ has implemented the Lin-Canny distance query algorithm and evaluated it
+ for its potential use in a real-time planning system 
+\begin_inset LatexCommand \cite{Ezzell2006}
+
+\end_inset
+
+.
+ Several tests were conducted.
+ The first test attempted to confirm the previously reported [6, 7] query
+ time performance of the algorithm.
+ Cylinders were placed in the workspace of the robot and moved from left
+ to right in front of a static model.
+ For each trial the number of cylinders was increased and the actual distance
+ query time of the algorithm was measured by the system clock.
+ The results are shown in Figure X.
+ Thirteen non-critical bodies is a significant number as it represents the
+ expected number of cylinders required to model the human body.
+ Therefore, Figure 7 shows, in detail, the query time for thirteen cylinders.
+ To help visualize the capability of the algorithm, Figure 8, shows a time
+ series of images which were taken as the algorithm computed, in real-time,
+ the distances to a sphere which rotated around the robot.
+\end_layout
+
+\begin_layout Subsection
+Real-time control
+\end_layout
+
+\begin_layout Standard
+The dynamic imaging platform requires coordinated real-time tracking control
+ of two 6-axis robots using multiple sources of motion information (robot
+ joint encoders and motion capture system).
+ Accurate dynamic motion control with this system requires precise characterizat
+ion of the robots? mechanical properties (geometric, inertial, frictional
+ and elastic), careful integration of the sensor data stream, and high bandwidth
+ nonlinear control of the robots.
+\end_layout
+
+\begin_layout Standard
+The co-investigator, Prof.
+ Dixon, has over ten years of analytical and experimental demonstrations
+ of robotic tracking controllers.
+ Dr.
+ Dixon's work is published in several research monographs, over 90 journal
+ and conference papers, and includes successful application of image-based
+ robot tracking control.
+ Dr Dixon was awarded the 2006 NSF CAREER Award for development and application
+ of Lyapunov-based control methods, and the 2006 IEEE Robotics and Automation
+ Society Early Academic Career Award.
+ Prof.
+ Dixon will guide the design, implementation and testing of robot tracking
+ capabilities (Specific Aim 2).
+\end_layout
+
+\begin_layout Standard
+The PI's laboratory recently has acquired and begun work with two PA10-6C
+ robots (Mitsubishi Heavy In-dustries, Kobe, Japan).
+ The PA10 is a six degree of freedom manipulator equipped with AC servo
+ motors and harmonic drive transmissions.
+ The large gear ratio and compact design of the harmonic drive makes the
+ PA10 ideal for robotic applications in the medical or clinical context.
+\end_layout
+
+\begin_layout Standard
+Preparatory work for the proposed project revealed the control system architectu
+re provided by the robot manufacturer was not well suited for a real-time
+ control environment.
+ The P.I.'s lab has replaced that control system with a real-time LINUX computer
+ running custom software using the OROCOS framework and libraries (http://www.oro
+cos.org).
+ This platform is operational and permits straightforward implementation
+ of control sys-tems having arbitrary complexity.
+\end_layout
+
+\begin_layout Subsection
+Automatic identification, characterization, and repose to faults
+\newpage
+
+\end_layout
+
+\begin_layout Section
+D.
+ Research Design and Methods
+\end_layout
+
+\begin_layout Subsection
+Overview
+\end_layout
+
+\begin_layout Subsection
+Collaborative Structure
+\end_layout
+
+\begin_layout Standard
+The project will be directed by the P.I.
+ and the principle performance site will be the Prof.
+ Banks' laboratory at the University of Florida.
+ The P.I.
+ will hire two graduate students for three years to work on the activities
+ described in Aims 1-4.
+ The roles of the co-investigators, all at the University of Florida, will
+ be as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Aims
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Duty
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Prof.
+ S.
+ Banks
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Prof.
+ W.
+ Dixon
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2,3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Work with P.I.
+ and graduate student to implement robot tracking control algorithms and
+ perform experimental assessments of robot tracking performance.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Timetable
+\end_layout
+
+\begin_layout Standard
+The proposed work will be completed in three years.
+\end_layout
+
+\begin_layout Subsection
+Aim 1: Development of a safe, real-time planning algorithm
+\end_layout
+
+\begin_layout Subsubsection
+Overview 
+\end_layout
+
+\begin_layout Standard
+To operate autonomous robotic systems in close proximity to humans, our
+ algorithm must ensure the saftey of operator and patients while simultaneously
+ achieving a high level or robotic performance.
+ A proven technique for real-time collision avoidance and local motion planning
+ is potential field techniques.
+ We also are proposing the use of safety engineering methods as a design
+ tool during the design of this algorithm.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+The standard dynamic model for a robotic system operating in an artificial
+ potential field can be expressed as,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+M(q)\ddot{q}(t)+N(q,\dot{q})=\tau(t)\label{eq:1}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In 
+\begin_inset LatexCommand \eqref{eq:1}
+
+\end_inset
+
+, 
+\begin_inset Formula $q(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\dot{q}(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\ddot{q}(t)$
+\end_inset
+
+ denote the actual position, velocity, and acceleration of the robot, respective
+ly, and 
+\begin_inset Formula $\tau(t)$
+\end_inset
+
+ represents the torque input vector.
+ The control objective will be to track a velocity field, denoted 
+\begin_inset Formula $\vartheta(\cdot)\in\mathbb{R}^{n}$
+\end_inset
+
+, which could be a function of the current link position, velocity, and
+ possibly time.
+ To quantify this objective, we can introduce a velocity field tracking
+ error, denoted 
+\begin_inset Formula $\eta(t)$
+\end_inset
+
+, that is defined as follows
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+\eta(t)=\dot{q}(t)-\vartheta(q,\dot{q},q_{d},\dot{q}_{d})\label{eq:2}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The design of 
+\begin_inset Formula $\tau(t)$
+\end_inset
+
+ follows using standard Lyapunov design techniques [ref] once 
+\begin_inset Formula $\vartheta(\cdot)$
+\end_inset
+
+ is properly defined.
+ This will be the focus of Aim 1 of this proposal.
+ Recent work by Tsuji et al.
+ 
+\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
+
+\end_inset
+
+ and Kulic and Croft 
+\begin_inset LatexCommand \cite{Kulic2006-1}
+
+\end_inset
+
+ reveal that focusing on the structure and parameters of 
+\begin_inset Formula $\vartheta(\cdot)$
+\end_inset
+
+, one can achieve both better dynamic control of the robot as well as more
+ safe behvior of the robot when close to obstacles.
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
+\end_layout
+
+\begin_layout Standard
+Successful completion of Aim 1 will yield a new method for the safe, real-time
+ control of robotic systems.
+ The method, based on careful selection of a desired velocity field, will
+ motion subject to constraints, arising from kinematics, dynamics, and nonholono
+mic systems; addressing the characteristics of dynamic environments; and
+ 3) encouraging the application of planning algorithms in novel application
+ areas.
+ 
+\end_layout
+
+\begin_layout Standard
+The approach proposed for Aim 1 has precedent in previously reported literature.
+ Despite postive initial findings by other groups, some risk is involved.
+ The greatest risk is that the real-time planning computations cannot be
+ done with sufficient speed to enable adequate control bandwidth.
+ If this problem is encountered, it will be addressed by adding computational
+ resources (again the computations are inherently parallel) and utilizing
+ simpler task formulations (like the look-up table approach).
+ Worst case is that novel contributions are not made.
+ In which case, a vanilla PF-based real-time planning and control system
+ will have been developed.
+ Even though this type of system has some well-documented limitations, it
+ has been successfully implemented on robotic systems in the past.
+ It would still provide a virtual and implementable algorithm for use in
+ other stages of this study.
+\end_layout
+
+\begin_layout Standard
+propose to address the planning challenges by extending previous The control
+ system, coupled with an adequate method of sensing obstacles in the environment
+, must avoid collisions or dangerous situations.
+ The control system should also protect people from excessive forces if
+ a collision occurs.
+ Admist these requirements, the robot must carry out the desired task in
+ a fast and efficient manner, which is usually a conflicting requirement.
+ Motivated by these challenges, many researchers have investigated potential
+ field techniques.
+\end_layout
+
+\begin_layout Subsection
+Aim 2: Novel model-based fault detection methods
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
+\begin_layout Standard
+The research details of Aim 2 are primarily concerned with human safety
+ under normal operating conditions of the robotic system.
+ However, all mechatronic systems are subject to failure.
+ In fact, the recorded mean time to failure for a robotic system is only
+ 500 to 2500 hours 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+.
+ Therefore another necessary component of a safer system is robot reliability
+ and fault tolerance.
+ Factors that must be considered to ensure the safety of the human abnormal
+ operating conditions include: detection of abnormal behavior (i.e., fault
+ detection 
+\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+
+\end_inset
+
+) by either the robot or the human; characterization, quantification, and
+ identification of the fault 
+\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+
+\end_inset
+
+; and then response to the fault 
+\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+
+\end_inset
+
+ such as emergency stop, altering the control objective, or accommodating
+ for the fault through redundancy.
+ Previous literature has focused on fault detection and tolerance in robotic
+ systems, but little attention has focused on modeling the set of faults
+ that can arise from a human-in-the-loop.
+ In this project we are focused on dynamics-based events rather than human
+ factors events (e.g., teleoperator fatigue) that have been previously investigate
+d.
+ A core scientific question for Aim 2 is how can a dynamics-based fault
+ model be developed to capture the effects of an unexpected event.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+Typical models for faults occurring in a dynamic system are expressed as
+ 
+\begin_inset LatexCommand \cite{Dixon2000}
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+M(q)\ddot{q}(t)+N(q,\dot{q})+u_{-1}(t-T_{f})\zeta(t)=\tau(t)\label{eq:1}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In 
+\begin_inset LatexCommand \eqref{eq:1}
+
+\end_inset
+
+, 
+\begin_inset Formula $q(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\dot{q}(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\ddot{q}(t)$
+\end_inset
+
+ denote the joint position, velocity, and acceleration, respectively, 
+\begin_inset Formula $\zeta(t)$
+\end_inset
+
+ represents a fault in the system, 
+\begin_inset Formula $u_{-1}(t-T_{f})$
+\end_inset
+
+ represents a unit step function, 
+\begin_inset Formula $T_{f}$
+\end_inset
+
+ represents the time instant at which a fault occurs, and 
+\begin_inset Formula $\tau(t)$
+\end_inset
+
+ represents the torque input vector.
+ This type of fault model will be insufficient for human-robot systems because
+ the human may exhibit a failure (e.g., fall down or stumble) but the failure
+ will not impact the dynamics of the robot.
+ Efforts in Aim 2 will focus on developing a new fault model that is based
+ on the closed-loop error system for the robotic 
+\emph on
+gait training system
+\emph default
+.
+ Specifically, models will be developed based on the closed-loop error system
+ of the robot, because the error system will be developed based on the motion
+ and forces generated by the human and the robot.
+ This model will be able to capture changes in the human's motion (e.g., an
+ unexpected limb motion due to muscle spasticity) that do not have a direct
+ effect on the dynamics of the robot.
+ Based on the development of a fault model, efforts in Aim 2 will also focus
+ on the development of a fault identification method that can be used for
+ quantifying faults.
+ Efforts to develop the fault identification method will focus on the constructi
+on of an error system estimate which can be compared to the actual error
+ system (i.e., comparing the learned intent of the human robot interaction
+ versus the states of the actual interaction).
+ Based on our recent advances in developing a new nonlinear estimation technique
+ 
+\begin_inset LatexCommand \cite{Makkar}
+
+\end_inset
+
+, initial efforts will focus on the development of a fault identification
+ method such as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+\widehat{\zeta}(t)=\int(k_{0}+1)e(\sigma)d\sigma+\int k_{1}\mathrm{sgn}(e(\sigma))d\sigma+(k_{0}+1)e(t)+(k_{0}+1)e(T_{f})\label{eq:2}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $k_{0}$
+\end_inset
+
+, 
+\begin_inset Formula $k_{1}$
+\end_inset
+
+ representsrepresent positive observer gains, where 
+\begin_inset Formula $\mathrm{sgn}(.)$
+\end_inset
+
+ denotes the vector signum function.
+ That is, the nonlinear approximation method in 
+\begin_inset LatexCommand \eqref{eq:2}
+
+\end_inset
+
+ can be used to identify the fault, and then we will examine the fault signature
+ for classification of the fault.
+ Classified faults will be incorporated in a database with an appropriate
+ action for the robot to execute.
+ The approximation method in 
+\begin_inset LatexCommand \eqref{eq:2}
+
+\end_inset
+
+ will be investigated in lieu of methods such as a neural network because
+ the method in 
+\begin_inset LatexCommand \eqref{eq:2}
+
+\end_inset
+
+ does not result in a function approximation error that could reduce the
+ quality of the identified fault signature.
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
+\end_layout
+
+\begin_layout Subsection
+Aim 3: Experimental assessment
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
+\begin_layout Standard
+Experimental assessment - Illustrate the developed motion planning system
+ on a novel, robotically actuated X-Ray imaging platform being developed
+ in parrallel here at the University of Florida.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
+\end_layout
+
+\begin_layout Subsection
+Aim 4: 
+\end_layout
+
+\begin_layout Standard
+Pilot study data - A hypothesis is the patients alter their behavior to
+ compensate for poorly behaved robotic systems.
+ Data data gathered from a small sample of participants during clinically
+ relevant applications with autonomous systems will be gathered to examine
+ the possibility of a large scale human subject testing.
+\end_layout
+
+\begin_layout Subsection
+Aim 3: Failure assessment
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
+\begin_layout Standard
+Fundamentally, no safeguarding system can ever be perfect, that is, risk
+ free.
+ Methods for assessing the relative safety of autonomous systems will be
+ developed.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+We propose the application of pre-existing qualitative and quantitative
+ safety analysis techniques as design tools during development of the real-time
+ motion planning algorithms.
+ Despite a few examples of these methods applied to robotic systems, we
+ propose the application of these methodologies to design and evaluate motion
+ planning algorithms.
+\end_layout
+
+\begin_layout Standard
+From basic failure analysis, the most common failure distribution is the
+ exponential distribution,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+F(t)=1-e^{-\lambda t}\label{eq:1}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the probability of failure.
+ Conventional methods for determining a value for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ includes historical data, government and commercial failure rate data,
+ and finally testing.
+ However, none of these methods are adequate or safe for human/robotic systems.
+ Therefore one goal of Aim 1 is to determine a methodology to safely estimate
+ values for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
+\newpage
+
+\end_layout
+
+\begin_layout Section
+E.
+ Human subjects research
+\end_layout
+
+\begin_layout Standard
+Blah blah
+\end_layout
+
+\begin_layout Standard
+
+\newpage
+
+\end_layout
+
+\begin_layout Section
+G.
+ Literature cited
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \bibtex[IEEEtran]{Proposal_Library}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
