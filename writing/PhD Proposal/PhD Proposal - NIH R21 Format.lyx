@@ -2,7 +2,7 @@
 \lyxformat 245
 \begin_document
 \begin_header
-\textclass article
+\textclass nih
 \begin_preamble
 \renewcommand\labelenumi{Aim \arabic{enumi}.}
 \end_preamble
@@ -13,7 +13,7 @@
 \paperfontsize 11
 \spacing single
 \papersize default
-\use_geometry true
+\use_geometry false
 \use_amsmath 1
 \cite_engine basic
 \use_bibtopic false
@@ -37,8 +37,7 @@
 \begin_body
 
 \begin_layout Section
-A.
- Specific Aims
+Specific Aims
 \end_layout
 
 \begin_layout Standard
@@ -105,8 +104,7 @@ Experimental assessment - Illustrate the developed methods of Aims 1 and
 \end_layout
 
 \begin_layout Section
-B.
- Background and Significance
+Background and Significance
 \end_layout
 
 \begin_layout Standard
@@ -452,8 +450,7 @@ d.
 \end_layout
 
 \begin_layout Section
-C.
- Preliminary studies
+Preliminary studies
 \end_layout
 
 \begin_layout Subsection
@@ -521,8 +518,7 @@ Real-time collision avoidance algorithms require information about obstacles
 \end_layout
 
 \begin_layout Section
-D.
- Research Design and Methods
+Research Design and Methods
 \end_layout
 
 \begin_layout Subsection
@@ -1098,8 +1094,136 @@ The proposed work will be completed in two years.
 \end_layout
 
 \begin_layout Section
-G.
- Literature cited
+Protection of Human Subjects
+\end_layout
+
+\begin_layout Standard
+This Human Subjects Research meets the definition of a clinical trial.
+ 
+\end_layout
+
+\begin_layout Subsection
+Risk to the Subjects
+\end_layout
+
+\begin_layout Subsubsection
+Human Subjects Involvement and Characteristics
+\end_layout
+
+\begin_layout Standard
+As outlined in the Research Design and Methods section, human subjects will
+ be recruited to perform three different activities, walking, jumping in
+ place, and squatting, within the workspaces of two robotic manipulators.
+ The subjects will be required to perform each activity twice, once while
+ the robots are powered off and in their home position and again while the
+ robots turned on and actively tracking a point of interest located on the
+ subject's body.
+ 
+\end_layout
+
+\begin_layout Standard
+Subjects will be recruited for participation based on their ability to perform
+ the above activities.
+ Ten male subjects, between the ages of 21 to 40, will be recruited.
+ Subjects recruited for this study are expected to be healthy overall with
+ no physical disabilities or diseases that would otherwise prevent them
+ from performing the previously mentioned activities.
+\end_layout
+
+\begin_layout Subsubsection
+Sources of Materials
+\end_layout
+
+\begin_layout Standard
+The subject's kinematic data, position, velocity and acceleration, of their
+ major body segments will be recorded by a passive marker, eight-camera
+ motion capture system.
+ Also ground reaction force data will be recorded by two in-ground force
+ platforms.
+ All subjects will be assigned a code, the key to which will be kept secured
+ in the PI's office.
+ The assigned code will identify the subjects recorded data.
+\end_layout
+
+\begin_layout Subsubsection
+Potential Risks
+\end_layout
+
+\begin_layout Standard
+The primary risk to the subjects is injury caused by unexpected collision
+ between the human subject and robot manipulators.
+ The likelihood of such a collision, however, will be minimal.
+  There is the potential of minimal discomfort in performing motions associated
+ with activities of daily living.
+\end_layout
+
+\begin_layout Standard
+There are no alternative procedures currently available to measure the absence
+ of asymetries our hypothosis predicts.
+\end_layout
+
+\begin_layout Subsection
+Adequacy of Protection Against Risks
+\end_layout
+
+\begin_layout Subsubsection
+Recruitment and Informed Consent
+\end_layout
+
+\begin_layout Subsubsection
+Protection Against Risk
+\end_layout
+
+\begin_layout Standard
+All testing will be conducted by or under the supervision of the principle
+ investigator.
+\end_layout
+
+\begin_layout Subsection
+Potential Benefits of the Proposed Research to the Subjects and Others
+\end_layout
+
+\begin_layout Subsection
+Importance of the Knowledge to be Gained
+\end_layout
+
+\begin_layout Subsection
+Data and Safety Monitoring Plan
+\end_layout
+
+\begin_layout Standard
+All subjects will be assigned a code, the key to which will be kept secured
+ in the PI's office.
+ All data will be kept in a secure program using these codes and will be
+ in the PI's possession only.
+ Once that data is collected, but before it is analyzed, the key to the
+ codes will be destroyed, thus de-identifying the data.
+\end_layout
+
+\begin_layout Standard
+
+\newpage
+
+\end_layout
+
+\begin_layout Section
+Inclusion of Women and Minorities
+\end_layout
+
+\begin_layout Section
+Targeted/Planned Enrollment
+\end_layout
+
+\begin_layout Section
+Inclusion of Children
+\end_layout
+
+\begin_layout Section
+Letters of Support
+\end_layout
+
+\begin_layout Section
+Biography and References Cited
 \end_layout
 
 \begin_layout Standard

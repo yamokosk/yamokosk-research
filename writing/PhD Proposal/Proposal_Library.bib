@@ -155,6 +155,30 @@ Encoding: Cp1252
   date = MAR
 }
 
+@ARTICLE{Cervantes2002,
+  author = {Cervantes, I. and Kelly, R. and Alvarez-Ramirez, J. and Moreno, J.},
+  title = {A robust velocity field control},
+  journal = {IEEE TRANSACTIONS ON CONTROL SYSTEMS TECHNOLOGY},
+  year = {2002},
+  volume = {10},
+  pages = {888 - 894},
+  number = {6},
+  abstract = {This paper is devoted to velocity field control (VFC) of uncertain
+	robotic manipulators. We propose a proportional-integral (PI)-type
+	controller derived from modeling error compensation ideas and singular
+	perturbation theory, that requires a minimum knowledge of the plant
+	(i.e., constant estimate of the inertia matrix). It is shown that
+	semiglobal practical stabilization is achieved; that is, given any
+	compact set of initial velocity field errors, there exist PI control
+	gains which guarantee that the robot tracks a desired velocity field
+	with arbitrary accuracy. The proposed controller was experimentally
+	evaluated on a two degrees-of-freedom arm.},
+  date = NOV,
+  issn = {1063-6536},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
 @ARTICLE{Chakravarthy1998-562,
   author = {Chakravarthy, A. and Ghose, D.},
   title = {Obstacle avoidance in a dynamic environment: A collision cone approach},
@@ -330,6 +354,33 @@ Encoding: Cp1252
   doi = {10.1109/TRA.2004.824693},
   owner = {yamokosk},
   timestamp = {2007.01.02}
+}
+
+@ARTICLE{Duindam2004a,
+  author = {Duindam, V. and Stramigioli, S. and Scherpen, J.M.A.},
+  title = {Passive compensation of nonlinear robot dynamics},
+  journal = {IEEE TRANSACTIONS ON ROBOTICS AND AUTOMATION},
+  year = {2004},
+  volume = {20},
+  pages = {480 - 487},
+  number = {3},
+  abstract = {In this paper, we derive a coordinate-free formulation of a passive
+	controller that makes a mechanical system track reference curves
+	in a potential field. Contrary to conventional reference tracking,
+	we do not specify a single time-varying trajectory that the system
+	has to track. Instead, we specify a whole curve that the system
+	has to stay on at all times. Using tools from differential geometry,
+	we first derive a controller that makes the system move along arbitrary
+	(smooth enough) reference curves while keeping the kinetic energy
+	constant. We then apply the results to the case of movement in an
+	artificial potential field, in which case, the reference curves
+	are completely determined by the potential field and cannot be chosen
+	arbitrarily. Simulation then shows the performance of the controller
+	on a benchmark robot with two degrees of freedom.},
+  date = JUN,
+  issn = {1042-296X},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
 }
 
 @ARTICLE{Edelsbrunner1985-213,
@@ -938,6 +989,74 @@ Encoding: Cp1252
   author = {Lavalle, S.M.}
 }
 
+@ARTICLE{Lee2005,
+  author = {Lee, D. and Li, P.Y.},
+  title = {Passive bilateral control and tool dynamics rendering for nonlinear,
+	mechanical teleoperators},
+  journal = {IEEE TRANSACTIONS ON ROBOTICS},
+  year = {2005},
+  volume = {21},
+  pages = {936 - 951},
+  number = {5},
+  abstract = {We propose a passive bilateral teleoperation control law for a pair
+	of n-degree-of-freedom (DOF) nonlinear robotic systems. The control
+	law ensures energetic passivity of the closed-loop teleoperator
+	with power scaling, coordinates motions of the master and slave
+	robots, and installs useful task-specific dynamics for inertia scaling,
+	motion guidance, and obstacle avoidance. Consequently, the closed-loop
+	teleoperator behaves like a common passive mechanical tool. A key
+	innovation is the passive decomposition, which decomposes the 2n-DOF
+	nonlinear teleoperator dynamics into two robot-like systems without
+	violating passivity: an n-DOF shape system representing the master-slave
+	position coordination aspect, and an n-DOF locked system representing
+	the dynamics of the coordinated teleoperator. The master-slave position
+	coordination is then achieved by regulating the shape system, while
+	programmable apparent inertia of the coordinated teleoperator is
+	achieved by scaling the inertia of the locked system. To achieve
+	this perfect coordination and inertia scaling, the proposed control
+	law measures and compensates for environment and human forcing.
+	Passive velocity field control and artificial potential field control
+	are used to implement guidance and obstacle avoidance for the coordinated
+	teleoperator. The designed control is also implemented in an intrinsically
+	passive negative semidefinite structure to ensure energetic passivity
+	of the closed-loop teleoperator, even in the presence of parametric
+	model uncertainties and inaccurate force sensing. Experiments are
+	performed to validate the properties of the proposed control framework.},
+  date = OCT,
+  issn = {1552-3098},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
+@ARTICLE{Lee2003,
+  author = {Lee, D. and Li, P.Y.},
+  title = {Passive bilateral feedforward control of linear dynamically similar
+	teleoperated manipulators},
+  journal = {IEEE TRANSACTIONS ON ROBOTICS AND AUTOMATION},
+  year = {2003},
+  volume = {19},
+  pages = {443 - 456},
+  number = {3},
+  abstract = {This paper presents a passive bilateral feedforward control scheme
+	for linear dynamically similar (LDS) teleoperated. manipulators
+	with kinematic scaling and power scaling. The proposed control law
+	renders the teleoperator as a passive rigid mechanical tool with
+	programmable apparent inertia to the human operator and the work
+	environment by utilizing bilateral force feedforward and kinematic
+	feedback control. The passivity of the closed-loop system is robust
+	to force measurement inaccuracies and model uncertainty. Thus, interaction
+	stability of the teleoperator with any passive environment is guaranteed.
+	Coordination error and the overall motion aspects of teleoperation
+	are controlled individually. The proposed control law is also applicable
+	to general nonlinear robotic teleoperators if sufficiently high
+	kinematic feedback gains are used. The proposed control schemes
+	have been validated experimentally for both LDS and non-LDS systems.},
+  date = JUN,
+  issn = {1042-296X},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
 @ARTICLE{Lee2001-477,
   author = {Lee, S. and Moradi, H.},
   title = {A real-time dual-arm collision avoidance algorithm for assembly},
@@ -969,13 +1088,53 @@ Encoding: Cp1252
   timestamp = {2007.01.17}
 }
 
-@ARTICLE{Li1999,
+@ARTICLE{Li2001,
+  author = {Li, P.Y. and Horowitz, R.},
+  title = {Passive velocity field control (PVFC): Part II - Application to contour
+	following},
+  journal = {IEEE TRANSACTIONS ON AUTOMATIC CONTROL},
+  year = {2001},
+  volume = {46},
+  pages = {1360 - 1371},
+  number = {9},
+  abstract = {In contour following applications, the various degrees of freedom
+	of a mechanical system have to be well coordinated, but very often,
+	the speed at which the contour is followed is not critical. Moreover,
+	in the context of machining, the system has to interact closely
+	with its physical environment. When the contour following task is
+	represented by a velocity field on the configuration manifold of
+	the system, the coordination aspect of the problem is made explicit.
+	The passive velocity field control (PVFC) scheme developed in the
+	Part I companion paper [7] can then be applied to track the defined
+	velocity field so that the desired contour is followed, and to ensure
+	that the interaction of the closed-loop system with the physical
+	environment is passive to enhance safety and stability. Unfortunately,
+	for some contours, an encoding velocity field on the configuration
+	manifold does not exist or is difficult to define and, as a consequence,
+	the PVFC cannot be directly applied. For systems whose configuration
+	manifolds are compact Lie groups and the desired contour is represented
+	by a parameterized trajectory, a general methodology is developed,
+	using a suspension technique, to define a velocity field on a manifold
+	related to the configuration manifold of the system for which PVFC
+	can be applied. With this strategy, timing along the contour can
+	be naturally varied on-line by a self-pacing scheme so that the
+	contour tracking performance can be improved. The experimental results
+	for a 2 degree of freedom robot following a Lissajous contour illustrates
+	and verifies the convergence and robustness properties of the PVFC
+	methodology.},
+  date = SEP,
+  issn = {0018-9286},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
+@ARTICLE{Li1999a,
   author = {Li, P.Y. and Horowitz, R.},
   title = {Passive velocity field control of mechanical manipulators},
-  journal = {IEEE Transactions On Robotics And Automation},
+  journal = {IEEE TRANSACTIONS ON ROBOTICS AND AUTOMATION},
   year = {1999},
   volume = {15},
-  pages = {751-763},
+  pages = {751 - 763},
   number = {4},
   abstract = {Two concepts are advocated for the task specification and control
 	of mechanical manipulators: 1) coding tasks in terms of velocity
@@ -990,7 +1149,61 @@ Encoding: Cp1252
 	velocity held, and exponentially stabilizes the particular multiple
 	of the desired velocity field which is determined by the total kinetic
 	energy of the manipulator control system.},
-  date = AUG
+  date = AUG,
+  issn = {1042-296X},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
+@ARTICLE{Li1999b,
+  author = {Li, P.Y. and Horowitz, R.},
+  title = {Passive velocity field control of mechanical manipulators (vol 15,
+	pg 757, 1999)},
+  journal = {IEEE TRANSACTIONS ON ROBOTICS AND AUTOMATION},
+  year = {1999},
+  volume = {15},
+  pages = {1147 - 1147},
+  number = {6},
+  date = DEC,
+  issn = {1042-296X},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
+@ARTICLE{Li1997,
+  author = {Li, P.Y. and Horowitz, R.},
+  title = {Control of smart exercise machines .1. Problem formulation and nonadaptive
+	control},
+  journal = {IEEE-ASME TRANSACTIONS ON MECHATRONICS},
+  year = {1997},
+  volume = {2},
+  pages = {237 - 247},
+  number = {4},
+  abstract = {This is the first part of a two-part paper on the design of intelligent
+	controllers for a class of exercise machines. Tbe control objective
+	is to cause the user to exercise in a manner which optimizes a criterion
+	related to the user's mechanical power. The optimal exercise strategy
+	is determined by a biomechanical behavior of the individual user,
+	which is assumed to satisfy an affine force-velocity relationship
+	dependent on the body geometric configuration, Consequently, the
+	control scheme must simultaneously: 1) identify the user's biomechanical
+	behavior; 2) optimize the controller; and 3) stabilize the system
+	to the estimated optimal states, Moreover, to ensure that the exercise
+	machine is safe to operate, the control system guarantees that the
+	interaction between the exercise machine and the user is passive.
+	In this first part of the paper, we formulate the control problem
+	and propose a controller structure which satisfies the safety requirement
+	and is capable of causing the user to execute an arbitrary exercise
+	strategy if the user's biomechanical behavior is known, The controller
+	is of the form of a dynamic damper and can be implemented using
+	only passive mechanical components. Part II of this paper is concerned
+	with the self-optimization problem, in which both the determination
+	of the optimal exercise strategy and the execution of that strategy,
+	when the user's biomechanical behavior is unknown, must be considered.},
+  date = DEC,
+  issn = {1083-4435},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
 }
 
 @INPROCEEDINGS{Lin2003,
@@ -1218,14 +1431,15 @@ Encoding: Cp1252
   keywords = {collision detectionpolyhedra}
 }
 
-@ARTICLE{MorenoValenzuela2006,
+@ARTICLE{Moreno-Valenzuela2006,
   author = {Moreno-Valenzuela, J. and Kelly, R.},
   title = {A hierarchical approach to manipulator velocity field control considering
 	dynamic friction compensation},
-  journal = {Journal Of Dynamic Systems Measurement And Control},
+  journal = {JOURNAL OF DYNAMIC SYSTEMS MEASUREMENT AND CONTROL-TRANSACTIONS OF
+	THE ASME},
   year = {2006},
   volume = {128},
-  pages = {670-674},
+  pages = {670 - 674},
   number = {3},
   abstract = {The velocity field control of robot manipulators is addressed in this
 	paper The proposed algorithm has a hierarchical structure based
@@ -1233,7 +1447,10 @@ Encoding: Cp1252
 	resolution and an inner loop of joint velocity control that uses
 	an observer for friction compensation. Experiments on a two degrees-of-freedom
 	direct-drive arm illustrate the performance of the proposed controller.},
-  date = SEP
+  date = SEP,
+  issn = {0022-0434},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
 }
 
 @ARTICLE{Ogren2005,
@@ -1435,15 +1652,77 @@ Encoding: Cp1252
   timestamp = {2007.01.02}
 }
 
-@ARTICLE{Suh2004,
+@ARTICLE{Suh2005,
+  author = {Suh, J.H. and Lee, K.S.},
+  title = {Virtual passivity-based decentralized control of multiple 3-wheeled
+	mobile robotic systems via system augmentation},
+  journal = {INTERNATIONAL JOURNAL OF AUTOMOTIVE TECHNOLOGY},
+  year = {2005},
+  volume = {6},
+  pages = {545 - 554},
+  number = {5},
+  abstract = {Passive velocity field control (PVFC) was previously developed for
+	fully mechanical systems, in which the motion task was specified
+	by behaviors in terms of a velocity field and the closed-loop was
+	passive with respect to the supply rate given by the environment
+	input. However, the PVFC was only applied to a single manipulator.
+	The proposed control law was derived geometrically and the geometric
+	and robustness properties of the closed-loop system were also analyzed.
+	In this paper, we propose a virtual passivity-based algorithm to
+	apply decentralized control to multiple 3-wheeled mobile robotic
+	systems whose subsystems are under nonholonomic constraints and
+	convey a common rigid object in a horizontal plain. Moreover, it
+	is shown that multiple robot systems ensure stability and the velocities
+	of augmented systems converge to a scaled multiple of each desired
+	velocity field for cooperative mobile robot systems. Finally, the
+	application of proposed virtual passivity-based decentralized algorithm
+	via system augmentation is applied to trace a circle and the simulation
+	results is presented in order to show effectiveness for the decentralized
+	control algorithm proposed in this research.},
+  date = OCT,
+  issn = {1229-9138},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
+@ARTICLE{Suh2005a,
+  author = {Suh, J.H. and Lee, Y.J. and Lee, K.S.},
+  title = {Object-transportation control of cooperative AGV systems based on
+	virtual-passivity decentralized control algorithm},
+  journal = {JOURNAL OF MECHANICAL SCIENCE AND TECHNOLOGY},
+  year = {2005},
+  volume = {19},
+  pages = {1720 - 1730},
+  number = {9},
+  abstract = {Automatic guided vehicle in the factory has an important role to advance
+	the flexible manufacturing system. In this paper, we propose a novel
+	object-transportation control algorithm of cooperative AGV systems
+	to apply decentralized control to multiple AGV systems. Each AGV
+	system is under nonholonomic constraints and conveys a common object-transportation
+	in a horizontal plain. Moreover it is shown that cooperative robot
+	systems ensure stability and the velocities of augmented systems
+	convergence to a scaled multiple of each desired velocity field
+	for cooperative AGV systems. Finally, the application of proposed
+	virtual passivity-based decentralized control algorithm via system
+	augmentation is applied to trace a circle. Finally, the simulation
+	and experimental results for the object-transportation by two AGV
+	systems illustrates the validity of the proposed virtual-passivity
+	decentralized control algorithm.},
+  date = SEP,
+  issn = {1738-494X},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
+}
+
+@ARTICLE{Suh2004a,
   author = {Suh, J.H. and Yamakita, M. and Kim, S.B.},
   title = {Adaptive desired velocity field control for cooperative mobile robotic
 	systems with decentralized PVFC},
-  journal = {JSME International Journal Series C-Mechanical Systems Machine Elements
-	and Manufacturing},
+  journal = {JSME INTERNATIONAL JOURNAL SERIES C-MECHANICAL SYSTEMS MACHINE ELEMENTS
+	AND MANUFACTURING},
   year = {2004},
   volume = {47},
-  pages = {280-288},
+  pages = {280 - 288},
   number = {1},
   abstract = {Passive velocity field control (PVFC) was previously developed for
 	mechanical systems which have strong coordination and must interact
@@ -1464,7 +1743,10 @@ Encoding: Cp1252
 	proposed control method is examined by numerical simulation for
 	cooperation tasks with two 3-wheeled mobile robot systems to consider
 	our previous research.},
-  date = MAR
+  date = MAR,
+  issn = {1344-7653},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
 }
 
 @ARTICLE{Sung2001,
@@ -1697,6 +1979,36 @@ Encoding: Cp1252
   pages = {283-291},
   number = {1-2},
   date = JUL
+}
+
+@ARTICLE{Yamakita2001,
+  author = {Yamakita, M. and Asano, F.},
+  title = {Extended passive velocity field control with variable velocity fields
+	for a kneed biped},
+  journal = {ADVANCED ROBOTICS},
+  year = {2001},
+  volume = {15},
+  pages = {139 - 168},
+  number = {2},
+  abstract = {In this paper, two aspects for task specification and control of biped
+	walking robot, i.e. (i) realization of safe control against human
+	brings and the outside environment by utilizing a passive velocity
+	field controller (PVFC), and (ii) energy-effective gait design based
+	on virtual passive dynamic walking, are studied and a new control
+	method is derived based on them. In our previous work, we have given
+	a method which satisfied the required properties and examined the
+	validity by numerical simulations. In the method a single trajectory
+	is realized; however, the walking behavior should be modified and
+	adapted by its energy level and initial conditions. Based on the
+	observations, we introduce multi-pattern walking using the virtual
+	passive gait to realize more natural walking motion. The virtual
+	passive gait is shown to require less control input than other methods
+	which can generate a limit cycle automatically without any gait
+	design, and we combine the virtual passive walk with PVFC to change
+	its walking speed easily and effectively.},
+  issn = {0169-1864},
+  owner = {yamokosk},
+  timestamp = {2007.02.01}
 }
 
 @CONFERENCE{Yamokoski2006,
