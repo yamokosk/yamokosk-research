@@ -1125,9 +1125,9 @@ As outlined in the Research Design and Methods section, human subjects will
 Subjects will be recruited for participation based on their ability to perform
  the above activities.
  Ten male subjects, between the ages of 21 to 40, will be recruited.
- Subjects recruited for this study are expected to be healthy overall with
- no physical disabilities or diseases that would otherwise prevent them
- from performing the previously mentioned activities.
+ They are expected to be healthy overall with no physical disabilities or
+ diseases that would otherwise prevent them from performing the aforementioned
+ mentioned activities.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1151,15 +1151,11 @@ Potential Risks
 
 \begin_layout Standard
 The primary risk to the subjects is injury caused by unexpected collision
- between the human subject and robot manipulators.
+ between the human subject and robot manipulators while the manipulators
+ are actively tracking the subjects motion.
  The likelihood of such a collision, however, will be minimal.
-  There is the potential of minimal discomfort in performing motions associated
+ There is the potential of minimal discomfort in performing motions associated
  with activities of daily living.
-\end_layout
-
-\begin_layout Standard
-There are no alternative procedures currently available to measure the absence
- of asymetries our hypothosis predicts.
 \end_layout
 
 \begin_layout Subsection
@@ -1175,8 +1171,25 @@ Protection Against Risk
 \end_layout
 
 \begin_layout Standard
-All testing will be conducted by or under the supervision of the principle
- investigator.
+Because of extensive simulation planned in Aims 1 and 3 as well as non-human
+ tests in Aim 4, a failure of the real-time collision avoidance algorithm
+ during this human trial is highly improbable.
+ Despite these sufficent measures, extra steps will be taken to ensure the
+ subjects safety.
+ First, the manipulators will be fit with custom designed viscoelastic materials
+ to absorb the energy of an impact and minimize injury.
+ Second, during real-time tracking of the subject, the manipulators will
+ maintain a minimum distance to the subject of 450 mm at all times.
+ This distance is calculated from the known maximum speed of the manipulators
+ (1 m/s) and doubling the mean human reaction time (~225 ms).
+ Third, there will be two independent kill-switches to terminate the robot's
+ motion through application of the manipulator's brake system.
+ One switch, a push button emergency stop, will be available to the PI who
+ will terminate robot motion if any unsafe conditions are noticed.
+ The second, a dead-man switch, will be tethered and carried in the hand
+ of the human subject.
+ The subject will be instructed to release pressure on the switch, if at
+ any time, they feel unsafe or in danger during the tracking activity.
 \end_layout
 
 \begin_layout Subsection
@@ -1185,6 +1198,12 @@ Potential Benefits of the Proposed Research to the Subjects and Others
 
 \begin_layout Subsection
 Importance of the Knowledge to be Gained
+\end_layout
+
+\begin_layout Standard
+The data obtained from these experiments will provide pilot data for further
+ studies into human-robot interaction.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1208,6 +1227,10 @@ All subjects will be assigned a code, the key to which will be kept secured
 
 \begin_layout Section
 Inclusion of Women and Minorities
+\end_layout
+
+\begin_layout Standard
+Women will be excluded from this study.
 \end_layout
 
 \begin_layout Section
