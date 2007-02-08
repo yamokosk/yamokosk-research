@@ -3,9 +3,6 @@
 \begin_document
 \begin_header
 \textclass nih
-\begin_preamble
-\renewcommand\labelenumi{Aim \arabic{enumi}.}
-\end_preamble
 \language english
 \inputencoding auto
 \fontscheme default
@@ -35,6 +32,10 @@
 \end_header
 
 \begin_body
+
+\begin_layout Standard
+
+\end_layout
 
 \begin_layout Section
 Specific Aims
@@ -1098,7 +1099,7 @@ Protection of Human Subjects
 \end_layout
 
 \begin_layout Standard
-This Human Subjects Research meets the definition of a clinical trial.
+This Human Subjects Research meets the definition of a clinical research.
  
 \end_layout
 
@@ -1128,6 +1129,8 @@ Subjects will be recruited for participation based on their ability to perform
  They are expected to be healthy overall with no physical disabilities or
  diseases that would otherwise prevent them from performing the aforementioned
  mentioned activities.
+ Subjects will be excluded from the study if they have a history of any
+ type of neuro-muscular disorder or possess a leg-length discrepancy.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1140,8 +1143,8 @@ The subject's kinematic data, position, velocity and acceleration, of their
  motion capture system.
  Also ground reaction force data will be recorded by two in-ground force
  platforms.
- All subjects will be assigned a code, the key to which will be kept secured
- in the PI's office.
+ All subjects will be assigned a code to preserve their identity, the key
+ to which will be kept secured in the PI's office.
  The assigned code will identify the subjects recorded data.
 \end_layout
 
@@ -1154,8 +1157,8 @@ The primary risk to the subjects is injury caused by unexpected collision
  between the human subject and robot manipulators while the manipulators
  are actively tracking the subjects motion.
  The likelihood of such a collision, however, will be minimal.
- There is the potential of minimal discomfort in performing motions associated
- with activities of daily living.
+ There is also the possibility of minimal discomfort in performing motions
+ associated with activities of daily living.
 \end_layout
 
 \begin_layout Subsection
@@ -1164,6 +1167,20 @@ Adequacy of Protection Against Risks
 
 \begin_layout Subsubsection
 Recruitment and Informed Consent
+\end_layout
+
+\begin_layout Standard
+Subjects will be recruited for this study by announcements posted in leaflets
+ around the University of Florida campus.
+ In a first interview with the P.I., potential risks and objectives of this
+ study will be explained to canidates interested in participation.
+ The type of data and method of collection will also be explained.
+ Any other questions or concerns a canidate might have will also be answered.
+ At the conclusion of the interview, canidates will be provided with a written
+ document which contains the same information covered in the interview.
+ Canidates will be asked to return at a later date if they still wish to
+ participate in the study after they have had time to consider the information
+ from the interview and document.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1177,15 +1194,15 @@ Because of extensive simulation planned in Aims 1 and 3 as well as non-human
  Despite these sufficent measures, extra steps will be taken to ensure the
  subjects safety.
  First, the manipulators will be fit with custom designed viscoelastic materials
- to absorb the energy of an impact and minimize injury.
+ to absorb the energy of an unexpected impact and minimize injury.
  Second, during real-time tracking of the subject, the manipulators will
  maintain a minimum distance to the subject of 450 mm at all times.
  This distance is calculated from the known maximum speed of the manipulators
  (1 m/s) and doubling the mean human reaction time (~225 ms).
  Third, there will be two independent kill-switches to terminate the robot's
- motion through application of the manipulator's brake system.
- One switch, a push button emergency stop, will be available to the PI who
- will terminate robot motion if any unsafe conditions are noticed.
+ motion.
+ The first is a push button emergency stop which will be available to the
+ PI to terminate the robot's motion if any unsafe conditions are noticed.
  The second, a dead-man switch, will be tethered and carried in the hand
  of the human subject.
  The subject will be instructed to release pressure on the switch, if at
@@ -1196,27 +1213,50 @@ Because of extensive simulation planned in Aims 1 and 3 as well as non-human
 Potential Benefits of the Proposed Research to the Subjects and Others
 \end_layout
 
+\begin_layout Standard
+Through participation in the study, each subject will recieve a full gait
+ analysis.
+ Otherwise, there are no other direct benefits to subjects participating
+ in this study.
+ The information obtained from these studies will be used for biomechanics
+ research and investigations into human-robot interactions.
+\end_layout
+
 \begin_layout Subsection
 Importance of the Knowledge to be Gained
 \end_layout
 
 \begin_layout Standard
-The data obtained from these experiments will provide pilot data for further
- studies into human-robot interaction.
- 
-\end_layout
+The information that is collected from this study may be used to improve
+ the design of future diagnostic and rehabilitation systems which must interact
+ with awake and alert patients.
+ For instance, registration-based image measurements are a useful clinical
+ tool to quantify bone and implant motions.
+ To aquire X-ray images for these measurements, clinicians and researchers
+ rely on standard fluoroscopy equipment which yields superb images of anesthetiz
+ed patients resting on an operating table.
+ However, these imaging systems do not observe the patient in motion - the
+ conditions in which pain, instability or dysfunction are manifest.
+ Recently, two different groups 
+\begin_inset LatexCommand \cite{Foresti2006,Liu2006}
 
-\begin_layout Subsection
-Data and Safety Monitoring Plan
-\end_layout
+\end_inset
 
-\begin_layout Standard
-All subjects will be assigned a code, the key to which will be kept secured
- in the PI's office.
- All data will be kept in a secure program using these codes and will be
- in the PI's possession only.
- Once that data is collected, but before it is analyzed, the key to the
- codes will be destroyed, thus de-identifying the data.
+ have mounted commercially available fluoroscopic machines to motorized
+ bases, which allow the floroscope field-of-view to automaically track the
+ movement of the patient on one or two degrees of freedom.
+ At the University of Florida, we are developing a six degree-of-freedom,
+ manipulator-based X-ray imaging platform to automatically track the movements
+ of patients.
+ Similar examples can be found in the field of rehabilitation robotics.
+ To date, no one has quantified the effects which autonomously operating
+ machines or robots have on awake and alert patients.
+ In the case of diagnostic robotic systems, it is important to understand
+ if the measurement system (robotic system) has an impact on the system
+ it is attempting to measure (patient).
+ Using standard gait measurement techniques and minimal risk to the subjects,
+ we can gather clinically relevant and otherwise useful design data on human-rob
+ot interaction dynamics.
 \end_layout
 
 \begin_layout Standard
