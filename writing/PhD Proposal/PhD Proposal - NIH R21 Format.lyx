@@ -268,6 +268,9 @@ s including, constructed from light weight materials [ref], actuated by
  While this research fulfills a necessary and important niche of robotic
  applications, it is too focused for the large variety of tasks required
  by health care applications.
+ Research in this area falls into the category of feedback motion planning
+ and can be categorized into two major categories: potential and veloctiy
+ field control.
 \end_layout
 
 \begin_layout Subsubsection
@@ -353,6 +356,12 @@ n of their potential field.
  demonstrated on a real-time platform.
 \end_layout
 
+\begin_layout Standard
+VHF - Their method, developed for navigation of mobile robots in the plane,
+ uses sensor measurements to update the cells of a grid representation of
+ the robot's environment.
+\end_layout
+
 \begin_layout Subsubsection
 Velocity field methods
 \end_layout
@@ -364,7 +373,7 @@ Also known more generally as velocity field control (VFC) techniques (e.g.
 
 \end_inset
 
-), t
+)
 \end_layout
 
 \begin_layout Subsubsection
@@ -508,165 +517,126 @@ Aim 1: Development of a safe, real-time control algorithm
 \begin_layout Standard
 To operate autonomous robotic systems in close proximity to humans, a control
  algorithm must avoid collisions with humans while simultaneously achieving
- a high level or performance.
- A technique for real-time collision avoidance and local motion planning
- is velocity field techniques.
- They allow task separation without time parametriation.
+ a high level of performance.
+ Velocity field control accomodates both of these requirements.
  However, little attention has focused on construction of the actual velocity
  field itelf.
- Most literature on this topic assumes that the velocity field is given
- in the problem statement.
- Li, who first introduced the velocity field technique, describes a time
- suspension technique which can construct a velocity field from a desired
- reference trajectory.
- Lavalle et al.
- have addressed the creation of fileds off-line through several preprocessing
- steps.
- The most intriguing work has been done by 
+ Most literature 
+\begin_inset LatexCommand \cite{Cervantes2002,Li1999,Li2001a,McIntyre2005,Moreno-Valenzuela2006,Yamakita2001}
+
+\end_inset
+
+ has focused on the control design and stability analysis assuming a desired
+ time-invariant velocity field is given in the problem statement.
+ Extending earlier work by Conner et al.
+\begin_inset LatexCommand \cite{Conner2003}
+
+\end_inset
+
+, Lindemann and Lavalle proposed a construction algorithm which smoothly
+ combines locally-defined vector fields using bump functions 
+\begin_inset LatexCommand \cite{Lindemann2005,Lindemann2006,Lindemann2006a}
+
+\end_inset
+
+.
+ However, their construction first decomposes the workspace into convex
+ polytopes or cells and then a discrete plan is computed over these cells.
+ Designated as a precomputation step, this global planning step and all
+ subseqent steps have to be recomputed for every change in the environment.
+ Furthermore, the intent of their algorithm is purely motion planning to
+ a desired goal state and does not accomodate velocity field contruction
+ for applications requiring tracking of a moving object or applications
+ with a priori knowledge of a desired trajectory.
+ Li and Horowitz, who first introduced the velocity field control technique,
+ describe a time suspension technique which can construct a velocity field
+ from a desired reference trajectory 
+\begin_inset LatexCommand \cite{Li2001b}
+
+\end_inset
+
+.
+ Their technique, which has become the default method for contour tracking
+ applications, does not accomodate dynamic obstacles.
+ 
+\end_layout
+
+\begin_layout Standard
+A drawback common to all methods mentioned above is that real-time information
+ about obstacle location is not integrated into the creation of the velocity
+ field.
+ In potential field research, this drawback was addressed by the vector
+ field histogram (VFH) algorithm (and later improvements, VFH+ 
+\begin_inset LatexCommand \cite{Ulrich1998}
+
+\end_inset
+
+ and VFH* 
+\begin_inset LatexCommand \cite{Ulrich2000}
+
+\end_inset
+
+) developed by Borenstein and Koren
+\begin_inset LatexCommand \cite{Borenstein1991}
+
+\end_inset
+
+, but nothing similar exists for velocity fields.
+ In fact, only one group to date has invesitgated time-varying velocity
+ field constructions.
+ Extending Li and Horowitz's technique, Suh et al.
+ decomposes the velocity field into a collection of radial basis functions,
+\begin_inset Formula \begin{equation}
+V(q,s)=\Phi(q)*W(s)\label{eq:1}\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\Phi(q)=[\phi_{1}(q),\phi_{2}(q),\ldots,\phi_{n}(q)]$
+\end_inset
+
+ and 
+\begin_inset Formula $W(s)=[w_{1}(s),w_{2}(s),\ldots,w_{n}(s)]^{T}$
+\end_inset
+
+ represent a collection of radial basis functions and weights respectively,
+ 
+\begin_inset Formula $q\in\mathbb{R}^{n}$
+\end_inset
+
+ are the generalized coordinates of the dynamic system, and 
+\begin_inset Formula $s$
+\end_inset
+
+ is a pseudo-time variable defined in the time suspension technique 
 \begin_inset LatexCommand \cite{Suh2004a}
 
 \end_inset
 
 .
- They assume that the desired velocity field is given by V(x,s) = sum(w(s)*phi(x
-)), where w(s) is a weight to be adjusted and phi(x) is a basis function.
- Then W_dot = M*BigPhi*(-M*sum(w*del*phi)*x_dot - F).
- They also used W_dot = proj(W).
- But their forumlation did not consider dynamic objects.
- 1) This is a non-model based or adaptive control approach.
- 
-\end_layout
-
-\begin_layout Standard
-2) Model-based approach.
-\end_layout
-
-\begin_layout Standard
-Our contribution will be the development of a novel potential field function,
- which is possibly state and time dependent, which will allow the robot
- to autonomously avoid collisions and also keep the robot dynamics in safe
- regions when operating in close proximity to people.
-\end_layout
-
-\begin_layout Standard
-The standard dynamic model for a robotic system can be expressed as,
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{equation}
-M(q)\ddot{q}(t)+N(q,\dot{q})=\tau(t)\label{eq:1}\end{equation}
-
+ Their contribution was to design an adaptive update rule for 
+\begin_inset Formula $\dot{W}(s)$
 \end_inset
 
-
+ using Lyapunov design techniques, however the update law did not incorporate
+ knowledge about obstacles in the environment.
 \end_layout
 
 \begin_layout Standard
-In 
+The effort in 
+\series bold
+Aim 1
+\series default
+ will be to address these drawbacks and develop novel velocity field constructio
+n algorithms.
+ We will develop a continuous adaptive estimate for the weights in 
 \begin_inset LatexCommand \eqref{eq:1}
 
 \end_inset
 
-, 
-\begin_inset Formula $q(t)$
-\end_inset
-
-, 
-\begin_inset Formula $\dot{q}(t)$
-\end_inset
-
-, 
-\begin_inset Formula $\ddot{q}(t)$
-\end_inset
-
- denote the actual position, velocity, and acceleration of the robot, respective
-ly, and 
-\begin_inset Formula $\tau(t)$
-\end_inset
-
- represents the torque input vector.
- The control objective will be to track a velocity field, denoted 
-\begin_inset Formula $\vartheta(\cdot)\in\mathbb{R}^{n}$
-\end_inset
-
-, which could be a function of the current link position, velocity, and
- possibly time.
- To quantify this objective, we introduce a velocity field tracking error,
- denoted 
-\begin_inset Formula $\eta(t)$
-\end_inset
-
-, that is defined as follows
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{equation}
-\eta(t)=\dot{q}(t)-\vartheta(q,\dot{q},q_{d},\dot{q}_{d})\label{eq:2}\end{equation}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The design of 
-\begin_inset Formula $\tau(t)$
-\end_inset
-
- follows using standard Lyapunov design techniques (e.g.
- 
-\begin_inset LatexCommand \cite{Dixon2003}
-
-\end_inset
-
-) once 
-\begin_inset Formula $\vartheta(\cdot)$
-\end_inset
-
- is properly defined.
- This will be the focus of Aim 1 of this proposal.
- Recent work suggests that focusing on the structure and parameters of 
-\begin_inset Formula $\vartheta(\cdot)$
-\end_inset
-
-, one can achieve both better dynamic control 
-\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
-
-\end_inset
-
- as well as more safe behavior 
-\begin_inset LatexCommand \cite{Kulic2006-1}
-
-\end_inset
-
- of the robot when close to obstacles.
- This approach does have some drawbacks which will need to be addressed.
- To implement a velocity field controller, an analytic expression for 
-\begin_inset Formula $\vartheta(\cdot)$
-\end_inset
-
- must be developed.
- This limitation typically restricts implementation to 2-D work spaces with
- simple obstacles (e.g.
- spheres or cylinders) 
-\begin_inset LatexCommand \cite{McIntyre2005}
-
-\end_inset
-
-.
- One way to address this problem is by approximating 
-\begin_inset Formula $\hat{\vartheta}(\cdot)$
-\end_inset
-
- with various non-linear estimation techniques.
-\end_layout
-
-\begin_layout Standard
-Successful completion of Aim 1 will yield a new method for the safe, real-time
- control of robotic systems.
- The method, based on the development of a novel desired velocity field,
- will consider the constraints of the robotic system as well as address
- the characteristics of dynamic environments.
+ using Lyapunov design techniques which takes into account not only tracking
+ performance of a desired reference signal but also obstacle information.
+ More...
 \end_layout
 
 \begin_layout Standard
@@ -703,7 +673,11 @@ It is paramount to understand and characterize the risk associated with
  failure probability or some associated measure.
  Therefore, we propose to develop a novel framework, based on qualitative
  and quantitative methods from safety engineering, to fully characterize
- the relative safety of the control and planning algorithms we develop.
+ the relative safety of the control algorithms we develop in 
+\series bold
+Aim 1
+\series default
+.
 \end_layout
 
 \begin_layout Standard
@@ -764,21 +738,21 @@ Once failure risks have been correctly categorized and minimized, it is
  The position of the human and other static obstacles is provided by an
  eight-camera, real-time marker tracking system from MotionAnalysis, Inc.
  Assessing the performance of the developed methods on this multi-manipulator
- platform will achieve three objectives: 1) Verify the real-time collision
- avoidance method from Aim 1 works as intended on a real system with model
- uncertainties and limited computational resources, 2) Verify the fault
- model and identification and response methods developed in Aim 2, and 3)
- Collect pilot data on how people modify their behavior when interacting
- with an autonomous robotic system.
+ platform will verify the control algorithm developed in 
+\series bold
+Aim 1
+\series default
+ works as intended on a real system with model uncertainties and limited
+ computational resources.
 \end_layout
 
 \begin_layout Standard
-
+Experimental verification of the real-time collision avoidance methods from
+ 
 \series bold
-Verification of the real-time collision avoidance:
+Aim 1
 \series default
- Experimental verification of the real-time collision avoidance methods
- from Aim 1 will proceed in several stages.
+ will proceed in three stages.
  
 \end_layout
 
@@ -835,11 +809,12 @@ Aim 4: Clinical research
 \end_layout
 
 \begin_layout Standard
-The information that is collected from this study may be used to improve
- the design of future diagnostic and rehabilitation systems which must interact
- with awake and alert patients.
- For instance, registration-based image measurements are a useful clinical
- tool to quantify bone and implant motions.
+New robotic systems are being developed for rehabilitation and diagnostic
+ tasks.
+ Unlike surgical robots, these platforms are intended to interact with awake
+ and alert humans to perform their task.
+ For instance, registration-based image measurements [ref] are a useful
+ clinical tool to quantify bone and implant motions.
  To aquire X-ray images for these measurements, clinicians and researchers
  rely on standard fluoroscopy equipment which yields superb images of anesthetiz
 ed patients resting on an operating table.
@@ -857,34 +832,98 @@ ed patients resting on an operating table.
  manipulator-based X-ray imaging platform to automatically track the movements
  of patients.
  Similar examples can be found in the field of rehabilitation robotics.
- To date, no one has quantified the effects which autonomously operating
- machines or robots have on awake and alert patients.
- In the case of diagnostic robotic systems, it is important to understand
- if the measurement system (robotic system) has an impact on the system
- it is attempting to measure (patient).
- Using standard gait measurement techniques and minimal risk to the subjects,
- we can gather clinically relevant and otherwise useful design data on human-rob
-ot interaction dynamics.
+ 
 \end_layout
 
 \begin_layout Standard
-New robotic systems are being developed for rehabilitation and diagnostic
- tasks.
- Unlike surgical robots, these platforms are intended to interact with awake
- and alert humans to perform their task.
- Of clinical importance, our hypothesis is that humans modify their behavior
+To date, no one has quantified the effects autonomously operating machines
+ or robots have on awake and alert patients.
+ In the case of diagnostic robotic systems, it is important to understand
+ if the measurement system (robotic system) has an impact on the system
+ it is attempting to measure (patient).
+ To collect data for this task, we will recruit 16 adult male subjects to
+ walk within the workspaces of the two robotic manipulators from 
+\series bold
+Aim 3
+\series default
+.
+ The subject's kinematic data, position, velocity and acceleration, of their
+ major body segments will be recorded by a passive marker, eight-camera
+ motion capture system.
+ Also ground reaction force (GRF) data will be recorded by two in-ground
+ force platforms.
+\end_layout
+
+\begin_layout Standard
+GRF data is a critical measure used in many different gross motion studies.
+ Combined with kinematic data from a motion capture system, clinicians and
+ researchers can calculate joint moments, powers, and contact forces as
+ well as estimate muscle forces.
+ Because this measured quantity has such a large impact on many other computed
+ quantities, researchers have investigated a variety of external factors
  (e.g.
- shorter stride length and lower trunk velocities during gait) in the presence
- of robots.
- We intend to collect motion capture data from n=10 subjects performing
- activities such as gait, jumping and squatting both in the workspace of
- the multi-robot system.
- In the first trial, the robots will be placed in their home positions and
- turned off.
- In a second trial the robots will be required to actively track a point
- on the subjects.
- This data will be analyzed to determine if the robots have a significant
- impact on the subject's motion parameters.
+ force plate targeting, shoe sole thickness, treadmill use) hypothesized
+ to effect the natural foot-ground interface.
+ We intend to perform similar analysis.
+ To analyze the data, the GRF data from each subject's right and left leg
+ (n=32) will be normalized with respect to the subject's body weight.
+ Following procedures outlined in related research, we will then perform
+ a frequency analysis of each GRF data set to determine the frequency content
+ 
+\begin_inset LatexCommand \cite{Giakas1997,Wearing2003}
+
+\end_inset
+
+.
+ Prior research in force plate targeting reveals small but significant changes
+ in the frequency content for the medio-lateral (ML) and anterior-posterior
+ (AP) components of a subjects GRF data 
+\begin_inset LatexCommand \cite{Wearing2003}
+
+\end_inset
+
+.
+ Conservatively assuming we will witness a similar magnitude in change,
+ the statistical power for n=32 is 0.71 and 0.77 for the ML and AP test respective
+ly.
+ However, we do anticipate much larger differences due to the greater distractio
+n potential of autonomously moving robots compared to targeting a fixed
+ location on the floor.
+ 
+\end_layout
+
+\begin_layout Standard
+Failing to find significant differences in the frequency content of the
+ GRF data, we will turn to the kinematic data that is collected for each
+ subject.
+ Measurement of left/right asymmetries is common in clinical gait analysis
+ to detect or confirm pathology.
+ Quantifying asymmetry is done via the asymmetry index (ASI), 
+\begin_inset Formula \[
+ASI=2*\frac{X_{R}-X_{L}}{X_{R}-X_{L}}\]
+
+\end_inset
+
+where 
+\begin_inset Formula $X_{L}$
+\end_inset
+
+ and 
+\begin_inset Formula $X_{R}$
+\end_inset
+
+ are the left/right measures of interest and an ASI < 0.01 is considered
+ practically symmetric.
+ In healthy adults under normal conditions, many gait measure are symmetic,
+ including stride length, limb speed, and pecentage of time each limb is
+ in single support 
+\begin_inset LatexCommand \cite{Giakas1997,Sadeghi1997}
+
+\end_inset
+
+.
+ We will compute the ASI for each of these measures for each subject to
+ determine if the robots had a significant impact on the subject's kinematics.
 \end_layout
 
 \begin_layout Subsection
@@ -2774,7 +2813,7 @@ Biography and References Cited
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \bibtex[IEEEtran]{Proposal_Library}
+\begin_inset LatexCommand \bibtex[plain]{Proposal_Library}
 
 \end_inset
 
