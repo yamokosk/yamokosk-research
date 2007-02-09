@@ -271,67 +271,13 @@ s including, constructed from light weight materials [ref], actuated by
 \end_layout
 
 \begin_layout Subsubsection
-Real-time collision avoidance
-\end_layout
-
-\begin_layout Standard
-For mobile robotics, Fox et al.
- developed the dynamic window approach (DWA) 
-\begin_inset LatexCommand \cite{fox95dynamic}
-
-\end_inset
-
- whose convergent properties have been proved 
-\begin_inset LatexCommand \cite{Ogren2005}
-
-\end_inset
-
- and been extended to mobile robots with more complex kinematic constraints
- 
-\begin_inset LatexCommand \cite{Brock1997}
-
-\end_inset
-
-.
- Similar in nature to receding horizon control (RHC) 
-\begin_inset LatexCommand \cite{Mayne1990}
-
-\end_inset
-
- or model predictive control (MPC) 
-\begin_inset LatexCommand \cite{Garcia1989}
-
-\end_inset
-
-, the dynamic window approach searches the admissible velocity space for
- a command which maximizes some utility function.
- This method provides reactive collision avoidance while accounting for
- the velocity and acceleration limits as well as dynamics of the robot.
- However, it requires discretization 
-\begin_inset LatexCommand \cite{fox95dynamic,Ogren2005,Brock1997}
-
-\end_inset
-
- or random sampling 
-\begin_inset LatexCommand \cite{bruce06}
-
-\end_inset
-
- of the robot's workspace.
- For higher dimensional systems, such as redundant manipulator systems,
- the computational complexity might become intractable.
+Potential field methods
 \end_layout
 
 \begin_layout Standard
 One the most successful collision avoidance techniques has been potential
  field based methods.
- Also known more generally as velocity field control (VFC) techniques (e.g.
- 
-\begin_inset LatexCommand \cite{Li1999,McIntyre2005,MorenoValenzuela2006,Suh2004}
-
-\end_inset
-
-), the potential field technique was first introduced by Khatib 
+ The potential field technique was first introduced by Khatib 
 \begin_inset LatexCommand \cite{Khatib1986-90}
 
 \end_inset
@@ -408,36 +354,73 @@ n of their potential field.
 \end_layout
 
 \begin_layout Subsubsection
-Automatic identification, characterization, and repose to faults
+Velocity field methods
 \end_layout
 
 \begin_layout Standard
-Factors that must be considered to ensure the safety of the human abnormal
- operating conditions include: detection of abnormal behavior (i.e., fault
- detection 
-\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+Also known more generally as velocity field control (VFC) techniques (e.g.
+ 
+\begin_inset LatexCommand \cite{Li1999,McIntyre2005,MorenoValenzuela2006,Suh2004}
 
 \end_inset
 
-) by either the robot or the human; characterization, quantification, and
- identification of the fault 
-\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+), t
+\end_layout
+
+\begin_layout Subsubsection
+Other methods
+\end_layout
+
+\begin_layout Standard
+For mobile robotics, Fox et al.
+ developed the dynamic window approach (DWA) 
+\begin_inset LatexCommand \cite{fox95dynamic}
 
 \end_inset
 
-; and then response to the fault 
-\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+ whose convergent properties have been proved 
+\begin_inset LatexCommand \cite{Ogren2005}
 
 \end_inset
 
- such as emergency stop, altering the control objective, or accommodating
- for the fault through redundancy.
- Previous literature has focused on fault detection and tolerance in robotic
- systems, but little attention has focused on modeling the set of faults
- that can arise from a human-in-the-loop.
- In this project we are focused on dynamics-based events rather than human
- factors events (e.g., teleoperator fatigue) that have been previously investigate
-d.
+ and been extended to mobile robots with more complex kinematic constraints
+ 
+\begin_inset LatexCommand \cite{Brock1997}
+
+\end_inset
+
+.
+ Similar in nature to receding horizon control (RHC) 
+\begin_inset LatexCommand \cite{Mayne1990}
+
+\end_inset
+
+ or model predictive control (MPC) 
+\begin_inset LatexCommand \cite{Garcia1989}
+
+\end_inset
+
+, the dynamic window approach searches the admissible velocity space for
+ a command which maximizes some utility function.
+ This method provides reactive collision avoidance while accounting for
+ the velocity and acceleration limits as well as dynamics of the robot.
+ However, it requires discretization 
+\begin_inset LatexCommand \cite{fox95dynamic,Ogren2005,Brock1997}
+
+\end_inset
+
+ or random sampling 
+\begin_inset LatexCommand \cite{bruce06}
+
+\end_inset
+
+ of the robot's workspace.
+ For higher dimensional systems, such as redundant manipulator systems,
+ the computational complexity might become intractable.
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard
@@ -519,27 +502,50 @@ Research Design and Methods
 \end_layout
 
 \begin_layout Subsection
-Aim 1: Development of a safe, real-time planning algorithm
-\end_layout
-
-\begin_layout Subsubsection
-Overview 
+Aim 1: Development of a safe, real-time control algorithm
 \end_layout
 
 \begin_layout Standard
-To operate autonomous robotic systems in close proximity to humans, any
- algorithm must avoid collisions with the patient or operator while simultaneous
-ly achieving a high level or performance.
+To operate autonomous robotic systems in close proximity to humans, a control
+ algorithm must avoid collisions with humans while simultaneously achieving
+ a high level or performance.
  A technique for real-time collision avoidance and local motion planning
- is potential field techniques.
- Our contribution will be the development of a novel potential field function,
+ is velocity field techniques.
+ They allow task separation without time parametriation.
+ However, little attention has focused on construction of the actual velocity
+ field itelf.
+ Most literature on this topic assumes that the velocity field is given
+ in the problem statement.
+ Li, who first introduced the velocity field technique, describes a time
+ suspension technique which can construct a velocity field from a desired
+ reference trajectory.
+ Lavalle et al.
+ have addressed the creation of fileds off-line through several preprocessing
+ steps.
+ The most intriguing work has been done by 
+\begin_inset LatexCommand \cite{Suh2004a}
+
+\end_inset
+
+.
+ They assume that the desired velocity field is given by V(x,s) = sum(w(s)*phi(x
+)), where w(s) is a weight to be adjusted and phi(x) is a basis function.
+ Then W_dot = M*BigPhi*(-M*sum(w*del*phi)*x_dot - F).
+ They also used W_dot = proj(W).
+ But their forumlation did not consider dynamic objects.
+ 1) This is a non-model based or adaptive control approach.
+ 
+\end_layout
+
+\begin_layout Standard
+2) Model-based approach.
+\end_layout
+
+\begin_layout Standard
+Our contribution will be the development of a novel potential field function,
  which is possibly state and time dependent, which will allow the robot
  to autonomously avoid collisions and also keep the robot dynamics in safe
  regions when operating in close proximity to people.
-\end_layout
-
-\begin_layout Subsubsection
-Approach
 \end_layout
 
 \begin_layout Standard
@@ -655,10 +661,6 @@ The design of
  with various non-linear estimation techniques.
 \end_layout
 
-\begin_layout Subsubsection
-Expected outcome
-\end_layout
-
 \begin_layout Standard
 Successful completion of Aim 1 will yield a new method for the safe, real-time
  control of robotic systems.
@@ -681,204 +683,7 @@ The approach proposed for Aim 1 has precedent in previously reported literature.
 \end_layout
 
 \begin_layout Subsection
-Aim 2: Novel model-based fault detection methods
-\end_layout
-
-\begin_layout Subsubsection
-Overview
-\end_layout
-
-\begin_layout Standard
-The research details of Aim 2 are primarily concerned with human safety
- under normal operating conditions of the robotic system.
- However, all mechatronic systems are subject to failure.
- In fact, the recorded mean time to failure for a robotic system is only
- 500 to 2500 hours 
-\begin_inset LatexCommand \cite{Dhillon1997}
-
-\end_inset
-
-.
- Therefore another necessary component of a safer system is robot reliability
- and fault tolerance.
- Factors that must be considered to ensure the safety of the human under
- abnormal operating conditions include: detection of abnormal behavior (i.e.,
- fault detection 
-\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
-
-\end_inset
-
-) by either the robot or the human; characterization, quantification, and
- identification of the fault 
-\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
-
-\end_inset
-
-; and then response to the fault 
-\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
-
-\end_inset
-
- such as emergency stop, altering the control objective, or accommodating
- for the fault through redundancy.
- Previous literature has focused on fault detection and tolerance in robotic
- systems, but little attention has focused on modeling the set of faults
- that can arise from a human-in-the-loop.
- In this project we are focused on dynamics-based events rather than human
- factors events (e.g., teleoperator fatigue) that have been previously investigate
-d.
- A core scientific question for Aim 2 is how can a dynamics-based fault
- model be developed to capture the effects of an unexpected event.
-\end_layout
-
-\begin_layout Subsubsection
-Approach
-\end_layout
-
-\begin_layout Standard
-Typical models for faults occurring in a dynamic system are expressed as
- 
-\begin_inset LatexCommand \cite{Dixon2000}
-
-\end_inset
-
-,
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{equation}
-M(q)\ddot{q}(t)+N(q,\dot{q})+u_{-1}(t-T_{f})\zeta(t)=\tau(t)\label{eq:3}\end{equation}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-In 
-\begin_inset LatexCommand \eqref{eq:3}
-
-\end_inset
-
-, 
-\begin_inset Formula $q(t)$
-\end_inset
-
-, 
-\begin_inset Formula $\dot{q}(t)$
-\end_inset
-
-, 
-\begin_inset Formula $\ddot{q}(t)$
-\end_inset
-
- denote the joint position, velocity, and acceleration, respectively, 
-\begin_inset Formula $\zeta(t)$
-\end_inset
-
- represents a fault in the system, 
-\begin_inset Formula $u_{-1}(t-T_{f})$
-\end_inset
-
- represents a unit step function, 
-\begin_inset Formula $T_{f}$
-\end_inset
-
- represents the time instant at which a fault occurs, and 
-\begin_inset Formula $\tau(t)$
-\end_inset
-
- represents the torque input vector.
- This type of fault model will be insufficient for human-robot systems because
- the human may exhibit a failure (e.g., fall down or stumble) but the failure
- will not impact the dynamics of the robot.
- Efforts in Aim 2 will focus on developing a new fault model that is based
- on the closed-loop error system for interacting with humans in the workspace.
- Specifically, models will be developed based on the closed-loop error system
- of the robot, because the error system will be developed based on the motion
- and forces generated by the human and the robot.
- This model will be able to capture changes in the human's motion (e.g., an
- unexpected limb motion due to muscle spasticity) that do not have a direct
- effect on the dynamics of the robot.
- Based on the development of a fault model, efforts in Aim 2 will also focus
- on the development of a fault identification method that can be used for
- quantifying faults.
- Efforts to develop the fault identification method will focus on the constructi
-on of an error system estimate which can be compared to the actual error
- system (i.e., comparing the learned intent of the human robot interaction
- versus the states of the actual interaction).
- Based on our recent advances in developing a new nonlinear estimation technique
- 
-\begin_inset LatexCommand \cite{Makkar}
-
-\end_inset
-
-, initial efforts will focus on the development of a fault identification
- method such as
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{equation}
-\widehat{\zeta}(t)=\int(k_{0}+1)e(\sigma)d\sigma+\int k_{1}\mathrm{sgn}(e(\sigma))d\sigma+(k_{0}+1)e(t)+(k_{0}+1)e(T_{f})\label{eq:4}\end{equation}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-where 
-\begin_inset Formula $k_{0}$
-\end_inset
-
-, 
-\begin_inset Formula $k_{1}$
-\end_inset
-
- represents positive observer gains, where 
-\begin_inset Formula $\mathrm{sgn}(\cdot)$
-\end_inset
-
- denotes the vector signum function.
- That is, the nonlinear approximation method in 
-\begin_inset LatexCommand \eqref{eq:4}
-
-\end_inset
-
- can be used to identify the fault, and then we will examine the fault signature
- for classification of the fault.
- Classified faults will be incorporated in a database with an appropriate
- action for the robot to execute.
- The approximation method in 
-\begin_inset LatexCommand \eqref{eq:4}
-
-\end_inset
-
- will be investigated in lieu of methods such as a neural network because
- the method in 
-\begin_inset LatexCommand \eqref{eq:4}
-
-\end_inset
-
- does not result in a function approximation error that could reduce the
- quality of the identified fault signature.
-\end_layout
-
-\begin_layout Subsubsection
-Expected outcome
-\end_layout
-
-\begin_layout Standard
-A new failure model will result from Aim 3 that will provide a foundation
- for model-based fault detection methods.
- Based on the model development, a dynamics based residual generating fault
- detection, identification, and characterization scheme will be developed
- to elicit a desired robot response to unexpected events (e.g., muscle spasticity,
- patient fall).
-\end_layout
-
-\begin_layout Subsection
-Aim 3: Experimental assessment
+Aim 2: Failure analysis
 \end_layout
 
 \begin_layout Standard
@@ -934,6 +739,10 @@ where
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Subsection
+Aim 3: Experimental assessment
 \end_layout
 
 \begin_layout Standard
@@ -1021,20 +830,45 @@ Success in each stage will be measured by two values.
  the desired and actual end-effector trajectory.
 \end_layout
 
-\begin_layout Standard
-
-\series bold
-Verification of the automatic fault identification and response:
-\series default
- To test the methods developed in Aim 2 we will conduct two separate tests.
+\begin_layout Subsection
+Aim 4: Clinical research
 \end_layout
 
 \begin_layout Standard
+The information that is collected from this study may be used to improve
+ the design of future diagnostic and rehabilitation systems which must interact
+ with awake and alert patients.
+ For instance, registration-based image measurements are a useful clinical
+ tool to quantify bone and implant motions.
+ To aquire X-ray images for these measurements, clinicians and researchers
+ rely on standard fluoroscopy equipment which yields superb images of anesthetiz
+ed patients resting on an operating table.
+ However, these imaging systems do not observe the patient in motion - the
+ conditions in which pain, instability or dysfunction are manifest.
+ Recently, two different groups 
+\begin_inset LatexCommand \cite{Foresti2006,Liu2006}
 
-\series bold
-Collect pilot data on human behavior modification in the presence of robots:
-\series default
- New robotic systems are being developed for rehabilitation and diagnostic
+\end_inset
+
+ have mounted commercially available fluoroscopic machines to motorized
+ bases, which allow the floroscope field-of-view to automaically track the
+ movement of the patient on one or two degrees of freedom.
+ At the University of Florida, we are developing a six degree-of-freedom,
+ manipulator-based X-ray imaging platform to automatically track the movements
+ of patients.
+ Similar examples can be found in the field of rehabilitation robotics.
+ To date, no one has quantified the effects which autonomously operating
+ machines or robots have on awake and alert patients.
+ In the case of diagnostic robotic systems, it is important to understand
+ if the measurement system (robotic system) has an impact on the system
+ it is attempting to measure (patient).
+ Using standard gait measurement techniques and minimal risk to the subjects,
+ we can gather clinically relevant and otherwise useful design data on human-rob
+ot interaction dynamics.
+\end_layout
+
+\begin_layout Standard
+New robotic systems are being developed for rehabilitation and diagnostic
  tasks.
  Unlike surgical robots, these platforms are intended to interact with awake
  and alert humans to perform their task.
