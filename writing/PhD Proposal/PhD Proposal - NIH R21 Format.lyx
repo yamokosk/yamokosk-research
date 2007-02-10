@@ -549,8 +549,8 @@ To operate autonomous robotic systems in close proximity to humans, a control
  for applications requiring tracking of a moving object or applications
  with a priori knowledge of a desired trajectory.
  Li and Horowitz, who first introduced the velocity field control technique,
- describe a time suspension technique which can construct a velocity field
- from a desired reference trajectory 
+ describe a technique to construct a velocity field from a desired reference
+ trajectory 
 \begin_inset LatexCommand \cite{Li2001b}
 
 \end_inset
@@ -587,7 +587,7 @@ A drawback common to all methods mentioned above is that real-time information
  Extending Li and Horowitz's technique, Suh et al.
  decomposes the velocity field into a collection of radial basis functions,
 \begin_inset Formula \begin{equation}
-V(q,s)=\Phi(q)*W(s)\label{eq:1}\end{equation}
+\vartheta(q,t)=\Phi(q)*W(t)\label{eq:1}\end{equation}
 
 \end_inset
 
@@ -596,26 +596,22 @@ where
 \end_inset
 
  and 
-\begin_inset Formula $W(s)=[w_{1}(s),w_{2}(s),\ldots,w_{n}(s)]^{T}$
+\begin_inset Formula $W(t)=[w_{1}(t),w_{2}(t),\ldots,w_{n}(t)]^{T}$
 \end_inset
 
  represent a collection of radial basis functions and weights respectively,
- 
+ and 
 \begin_inset Formula $q\in\mathbb{R}^{n}$
 \end_inset
 
- are the generalized coordinates of the dynamic system, and 
-\begin_inset Formula $s$
-\end_inset
-
- is a pseudo-time variable defined in the time suspension technique 
+ are the generalized coordinates of the dynamic system 
 \begin_inset LatexCommand \cite{Suh2004a}
 
 \end_inset
 
 .
  Their contribution was to design an adaptive update rule for 
-\begin_inset Formula $\dot{W}(s)$
+\begin_inset Formula $\dot{W}(t)$
 \end_inset
 
  using Lyapunov design techniques, however the update law did not incorporate
@@ -629,27 +625,227 @@ Aim 1
 \series default
  will be to address these drawbacks and develop novel velocity field constructio
 n algorithms.
- We will develop a continuous adaptive estimate for the weights in 
+ The first approach we will attempt is to mesh the contributions of Borenstein
+ and Koren's VFH method with Li and Horowitz's method for constructing 
+\begin_inset Formula $\vartheta(q,t)$
+\end_inset
+
+.
+ Our goal is to find a new expression for the velocity field, 
+\begin_inset Formula $\vartheta(q,d,t)$
+\end_inset
+
+, which is also a function of the distances to obstacles in the workspace.
+ Then, similar to the VFH method, computation of this field will accomodate
+ discrete sensor measurements from distance sensors on the robot.
+ To do this we will start from Li and Horowitz's method by defining a new
+ metric function 
+\begin_inset Formula $U:\mathbb{R}^{n}\rightarrow\mathbb{R}$
+\end_inset
+
+,
+\begin_inset Formula \begin{equation}
+U(e,d)=\underset{i=1}{\overset{n}{\sum}}a_{i}\mathrm{tanh}^{2}(e_{i})+\underset{i=1}{\overset{p}{\sum}}b_{i}\left(1-\mathrm{tanh}^{2}(d_{i})\right)\label{eq:2}\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $e=q_{d}(t)-q(t)\in\mathbb{R}^{n}$
+\end_inset
+
+ is a tracking error between the desired, 
+\begin_inset Formula $q_{d}(t)$
+\end_inset
+
+, and measured, 
+\begin_inset Formula $q(t)$
+\end_inset
+
+, generalized coordinates, 
+\begin_inset Formula $d\in\mathbb{R}^{p}$
+\end_inset
+
+ are the Euclidean distances to objects in the workspace, 
+\begin_inset Formula $a_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $b_{i}$
+\end_inset
+
+ are positive weights, and 
+\begin_inset Formula $\mathrm{tanh}(\cdot)$
+\end_inset
+
+ is the hyperbolic tangent function.
+ Notice that 
+\begin_inset LatexCommand \eqref{eq:2}
+
+\end_inset
+
+ increases as 
+\begin_inset Formula $q(t)$
+\end_inset
+
+ deviates from 
+\begin_inset Formula $q_{d}(t)$
+\end_inset
+
+ or as 
+\begin_inset Formula $d$
+\end_inset
+
+ approaches zero.
+ Therefore 
+\begin_inset Formula $U(e,d)$
+\end_inset
+
+ is a metric of both tracking performance and obstacle avoidance.
+ Our metric has two key differences from that proposed by Li and Horowitz.
+ Instead of the hyperbolic tangent function, they used the cosine function
+ which restricted their method to revolute joints by restricting values
+ of 
+\begin_inset Formula $e$
+\end_inset
+
+ to lie between 
+\begin_inset Formula $-\pi$
+\end_inset
+
+ and 
+\begin_inset Formula $\pi$
+\end_inset
+
+.
+ The second key differnce in our inclusion of the second term which accounts
+ for obstacle distance information.
+ Using this new metric and the procedure outlined by Li and Horowitz's original
+ work, we should then be able to derive an expression for 
+\begin_inset Formula $\vartheta(q,d,t)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The second approach we will investigate is inspired by 
 \begin_inset LatexCommand \eqref{eq:1}
 
 \end_inset
 
- using Lyapunov design techniques which takes into account not only tracking
- performance of a desired reference signal but also obstacle information.
- More...
+.
+ Using Lyapunov design tools such as integrator backstepping will attempt
+ to extend the work reported by Suh et al.
+ The critical difference will be in the definition of a Lyapunov canidate
+ function which will drive the design of not only 
+\begin_inset Formula $\dot{W}(t)$
+\end_inset
+
+ as in 
+\begin_inset LatexCommand \cite{Suh2004a}
+
+\end_inset
+
+ but also a new term 
+\begin_inset Formula $\dot{Z}(t)$
+\end_inset
+
+ which is a result of our decomposition for 
+\begin_inset Formula $\vartheta(q,d,t)$
+\end_inset
+
+
+\begin_inset Formula \begin{equation}
+\vartheta(q,d,t)=\Phi(q)*W(t)+\Omega(d)*Z(t)\label{eq:3}\end{equation}
+
+\end_inset
+
+where, similar to 
+\begin_inset LatexCommand \eqref{eq:1}
+
+\end_inset
+
+, 
+\begin_inset Formula $\Omega(d)=[\omega_{1}(d),\omega_{2}(d),\ldots,\omega_{n}(d)]$
+\end_inset
+
+ and 
+\begin_inset Formula $Z(t)=[z_{1}(t),z_{2}(t),\ldots,z_{n}(t)]^{T}$
+\end_inset
+
+ represent a collection of radial basis functions and weights respectively
+ to capture obstacle distance information.
+ Lyapunov-based tools such as integrator backstepping will be used to design
+ 
+\begin_inset Formula $\dot{W}(t)$
+\end_inset
+
+ and 
+\begin_inset Formula $\dot{Z}(t)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-The approach proposed for Aim 1 has precedent in previously reported literature.
- One of the greatest risks this approach faces is whether computations cannot
- be done with sufficient speed to enable adequate control bandwidth.
+The instantaneous speed of the robot can be directly related to the severity
+ of injury it could cause in an unexpected collision.
+ Prior research 
+\begin_inset LatexCommand \cite{Kulic2006-1,Nokata2002}
+
+\end_inset
+
+ has focused on designing potential fields to minimize several danger indicies
+ which are related to the potential impact force between the robot and human.
+ These factors are usually based on measures such as relative distance,
+ relative velocity, robot inertia and stiffness.
+ An appeal of the passive velocity field control method is that the speed
+ at which the robot follows the trajectories embedded in the velocity field
+ can be controlled independently by the amount of energy present in the
+ feeback system 
+\begin_inset LatexCommand \cite{Li2001b}
+
+\end_inset
+
+.
+ As a final goal for 
+\series bold
+Aim 1
+\series default
+, we intend to investigate methods of designing an outer control loop to
+ modulate this energy level to maximize human safety.
+ The control loop will be designed using standard Lyapunov design techniques
+ as mentioned above.
+\end_layout
+
+\begin_layout Standard
+The approaches proposed in 
+\series bold
+Aim 1
+\series default
+ all have precedent in previously reported literature.
+ However, each one relies on Lyapunov design techniques which have some
+ well known drawbacks.
+ The often cited problem is the search for a suitable Lyapunov canidate
+ function.
+ In fact, all Lyapunov control design boils down to this single task.
+ Fortunately, Lyapunov techniques have matured significantly over the last
+ decade and been successfully applied to a wide variety of problem domains
+ [ref Dixon's book].
+ The other potential problem is the computational complexity of the velocity
+ field computation algorithm.
+ Whatever method is finally developed in 
+\series bold
+Aim 1
+\series default
+ needs to be computationally efficient so that it can be implemented in
+ a real-time control system (
+\series bold
+Aim 3 and 4
+\series default
+).
  If this problem is encountered, it will be addressed by adding additional
  computational resources.
- In the worst case, novel contributions will not be made.
- In this case, a previously reported velocity field controller will have
- been implemented.
- At minimum, this would allow progress to proceed in the other Aims of this
- proposal.
 \end_layout
 
 \begin_layout Subsection
@@ -687,7 +883,7 @@ From basic failure analysis, the most common failure distribution is the
 
 \begin_layout Standard
 \begin_inset Formula \begin{equation}
-F(t)=1-e^{-\lambda t}\label{eq:3}\end{equation}
+F(t)=1-e^{-\lambda t}\label{eq:4}\end{equation}
 
 \end_inset
 
@@ -831,16 +1027,25 @@ ed patients resting on an operating table.
  At the University of Florida, we are developing a six degree-of-freedom,
  manipulator-based X-ray imaging platform to automatically track the movements
  of patients.
- Similar examples can be found in the field of rehabilitation robotics.
- 
 \end_layout
 
 \begin_layout Standard
-To date, no one has quantified the effects autonomously operating machines
- or robots have on awake and alert patients.
- In the case of diagnostic robotic systems, it is important to understand
- if the measurement system (robotic system) has an impact on the system
- it is attempting to measure (patient).
+To date, little work has been done to quantified the effects autonomously
+ operating machines or robots have on awake and alert patients.
+ Yokoi et al.
+ proposed that 75% of people are intimidated when a robot hands an 8 mm
+ video cassette tape to a human with the velocity of 0.5 m/s 
+\begin_inset LatexCommand \cite{Yokoi1996}
+
+\end_inset
+
+.
+ But what effect does the feeling of intimidation have a human's measurable
+ behaviors? This is important to quantify, especially in the case of diagnostic
+ robotic systems.
+ We need to understand if the measurement system (robotic system) has an
+ impact on the system it is attempting to measure (patient).
+ Similar, arguements can be made with respect to rehabilitation robots.
  To collect data for this task, we will recruit 16 adult male subjects to
  walk within the workspaces of the two robotic manipulators from 
 \series bold
@@ -973,7 +1178,7 @@ The proposed work will be completed in two years.
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Caption
 Gnatt chart for activities proposed for this research
@@ -1268,7 +1473,7 @@ Aim1
 \begin_inset Text
 
 \begin_layout Standard
-Develop novel velocity field
+Develop velocity fields which account for obstacles
 \end_layout
 
 \end_inset
@@ -1351,7 +1556,7 @@ Develop novel velocity field
 \begin_inset Text
 
 \begin_layout Standard
-Assess field calculation in real-time framework
+Investigate
 \end_layout
 
 \end_inset
