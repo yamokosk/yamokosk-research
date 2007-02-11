@@ -69,29 +69,33 @@ The objective of this research is to address these concerns through several
 \end_layout
 
 \begin_layout Enumerate
-Safe, autonomous robots - Develop an inherently safe, real-time control
- and planning algorithm which will avoid collisions with people in the workspace
+New safe, real-time control algorithms - Develop an inherently safe, real-time
+ control algorithm which will avoid collisions with people in the workspace
  of the robot
 \end_layout
 
 \begin_layout Enumerate
-Automatic fault identification and response - Develop fault models and nonlinear
- estimation methods to detect and quantify/identify unexpected behaviors
- from the human and robotic system.
+Failure assessment - Develop a novel framework, based on qualitative and
+ quantitative methods from safety engineering, to fully characterize the
+ relative safety of the algorithms developed in 
+\series bold
+Aim 1
+\series default
+.
 \end_layout
 
 \begin_layout Enumerate
-Failure assessment - Fundamentally, no safeguarding system can ever be perfect,
- that is, risk free.
- Therefore, we propose to develop a novel framework, based on qualitative
- and quantitative methods from safety engineering, to fully characterize
- the relative safety of the control and planning algorithms we develop
+Experimental assessment - Verify the control algorithm developed in 
+\series bold
+Aim 1
+\series default
+ works as intended on a real system with model uncertainties and limited
+ computational resources.
 \end_layout
 
 \begin_layout Enumerate
-Experimental assessment - Illustrate the developed methods of Aims 1 and
- 2 on a robotically actuated X-Ray imaging platform being developed in parrallel
- here at the University of Florida.
+Clinical research - Measure the effect autonomously moving robots have on
+ awake and alert people.
 \end_layout
 
 \begin_layout Standard
@@ -110,19 +114,17 @@ To fight soaring health care costs and simultaneously increase the quality
  and intelligent systems to find solutions.
  Over the last decade, there has been an explosion of robotic applications
  in health services.
- The Food and Drug Administration, who reviews data on the safety and effectiven
-ess of robotic software and hardware, estimates that 36,600 robotic surgeries
- were done in 2005, up nearly 50 percent from 2004 [ref?].
- Analysts predict the figure will grow at a similar rate as the general
- public becomes informed about the advantages of roboticly assisted surgeries
- [ref?].
- Beyond surgical applications 
-\begin_inset LatexCommand \cite{Lanfranco2004}
+ According to a recent Newsweek article, an estimated 36,600 robotic surgeries
+ were performed in 2005, up nearly 50 percent from 2004.
+ Analysts predict that figure will double in 2006 to about 70,000 procedures
+ 
+\begin_inset LatexCommand \cite{Barrett2005}
 
 \end_inset
 
-, robotics technology is also being applied to assist with rehabilitation
- tasks 
+.
+ Beyond surgical applications, robotics technology is also being applied
+ to assist with rehabilitation tasks 
 \begin_inset LatexCommand \cite{Hillman2003,Krebs2000}
 
 \end_inset
@@ -133,7 +135,7 @@ ess of robotic software and hardware, estimates that 36,600 robotic surgeries
 \end_inset
 
 , and develop better diagnostic tools 
-\begin_inset LatexCommand \cite{Yamokoski2006}
+\begin_inset LatexCommand \cite{Foresti2006,Liu2006,Yamokoski2006}
 
 \end_inset
 
@@ -164,8 +166,13 @@ Given the increasing adoption of robotics technology in health care, is
  responds to the surgeon's actions as if they were the surgeon's own hands.
  Future systems, however, will yield more autonomous control to the robotic
  system.
- Starting with routine tasks such as suturing, future systems may be capable
- of completing full procedures [ref].
+ Starting with routine tasks such as biopsies, future systems may be capable
+ of completing full procedures 
+\begin_inset LatexCommand \cite{Lanfranco2004}
+
+\end_inset
+
+.
  Early indications of this trend already exist.
  The ROBODOC
 \begin_inset ERT
@@ -183,10 +190,10 @@ textregistered
  Surgical System (Integrated Surgical Systems, Inc., Sacramento, CA) allows
  a surgeon to input a series of movements off-line which are then executed
  by the robot.
- ROBODOC makes no autonomous judgments about its programmed actions, yet
- this demonstrates the desire to semi-automate routine tasks.
- Beyond surgical applications, for other health care applications the human-in-t
-he-loop control methodology is simply not practical.
+ ROBODOC makes no autonomous judgments about its programmed actions.
+ However, this demonstrates the desire to semi-automate routine tasks.
+ Beyond surgical applications, the human-in-the-loop control methodology
+ is simply not practical.
  For example, the speed or complexity of some rehabilitation or diagnostic
  applications necessitate more autonomy.
  The concern is that when robots are required to perform autonomous actions
@@ -864,12 +871,16 @@ It is paramount to understand and characterize the risk associated with
 .
  Unfortunately, there are few examples of these methods applied to real
  robotic systems.
- Furthermore, new algorithms for collision avoidance or automatic fault
- tolerance are published with no characterization of the improvement in
- failure probability or some associated measure.
- Therefore, we propose to develop a novel framework, based on qualitative
- and quantitative methods from safety engineering, to fully characterize
- the relative safety of the control algorithms we develop in 
+ Furthermore, new algorithms for collision avoidance or real-time control
+ are published with no characterization of the improvement in failure probabilit
+y or some associated measure.
+ Efforts in 
+\series bold
+Aim 2
+\series default
+ will seek to develop a novel framework, based on qualitative and quantitative
+ methods from safety engineering, to fully characterize the relative safety
+ of the control algorithms developed in 
 \series bold
 Aim 1
 \series default
@@ -978,7 +989,8 @@ Dynamic obstacle avoidance I:
  The second robot, under control of the velocity field control algorithm,
  will be required to track a desired trajectory while avoiding collisions
  with the first robot.
- In separate tests, the mean speed of both robots will be varied.
+ In separate tests, the mean speed of both robots will be varied between
+ 0.25 and 0.9 m/s.
 \end_layout
 
 \begin_layout Enumerate
@@ -1556,7 +1568,7 @@ Develop velocity fields which account for obstacles
 \begin_inset Text
 
 \begin_layout Standard
-Investigate
+Develop new energy control loop for VFC methods
 \end_layout
 
 \end_inset
