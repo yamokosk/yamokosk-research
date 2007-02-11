@@ -69,7 +69,7 @@ The objective of this research is to address these concerns through several
 \end_layout
 
 \begin_layout Enumerate
-New safe, real-time control algorithms - Develop an inherently safe, real-time
+Safe, real-time control algorithms - Develop an inherently safe, real-time
  control algorithm which will avoid collisions with people in the workspace
  of the robot
 \end_layout
@@ -450,22 +450,59 @@ Preliminary studies
 \end_layout
 
 \begin_layout Subsection
-Real-time control
+Real-time software control architecture
 \end_layout
 
 \begin_layout Standard
-The co-investigator, Prof.
- Dixon, has over ten years of analytical and experimental demonstrations
- of robotic tracking controllers.
- Dr.
- Dixon's work is published in several research monographs, over 90 journal
- and conference papers, and includes successful application of image-based
- robot tracking control.
- Dr Dixon was awarded the 2006 NSF CAREER Award for development and application
- of Lyapunov-based control methods, and the 2006 IEEE Robotics and Automation
- Society Early Academic Career Award.
- Prof.
- Dixon will guide the design, implementation and testing of Aims 1 and 2.
+The real-time software control architecture required to proceed with objectives
+ in 
+\series bold
+Aims 3 and 4
+\series default
+ has already been completed.
+ Prior studies to assess the measurement capabilities of the PA10-6C robot
+ (e.g.
+ static accuracy and precision) utilized a control system implemented in
+ Linux with the hard real-time software framework provided by the OROCOS
+ project 
+\begin_inset LatexCommand \cite{Bruyninckx2003}
+
+\end_inset
+
+ and RTAI 
+\begin_inset LatexCommand \cite{Dozio2003-distributed}
+
+\end_inset
+
+.
+ This control framework integrated a real-time motion controller for one
+ robot and a real-time target generator driven by inputs from an 8-camera,
+ active marker motion capture system (PhaseSpace Inc.).
+ Lessons learned from this early design motivated the adoption of more rigorous
+ software design tools, including component-based software engineering (CBSE)
+ principles.
+ Component-based software development provides several key benefits when
+ applied to the design of robotic software control systems, particularly
+ in software reusability and modularity.
+ CBSE software components are reusable by design and several open-source
+ projects devoted to CBSE use in robotic systems host repositories of freely
+ available components 
+\begin_inset LatexCommand \cite{Brooks2005}
+
+\end_inset
+
+.
+ The current software architecture is composed of several real-time components
+ utilizing the previously mentioned open-source software projects.
+ The component framework is provided by the ORCA project 
+\begin_inset LatexCommand \cite{Makarenko2006}
+
+\end_inset
+
+.
+ In separately funded investigations, the dual-arm robotic system is currently
+ undergoing dynamic accuracy and precision tests.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -498,13 +535,143 @@ Real-time collision avoidance algorithms require information about obstacles
  to right in front of a static model.
  For each trial the number of cylinders was increased and the actual distance
  query time of the algorithm was measured by the system clock.
- The results are shown in Figure TBD.
- Thirteen non-critical bodies is a significant number as it represents the
- expected number of cylinders required to model the human body.
- Therefore, Figure 7 shows, in detail, the query time for thirteen cylinders.
- To help visualize the capability of the algorithm, Figure TBD, shows a
- time series of images which were taken as the algorithm computed, in real-time,
- the distances to a sphere which rotated around the robot.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/RTimeDistCalc_NumBodies.eps
+	lyxscale 40
+	height 2.75in
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/RTDistCalc_12Bodies.eps
+	lyxscale 50
+	height 2.75in
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+
+\emph on
+\begin_inset LatexCommand \label{fig:RTDistCalc_Stats}
+
+\end_inset
+
+Left
+\emph default
+: Distance query time of the algorithm for a variable number of bodies moving
+ in proximity to the robot.
+ 
+\emph on
+Right
+\emph default
+: Query time for thirteen non-critical cylindrical bodies moving in proximity
+ to the robot.
+\end_layout
+
+\end_inset
+
+The results are shown in Figure 
+\begin_inset LatexCommand \ref{fig:RTDistCalc_Stats}
+
+\end_inset
+
+.
+ The expected number of cylinders required to adequately model the major
+ segments of the human body is thirteen.
+ Therefore, Figure 
+\begin_inset LatexCommand \ref{fig:RTDistCalc_Stats}
+
+\end_inset
+
+ also shows, in detail, the query time for thirteen cylinders.
+ Figure 
+\begin_inset LatexCommand \ref{fig:RTDistCalc_Stats}
+
+\end_inset
+
+ shows that we were able to achieve a mean run time of 2.3 ms for thirteen
+ bodies.
+ This is significant because the command cycle time for the PA10-6C manipulator
+ system is 2 ms.
+ With further code optimization of our implementation, we should be able
+ to achieve practical real-time performance (<2 ms).
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/RTDistCalc_MovieFrames.eps
+	lyxscale 35
+	width 100text%
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+\begin_inset LatexCommand \label{fig:RTDist-Filmstrip}
+
+\end_inset
+
+A film strip of images depicting the algorithm computing the distances from
+ all critical bodies (robot model) to a single non-critical body (the sphere).
+\end_layout
+
+\end_inset
+
+To help visualize the capability of the algorithm, Figure 
+\begin_inset LatexCommand \ref{fig:RTDist-Filmstrip}
+
+\end_inset
+
+, shows a time series of images which were taken as the algorithm computed,
+ in real-time, the distances to a sphere which rotated around the robot.
 \end_layout
 
 \begin_layout Subsection
@@ -934,11 +1101,51 @@ Once failure risks have been correctly categorized and minimized, it is
  have developed a novel, roboticly actuated medical imaging platform.
  The system, already constructed and functional, is based on two PA10-6C
  (Mitsubishi Heavy Industries) six degree-of-freedom (DOF) robot arms.
- As shown in Figure TBD, the two manipulators are positioned about one meter
- apart and orientated to face each other.
+ As shown in Figure 
+\begin_inset LatexCommand \ref{fig:BetweenRobots}
+
+\end_inset
+
+, the two manipulators are positioned about one meter apart and orientated
+ to face each other.
  The design intent of this system is to image people in motion with X-ray
  equipment mounted to the end of the manipulators (X-ray equipment is not
- shown in Figure TBD).
+ shown in Figure 
+\begin_inset LatexCommand \ref{fig:BetweenRobots}
+
+\end_inset
+
+).
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/WalkBetweenRobots.eps
+	lyxscale 50
+	width 6in
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+\begin_inset LatexCommand \label{fig:BetweenRobots}
+
+\end_inset
+
+The image shows our lab's two PA10-6C manipulators spaced about 1.4 meters
+ apart.
+ Space in between the manipulators allows a person to perform activites
+ of clinical relevance.
+\end_layout
+
+\end_inset
+
  This requires that the manipulators track a point of interest on the human's
  body while simultaneously avoiding collisions with both the evironment
  and human.
@@ -1038,7 +1245,42 @@ ed patients resting on an operating table.
  movement of the patient on one or two degrees of freedom.
  At the University of Florida, we are developing a six degree-of-freedom,
  manipulator-based X-ray imaging platform to automatically track the movements
- of patients.
+ of patients (Figure 
+\begin_inset LatexCommand \ref{fig:GatorRay Animation}
+
+\end_inset
+
+).
+ 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pics/VirtualGatorRay.eps
+	lyxscale 50
+	width 5in
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+\begin_inset LatexCommand \label{fig:GatorRay Animation}
+
+\end_inset
+
+Animation of the dual-arm imaging platform tracking human's in motion.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
