@@ -1,0 +1,146 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass nih
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Facilities and Other Resources
+\end_layout
+
+\begin_layout Subsection
+Laboratory
+\end_layout
+
+\begin_layout Standard
+In Prof.
+ Banks' (co-P.I.) laboratory (450 s.f., 100% availability):
+\end_layout
+
+\begin_layout Itemize
+PhaseSpace Motion Capture System - 8 camera, real-time motion capture with
+ workstation and software.
+\end_layout
+
+\begin_layout Itemize
+Motion Analysis Corporation Eagle Motion Capture System - 8 camera, real-time
+ motion capture with workstation and software.
+\end_layout
+
+\begin_layout Itemize
+Two Mitsubishi PA10-6C - Six-axis high-performance robots with Linux real-time
+ workstation and custom control software.
+\end_layout
+
+\begin_layout Subsection
+Computer
+\end_layout
+
+\begin_layout Standard
+In Prof.
+ Banks' (co-P.I.) laboratory,
+\end_layout
+
+\begin_layout Itemize
+Two Dual XEON 2.4 GHz, 1GB workstations
+\end_layout
+
+\begin_layout Itemize
+Two XEON 2.4 GHz, 1GB workstations
+\end_layout
+
+\begin_layout Itemize
+Four Pentium Workstations
+\end_layout
+
+\begin_layout Itemize
+Inkjet and Laser printers 
+\end_layout
+
+\begin_layout Subsection
+Office
+\end_layout
+
+\begin_layout Standard
+In Prof.
+ Banks' (co-P.I.) laboratory, 100% availability: Desks, equipment, storage,
+ and supplies for 10 students and post-graduate fellows.
+ 
+\end_layout
+
+\begin_layout Subsection
+Other
+\end_layout
+
+\begin_layout Standard
+To support clinical gait research objectives, two facilties are available.
+ The primary facility is the University of Florida's Biomechanics and Motion
+ Analysis Lab at the Orthopaedics and Sports Medicine Institute (scheduled
+ access arranged):
+\end_layout
+
+\begin_layout Itemize
+11 Camera Motion Analysis Corp.
+ Eagle passive marker motion capture system
+\end_layout
+
+\begin_layout Itemize
+2 AMTI force platforms
+\end_layout
+
+\begin_layout Itemize
+Telemyo2400 telemetered electromyography system
+\end_layout
+
+\begin_layout Standard
+The contingency site is Prof.
+ Banks (co-investigator) BioMotion Laboratory in West Palm Beach:
+\end_layout
+
+\begin_layout Itemize
+6 Camera Motion Analysis Corp.
+ passive marker motion capture system
+\end_layout
+
+\begin_layout Itemize
+2 AMTI LG6 biomechanics force platforms
+\end_layout
+
+\begin_layout Itemize
+Telemyo8 telemetered electromyography system
+\end_layout
+
+\begin_layout Standard
+Also for any prototyping, fixturing and construction required in support
+ of the project, two fully equipped machine shops are available in the Mechanica
+l and Aerospace Department buildings.
+ 
+\end_layout
+
+\end_body
+\end_document

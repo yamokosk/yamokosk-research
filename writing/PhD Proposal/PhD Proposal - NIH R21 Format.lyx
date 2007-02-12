@@ -3,6 +3,9 @@
 \begin_document
 \begin_header
 \textclass nih
+\begin_preamble
+\usepackage{colortbl}
+\end_preamble
 \language english
 \inputencoding auto
 \fontscheme default
@@ -39,28 +42,23 @@ Specific Aims
 
 \begin_layout Standard
 To fight soaring health care costs and simultaneously increase the quality
- of health care, many researchers are turning to the technologies of robotics
- and intelligent systems to find solutions.
+ of health care, many researchers are turning to robotics and intelligent
+ systems to find solutions.
  Over the last decade, there has been an explosion of robotic applications
  in health services.
  Given the increasing adoption of robotics technology in health care, is
- there reason for concern? There are in fact two reasons.
+ there reason for concern? There are, in fact, two reasons.
  The first involves the safety associated with autonomous robots.
- Future systems, will yield more autonomous control to the robotic system.
- Starting with routine tasks such as suturing, future systems may be capable
+ Future systems will yield more autonomous control to the robotic system.
+ Starting with routine tasks such as biopsies, future systems may be capable
  of completing full procedures.
  The concern is that when robots are required to perform autonomous actions
  in close proximity to humans, serious issues of operator and patient safety
  arise.
  The second reason for concern is that all  systems are subject to failure.
- Current systems notify the operator when a component nears the end of it
- reliable lifetime.
- However, there are no methods employed in practice which address issues
- of patient or operator safety if a component was to fail 
-\emph on
-during
-\emph default
- use.
+ However, new algorithms for collision avoidance or real-time control are
+ published with no characterization of the improvement in failure probability
+ or some associated measure.
 \end_layout
 
 \begin_layout Standard
@@ -71,17 +69,12 @@ The objective of this research is to address these concerns through several
 \begin_layout Enumerate
 Safe, real-time control algorithms - Develop an inherently safe, real-time
  control algorithm which will avoid collisions with people in the workspace
- of the robot
+ of the robot.
 \end_layout
 
 \begin_layout Enumerate
-Failure assessment - Develop a novel framework, based on qualitative and
- quantitative methods from safety engineering, to fully characterize the
- relative safety of the algorithms developed in 
-\series bold
-Aim 1
-\series default
-.
+Failure assessment - Quantify the safety of current collision avoidance
+ algorithms in the context of human-robot interactions.
 \end_layout
 
 \begin_layout Enumerate
@@ -110,8 +103,8 @@ Background and Significance
 
 \begin_layout Standard
 To fight soaring health care costs and simultaneously increase the quality
- of health care, many researchers are turning to the technologies of robotics
- and intelligent systems to find solutions.
+ of health care, many researchers are turning to robotics and intelligent
+ systems technologies to find solutions.
  Over the last decade, there has been an explosion of robotic applications
  in health services.
  According to a recent Newsweek article, an estimated 36,600 robotic surgeries
@@ -123,13 +116,13 @@ To fight soaring health care costs and simultaneously increase the quality
 \end_inset
 
 .
- Beyond surgical applications, robotics technology is also being applied
+ Beyond surgical applications, robotics technology also is being applied
  to assist with rehabilitation tasks 
 \begin_inset LatexCommand \cite{Hillman2003,Krebs2000}
 
 \end_inset
 
-, automate repetitive yet critical tasks such as prescription filling 
+, automate repetitive tasks such as prescription filling 
 \begin_inset LatexCommand \cite{Pedersen2006}
 
 \end_inset
@@ -145,25 +138,25 @@ To fight soaring health care costs and simultaneously increase the quality
 
 \end_inset
 
- and countless more exist as prototypes in research labs across the world.
+ and countless more exist as prototypes in research labs worldwide.
 \end_layout
 
 \begin_layout Standard
 Given the increasing adoption of robotics technology in health care, is
- there reason for concern? There are in fact two reasons.
+ there reason for concern? There are, in fact, two reasons.
  The first involves the safety associated with autonomous robots.
  According to FDA records, current commercial surgical robotic systems have
- not caused a patient undue injury [ref].
+ not caused a patient injury.
  However, the reason for this good fortune is not necessarily due to exceptional
- safety measures, even though current systems do employ an impressive array
- of stop-gaps and safety measures.
+ safety measures, even though current systems do employ an array of stop-gaps
+ and safety measures.
  Rather current surgical robotic systems are safe due to the design of their
  control system.
  Similar to a vehicle or airplane, current robotic systems are based on
- what called a human-in-the-loop control system.
- They are not autonomous and only move by real-time commands sent by a surgeon.
- Similar to non-roboticly assisted surgeries, this control methodology simply
- responds to the surgeon's actions as if they were the surgeon's own hands.
+ a human-in-the-loop control system.
+ They are not autonomous, only moving by commands sent by a surgeon.
+ Similar to non-robotic assisted surgeries, the robot simply responds to
+ the surgeon's actions as if they were the surgeon's own hands.
  Future systems, however, will yield more autonomous control to the robotic
  system.
  Starting with routine tasks such as biopsies, future systems may be capable
@@ -193,7 +186,7 @@ textregistered
  ROBODOC makes no autonomous judgments about its programmed actions.
  However, this demonstrates the desire to semi-automate routine tasks.
  Beyond surgical applications, the human-in-the-loop control methodology
- is simply not practical.
+ is simply not practical for other health care applications.
  For example, the speed or complexity of some rehabilitation or diagnostic
  applications necessitate more autonomy.
  The concern is that when robots are required to perform autonomous actions
@@ -202,50 +195,42 @@ textregistered
 \end_layout
 
 \begin_layout Standard
-The second reason for concern is that all mechatronic systems are subject
- to failure.
- Current commercial surgical systems have tried to reduce component failure
- before an operation by careful bookkeeping of the number of hours components
- have been in use (e.g.
- da Vinci
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
-textregistered
-\end_layout
-
-\end_inset
-
- Surgical System, Intuitive Surgical, Inc., Sunnyvale, CA).
- However this method does not address issues of patient or operator safety
- if a component was to fail 
-\emph on
-during
-\emph default
- use.
- Minimizing mean time to failure can also be achieved by designing a robotic
- system from scratch with high reliability components, but this extra design
- effort can exponentially increases the final cost of the system.
- The alternative is to rely on off-the-shelf robots developed for industrial
- uses.
- Unfortunately, the recorded mean time to failure for an industrial robotic
- system is only 500 to 2500 hours 
+The second reason for concern is that all mechatronic systems, even safeguarding
+ systems, are subject to failure.
+ Several assessment techniques, both qualitative and quantitative, from
+ safety engineering have been identified for use with robotic systems 
 \begin_inset LatexCommand \cite{Dhillon1997}
 
 \end_inset
 
 .
+ Yet despite the availability of these methods, new algorithms for collision
+ avoidance or real-time control are published with no characterization of
+ the improvement in failure probability or some associated measure.
 \end_layout
 
 \begin_layout Standard
 The research objective of this study is to systematically address both of
- these concerns, thereby creating safer and more capable robotic systems.
- This in turn will improve to quality of life for millions who could benefit
- from application of robotic technologies in health care.
+ these concerns.
+ While the methods proposed herein will be applicable to all robotic application
+s, systems which are meant to interact with alert and awake people will
+ benefit directly.
+ An example of such a system is the six degree-of-freedom, robot-based X-Ray
+ platform we are developing at the University of Florida to image people
+ in motion.
+ Shape registration measurements 
+\begin_inset LatexCommand \cite{Banks1992,Banks1996,Fregly2005,Kanisawa2003,Morooka2006,Fantozzi2004}
+
+\end_inset
+
+, which are a useful clinical tool to quantify bone and implant motions,
+ rely on X-ray images for the measurement.
+ However, traditional imaging systems (e.g.
+ fluoroscope, CT, MRI) are not meant to observe the patient in motion -
+ the conditions in which pain, instability or dysfunction are manifest.
+ In the future, making these systems more human-friendly will improve to
+ quality of life for millions who could benefit from application of robotic
+ technologies in health care.
  Beyond the impacts in health care, in accomplishing these tasks a number
  of theoretical, computational and experimental activities are proposed
  that will be of high interest to the general robotics and controls communities.
@@ -258,133 +243,15 @@ Prior research
 \end_layout
 
 \begin_layout Standard
-Research which begins to address the concerns outlined above spans across
- several established areas of robotics and control research.
+Research addressing the concerns outlined above spans several established
+ areas of robotics and control research.
  Of considerable interest to this proposal are algorithms and methods which
- 1) provide real-time collision avoidance and 2) automatic identification,
- characterization, and response to an unexpected fault in the system.
- Other methods by which to make robots inherently safe are also being explored.
- For instance, a community of researchers have sought, through mechanical
- design, to make it impossible for a robot to harm a person.
- While proposals have varied, these designs share the same set of characteristic
-s including, constructed from light weight materials [ref], actuated by
- low maximum torque/velocity actuators [ref], or constructed of flexible
- or compliant links and joints [ref].
- These designs are well conceived, but often the resultant robot becomes
- too weak or inaccurate to perform any real task [ref].
- While this research fulfills a necessary and important niche of robotic
- applications, it is too focused for the large variety of tasks required
- by health care applications.
- Research in this area falls into the category of feedback motion planning
- and can be categorized into two major categories: potential and veloctiy
- field control.
+ provide 1) real-time collision avoidance and 2) characterization of failure
+ probabilities.
 \end_layout
 
 \begin_layout Subsubsection
-Potential field methods
-\end_layout
-
-\begin_layout Standard
-One the most successful collision avoidance techniques has been potential
- field based methods.
- The potential field technique was first introduced by Khatib 
-\begin_inset LatexCommand \cite{Khatib1986-90}
-
-\end_inset
-
- for real-time collision avoidance and local planning.
- Obstacles and goal location are assigned repulsive and attractive potentials,
- respectively.
- A virtual control force, normally applied to the manipulator's end-effector,
- is generated by summing the negative gradient of each potential field.
- By following the negative gradient of the combined fields, the end-effector
- will be repulsed from obstacles and attracted towards the goal location.
- Previous literature has primarily focused on addressing one of two major
- drawbacks associated with potential field techniques.
- The first is the possibility of local minima created in the workspace of
- the robot.
- These local minima appear as false goal locations and can terminate the
- motion of the arm prematurely.
- A small sampling of this work reveals a large variety of the approaches
- have been attempted.
- These include backtracking, random walks 
-\begin_inset LatexCommand \cite{Barraquand1990}
-
-\end_inset
-
-, behavior/agent based approaches 
-\begin_inset LatexCommand \cite{Hamilton1998}
-
-\end_inset
-
-, fuzzy logic 
-\begin_inset LatexCommand \cite{Mbede2003-249,Merchan-Cruz2006}
-
-\end_inset
-
-, variable structure control 
-\begin_inset LatexCommand \cite{Cardiel2004,Chang1996}
-
-\end_inset
-
-, and more mathematically complex potential functions 
-\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423,Cardiel2004,Tanner2003}
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-The other drawback, which has received less attention, is that potential
- field techniques do not immediately consider or attempt to control the
- dynamics of the robotic system.
- In the worse case, naive construction the potential field might generate
- control signals out side the actuator limits of the robot.
- Tsuji et al.
- attempted to address these problems for applications in industrial control
- by intelligently constructing a time varying potential field of whose qualities
- they could manipulate to control the time of travel as well as the velocity
- profile of the robot 
-\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
-
-\end_inset
-
-.
- Recent work by Kulic and Croft 
-\begin_inset LatexCommand \cite{Kulic2006-1}
-
-\end_inset
-
- included a factor related to the Head Injury Criterion (HIC) into the definitio
-n of their potential field.
- But their work still suffers from local minima problems and has not been
- demonstrated on a real-time platform.
-\end_layout
-
-\begin_layout Standard
-VHF - Their method, developed for navigation of mobile robots in the plane,
- uses sensor measurements to update the cells of a grid representation of
- the robot's environment.
-\end_layout
-
-\begin_layout Subsubsection
-Velocity field methods
-\end_layout
-
-\begin_layout Standard
-Also known more generally as velocity field control (VFC) techniques (e.g.
- 
-\begin_inset LatexCommand \cite{Li1999,McIntyre2005,MorenoValenzuela2006,Suh2004}
-
-\end_inset
-
-)
-\end_layout
-
-\begin_layout Subsubsection
-Other methods
+Real-time collision avoidance
 \end_layout
 
 \begin_layout Standard
@@ -431,8 +298,183 @@ For mobile robotics, Fox et al.
 \end_inset
 
  of the robot's workspace.
- For higher dimensional systems, such as redundant manipulator systems,
- the computational complexity might become intractable.
+ For higher dimensional systems, such as a redundant manipulator, the computatio
+nal complexity might become intractable.
+\end_layout
+
+\begin_layout Standard
+The most common approach to achieving feedback control in the presence of
+ obstacles is to use a potential field.
+ The potential field technique was first introduced by Khatib 
+\begin_inset LatexCommand \cite{Khatib1986-90}
+
+\end_inset
+
+ for real-time collision avoidance and local planning.
+ Obstacles and goal location are assigned repulsive and attractive potentials,
+ respectively.
+ By generating a control signal from the negative gradient of the combined
+ fields, the robot will be repulsed from obstacles and attracted towards
+ the goal location.
+ Previous literature has primarily focused on addressing one of two major
+ drawbacks associated with potential field techniques.
+ The first is the possibility of local minima created in the workspace of
+ the robot.
+ These local minima appear as false goal locations and can terminate the
+ motion of the robot prematurely.
+ A small sampling of this work reveals a large variety of the approaches
+ have been attempted.
+ These include backtracking, random walks 
+\begin_inset LatexCommand \cite{Barraquand1990}
+
+\end_inset
+
+, behavior/agent based approaches 
+\begin_inset LatexCommand \cite{Hamilton1998}
+
+\end_inset
+
+, fuzzy logic 
+\begin_inset LatexCommand \cite{Mbede2003-249,Merchan-Cruz2006}
+
+\end_inset
+
+, variable structure control 
+\begin_inset LatexCommand \cite{Cardiel2004,Chang1996}
+
+\end_inset
+
+, and more mathematically complex potential functions 
+\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423,Cardiel2004,Tanner2003}
+
+\end_inset
+
+.
+ The other drawback, which has received less attention, is that potential
+ field techniques do not immediately consider or attempt to control the
+ dynamics of the robotic system.
+ In the worst case, naive construction of the potential field might generate
+ control signals outside the actuator limits of the robot.
+ Tsuji et al.
+ attempted to address these problems for applications in industrial control
+ by intelligently constructing a time varying potential field whose qualities
+ could be manipulated to control the time of travel and the velocity profile
+ of the robot 
+\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
+
+\end_inset
+
+.
+ Other interesting work as included factors related to the Head Injury Criterion
+ (HIC) into the field computation 
+\begin_inset LatexCommand \cite{Ikuta2001,Nokata2002,Kulic2006-1}
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The alternative to potential field methods is velocity field control.
+ This method places a vector field over the state space directly, rather
+ than computing it as the gradient of a potential field.
+ An appeal of this method is that the speed at which the robot follows the
+ trajectories embedded in the velocity field and the error in tracking the
+ field itself can be controlled independently.
+ Its was first introduced by Li and Horowitz 
+\begin_inset LatexCommand \cite{Li1999,Li2001a,Li2001b}
+
+\end_inset
+
+.
+ Since its introduction, a few improvements have been proposed such as adaptatio
+n for model uncertainties 
+\begin_inset LatexCommand \cite{McIntyre2005}
+
+\end_inset
+
+ and the introduction of an adaptive field algorithm 
+\begin_inset LatexCommand \cite{Suh2004a}
+
+\end_inset
+
+.
+ However, real-time information about obstacle location is not integrated
+ into the creation of the velocity field.
+ In potential field research, this drawback was addressed by the vector
+ field histogram (VFH) algorithm (and later improvements, VFH+ 
+\begin_inset LatexCommand \cite{Ulrich1998}
+
+\end_inset
+
+ and VFH* 
+\begin_inset LatexCommand \cite{Ulrich2000}
+
+\end_inset
+
+) developed by Borenstein and Koren
+\begin_inset LatexCommand \cite{Borenstein1991}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Failure analysis
+\end_layout
+
+\begin_layout Standard
+Several assessment techniques, both qualitative and quantitative, from safety
+ engineering have been identified for use with robotic systems 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+ and a few of these methods have been applied to real systems, including
+ failure mode analysis 
+\begin_inset LatexCommand \cite{Walker1996}
+
+\end_inset
+
+ and fault tree analysis 
+\begin_inset LatexCommand \cite{Carreras:2001,Khodabandehloo1996}
+
+\end_inset
+
+.
+ Fei et al.
+ 
+\begin_inset LatexCommand \cite{fei2001sim}
+
+\end_inset
+
+ proposed a systematic methodology to analyze, control and evaluate the
+ safety of medical robots.
+ However, only one failure analysis study of real-time collision avoidance
+ methods has been preformed 
+\begin_inset LatexCommand \cite{Fraile2006}
+
+\end_inset
+
+.
+ Through several measures, they examined the elastic strip method 
+\begin_inset LatexCommand \cite{Brock2002}
+
+\end_inset
+
+, potential field method 
+\begin_inset LatexCommand \cite{Khatib1986-90}
+
+\end_inset
+
+, and a strategy-based method 
+\begin_inset LatexCommand \cite{Mediavilla2003}
+
+\end_inset
+
+ developed by the authors of the comparison.
 \end_layout
 
 \begin_layout Standard
@@ -692,9 +734,9 @@ Aim 1: Development of a safe, real-time control algorithm
 To operate autonomous robotic systems in close proximity to humans, a control
  algorithm must avoid collisions with humans while simultaneously achieving
  a high level of performance.
- Velocity field control accomodates both of these requirements.
+ Velocity field control accommodates both of these requirements.
  However, little attention has focused on construction of the actual velocity
- field itelf.
+ field itself.
  Most literature 
 \begin_inset LatexCommand \cite{Cervantes2002,Li1999,Li2001a,McIntyre2005,Moreno-Valenzuela2006,Yamakita2001}
 
@@ -717,9 +759,9 @@ To operate autonomous robotic systems in close proximity to humans, a control
  However, their construction first decomposes the workspace into convex
  polytopes or cells and then a discrete plan is computed over these cells.
  Designated as a precomputation step, this global planning step and all
- subseqent steps have to be recomputed for every change in the environment.
+ subsequent steps have to be recomputed for every change in the environment.
  Furthermore, the intent of their algorithm is purely motion planning to
- a desired goal state and does not accomodate velocity field contruction
+ a desired goal state and does not accommodate velocity field construction
  for applications requiring tracking of a moving object or applications
  with a priori knowledge of a desired trajectory.
  Li and Horowitz, who first introduced the velocity field control technique,
@@ -731,7 +773,7 @@ To operate autonomous robotic systems in close proximity to humans, a control
 
 .
  Their technique, which has become the default method for contour tracking
- applications, does not accomodate dynamic obstacles.
+ applications, does not accommodate dynamic obstacles.
  
 \end_layout
 
@@ -810,7 +852,7 @@ n algorithms.
 \end_inset
 
 , which is also a function of the distances to obstacles in the workspace.
- Then, similar to the VFH method, computation of this field will accomodate
+ Then, similar to the VFH method, computation of this field will accommodate
  discrete sensor measurements from distance sensors on the robot.
  To do this we will start from Li and Horowitz's method by defining a new
  metric function 
@@ -891,7 +933,7 @@ where
 \end_inset
 
 .
- The second key differnce in our inclusion of the second term which accounts
+ The second key difference in our inclusion of the second term which accounts
  for obstacle distance information.
  Using this new metric and the procedure outlined by Li and Horowitz's original
  work, we should then be able to derive an expression for 
@@ -908,9 +950,9 @@ The second approach we will investigate is inspired by
 \end_inset
 
 .
- Using Lyapunov design tools such as integrator backstepping will attempt
+ Using Lyapunov design tools such as integrator backstepping, we will attempt
  to extend the work reported by Suh et al.
- The critical difference will be in the definition of a Lyapunov canidate
+ The critical difference will be in the definition of a Lyapunov candidate
  function which will drive the design of not only 
 \begin_inset Formula $\dot{W}(t)$
 \end_inset
@@ -965,18 +1007,18 @@ where, similar to
 The instantaneous speed of the robot can be directly related to the severity
  of injury it could cause in an unexpected collision.
  Prior research 
-\begin_inset LatexCommand \cite{Kulic2006-1,Nokata2002}
+\begin_inset LatexCommand \cite{Nokata2002,Kulic2006-1}
 
 \end_inset
 
- has focused on designing potential fields to minimize several danger indicies
+ has focused on designing potential fields to minimize several danger indices
  which are related to the potential impact force between the robot and human.
  These factors are usually based on measures such as relative distance,
  relative velocity, robot inertia and stiffness.
  An appeal of the passive velocity field control method is that the speed
  at which the robot follows the trajectories embedded in the velocity field
  can be controlled independently by the amount of energy present in the
- feeback system 
+ feedback system 
 \begin_inset LatexCommand \cite{Li2001b}
 
 \end_inset
@@ -1000,7 +1042,7 @@ Aim 1
  all have precedent in previously reported literature.
  However, each one relies on Lyapunov design techniques which have some
  well known drawbacks.
- The often cited problem is the search for a suitable Lyapunov canidate
+ The often cited problem is the search for a suitable Lyapunov candidate
  function.
  In fact, all Lyapunov control design boils down to this single task.
  Fortunately, Lyapunov techniques have matured significantly over the last
@@ -1031,62 +1073,112 @@ It is paramount to understand and characterize the risk associated with
  automatic safeguarding systems.
  Several assessment techniques, both qualitative and quantitative, from
  safety engineering have been identified for use with robotic systems 
-\begin_inset LatexCommand \cite{Dhillon1997,fei2001sim}
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+ and a few of these methods have been applied to real systems, including
+ failure mode analysis 
+\begin_inset LatexCommand \cite{Walker1996}
+
+\end_inset
+
+ and fault tree analysis 
+\begin_inset LatexCommand \cite{Carreras:2001,Khodabandehloo1996}
 
 \end_inset
 
 .
- Unfortunately, there are few examples of these methods applied to real
- robotic systems.
- Furthermore, new algorithms for collision avoidance or real-time control
- are published with no characterization of the improvement in failure probabilit
-y or some associated measure.
- Efforts in 
+ Fei et al.
+ 
+\begin_inset LatexCommand \cite{fei2001sim}
+
+\end_inset
+
+ proposed a systematic methodology to analyze, control and evaluate the
+ safety of medical robots.
+ Yet despite the availability of these methods, new algorithms for collision
+ avoidance or real-time control are published with no characterization of
+ the improvement in failure probability or some associated measure.
+\end_layout
+
+\begin_layout Standard
+The only published characterization to date was preformed by Fraile et al.
+ in a comparison study 
+\begin_inset LatexCommand \cite{Fraile2006}
+
+\end_inset
+
+.
+ Through several measures, they examined the elastic strip method 
+\begin_inset LatexCommand \cite{Brock2002}
+
+\end_inset
+
+, potential field method 
+\begin_inset LatexCommand \cite{Khatib1986-90}
+
+\end_inset
+
+, and a strategy-based method 
+\begin_inset LatexCommand \cite{Mediavilla2003}
+
+\end_inset
+
+ developed by the authors of the comparison.
+ Despite careful design of their experiment, we believe their results were
+ skewed due to the locality of the methods considered.
+ The elastic strip and strategy-based methods, which both require global
+ information and preprocessing, performed better in most tests than the
+ potential field method, which relies purely on local information.
+ However, preprocessing is a step only available in highly engineered or
+ controlled environments (such as their test case) or when a priori path
+ information is known.
+\end_layout
+
+\begin_layout Standard
+The efforts in 
 \series bold
 Aim 2
 \series default
- will seek to develop a novel framework, based on qualitative and quantitative
- methods from safety engineering, to fully characterize the relative safety
- of the control algorithms developed in 
+ will focus on characterizing the failure rate of the methods in 
 \series bold
 Aim 1
 \series default
-.
-\end_layout
+ as well as similar methods previously reported in literature.
+ Where Fraile et al.
+ examined failure rates in the setting of a manufacturing setting, we are
+ proposing similar analysis in the more complex operational space of human
+ activity.
+ To date, no comparable analysis has been performed.
+ To complete this task, we propose using Monte-Carlo simulation.
+ In a virtual environment, humans and robots will be programmed with a specific
+ task.
+ For instance, the robot manipulators will be programmed to track the motion
+ of a person as they move through the workspace of the robots.
+ Under control of the collision avoidance algorithm, the human-robot dynamic
+ system will be simulated over the range of human variability and robot
+ initial conditions to compute two metrics proposed in 
+\begin_inset LatexCommand \cite{Fraile2006}
 
-\begin_layout Standard
-From basic failure analysis, the most common failure distribution is the
- exponential distribution,
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{equation}
-F(t)=1-e^{-\lambda t}\label{eq:4}\end{equation}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-where 
-\begin_inset Formula $\lambda$
-\end_inset
-
- is the probability of failure.
- Conventional methods for determining a value for 
-\begin_inset Formula $\lambda$
-\end_inset
-
- includes historical data, government and commercial failure rate data,
- and finally testing.
- However, none of these methods are adequate or safe for human/robotic systems.
- Therefore one goal of Aim 1 is to determine a methodology to safely estimate
- values for 
-\begin_inset Formula $\lambda$
 \end_inset
 
 .
+ Those metrics are the number of critical points (CP) and faults (F).
+ Critical points are defined as discretized points from the manipulator's
+ path which are less than some critical distance away from a person.
+ Faults are defined as any simulation which terminates prematurely due to
+ collision or live-lock before achieving the prescribed goal.
+ 
+\end_layout
+
+\begin_layout Standard
+The major drawback of Monte-Carlo method is the computational burden of
+ repeated dynamic simulations.
+ If this problem is encountered, it will be addressed by adding additional
+ computational resources as well as investigating the use of surrogate dynamic
+ models such as response surfaces.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1098,9 +1190,9 @@ Once failure risks have been correctly categorized and minimized, it is
  important to experimentally assess all developed algorithms on a real system.
  At the University of Florida, co-investigator Prof.
  Banks and the P.I.
- have developed a novel, roboticly actuated medical imaging platform.
- The system, already constructed and functional, is based on two PA10-6C
- (Mitsubishi Heavy Industries) six degree-of-freedom (DOF) robot arms.
+ have developed a novel, robotic actuated medical imaging platform.
+ The system, already constructed and functional, is based on two six degree-of-f
+reedom (DOF) robot arms (PA10-6C, Mitsubishi Heavy Industries).
  As shown in Figure 
 \begin_inset LatexCommand \ref{fig:BetweenRobots}
 
@@ -1140,18 +1232,18 @@ status collapsed
 
 The image shows our lab's two PA10-6C manipulators spaced about 1.4 meters
  apart.
- Space in between the manipulators allows a person to perform activites
+ Space in between the manipulators allows a person to perform activities
  of clinical relevance.
 \end_layout
 
 \end_inset
 
  This requires that the manipulators track a point of interest on the human's
- body while simultaneously avoiding collisions with both the evironment
+ body while simultaneously avoiding collisions with both the environment
  and human.
  The position of the human and other static obstacles is provided by an
  eight-camera, real-time marker tracking system from MotionAnalysis, Inc.
- Assessing the performance of the developed methods on this multi-manipulator
+ Assessing the performance of the control methods on this multi-manipulator
  platform will verify the control algorithm developed in 
 \series bold
 Aim 1
@@ -1175,7 +1267,7 @@ Aim 1
 \emph on
 Static obstacles avoidance:
 \emph default
- Three to five static obstacles of known dimensions will be placed the robots'
+ Three to five static obstacles of known dimensions will be placed the robot's
  workspace.
  Their location and orientation will be measured by the real-time marker
  tracking system.
@@ -1206,8 +1298,8 @@ Dynamic obstacle avoidance I:
 Dynamic obstacle avoidance II:
 \emph default
  Both robots will be programmed to follow a desired repetitive trajectory.
- A person standing outside the workspaces of both robots will wave a wand
- that reaches inside the workspaces of the robots.
+ A person standing outside the workspace of both robots will wave a wand
+ that reaches inside the work spaces of the robots.
  The location of the wand will be measured by markers placed on the rod
  and the real-time marker tracking system.
 \end_layout
@@ -1241,8 +1333,8 @@ ed patients resting on an operating table.
 \end_inset
 
  have mounted commercially available fluoroscopic machines to motorized
- bases, which allow the floroscope field-of-view to automaically track the
- movement of the patient on one or two degrees of freedom.
+ bases, which allow the fluoroscope field-of-view to automatically track
+ the movement of the patient on one or two degrees of freedom.
  At the University of Florida, we are developing a six degree-of-freedom,
  manipulator-based X-ray imaging platform to automatically track the movements
  of patients (Figure 
@@ -1299,9 +1391,9 @@ To date, little work has been done to quantified the effects autonomously
  robotic systems.
  We need to understand if the measurement system (robotic system) has an
  impact on the system it is attempting to measure (patient).
- Similar, arguements can be made with respect to rehabilitation robots.
+ Similar, arguments can be made with respect to rehabilitation robots.
  To collect data for this task, we will recruit 16 adult male subjects to
- walk within the workspaces of the two robotic manipulators from 
+ walk within the workspace of the two robotic manipulators from 
 \series bold
 Aim 3
 \series default
@@ -1373,8 +1465,8 @@ where
 
  are the left/right measures of interest and an ASI < 0.01 is considered
  practically symmetric.
- In healthy adults under normal conditions, many gait measure are symmetic,
- including stride length, limb speed, and pecentage of time each limb is
+ In healthy adults under normal conditions, many gait measure are symmetric,
+ including stride length, limb speed, and percentage of time each limb is
  in single support 
 \begin_inset LatexCommand \cite{Giakas1997,Sadeghi1997}
 
@@ -1391,7 +1483,7 @@ Collaborative Structure
 
 \begin_layout Standard
 The project will be directed by the P.I.
- and the principle performance site will be the Prof.
+ and the principal performance site will be co-P.I.
  Banks' laboratory at the University of Florida.
  The P.I.
  will hire two graduate students for two years to work on the activities
@@ -1399,18 +1491,15 @@ The project will be directed by the P.I.
  The roles of the co-investigators, all at the University of Florida, will
  be as follows.
  Prof.
- W.
  Dixon will work with P.I.
  and graduate student to implement the real-time collision avoidance algorithm
- as well as the automatic fault identification and response methods (Aims
- 1 and 2).
+ as well as the implementation on the robots (Aims 1 and 3).
  Prof.
- S.
  Banks will work with the P.I.
- and graduate student to perform the verification of Aim 1 and 2 on the
- dual-manipulator system being developed in parallel in his laboratory.
- He will also assist with the recruitment of n=10 subjects for human-robot
- interaction tests (Aim 4).
+ and graduate student to perform the clinical research and data analysis
+ of Aim 4.
+ Also, an undergraduate student will be hired for two years to assist with
+ data collection and some advanced research tasks.
 \end_layout
 
 \begin_layout Subsection
@@ -1419,28 +1508,23 @@ Timetable
 
 \begin_layout Standard
 The proposed work will be completed in two years.
- Theoretical work for Aims 1, 2, and 3 are all independent of each other,
- so much of their work can proceed in parallel.
- Aims 1 and 2 will require 12 months and Aim 3 will require 6 months.
- Implementation of Aims 1 and 2 on the robotic system will require 3 months
- after theoretical work has completed.
- Finally, 6 months will be allotted to carry out all testing and data collection
- proposed for Aim 4.
+ Below is a time table which contains the major objectives of each Aim as
+ well as expected start and completion dates.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Caption
-Gnatt chart for activities proposed for this research
+Gantt chart for activities proposed for this research
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="12" columns="9">
+<lyxtabular version="3" rows="14" columns="9">
 <features>
 <column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1451,7 +1535,7 @@ Gnatt chart for activities proposed for this research
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" rightline="true" width="0">
-<row>
+<row topline="true">
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -1461,7 +1545,7 @@ Gnatt chart for activities proposed for this research
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -1499,7 +1583,7 @@ Year 1
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -1736,6 +1820,18 @@ Develop velocity fields which account for obstacles
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1745,6 +1841,18 @@ Develop velocity fields which account for obstacles
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1754,6 +1862,18 @@ Develop velocity fields which account for obstacles
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1763,6 +1883,18 @@ Develop velocity fields which account for obstacles
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1828,6 +1960,18 @@ Develop new energy control loop for VFC methods
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1837,6 +1981,18 @@ Develop new energy control loop for VFC methods
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1846,6 +2002,18 @@ Develop new energy control loop for VFC methods
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1961,7 +2129,7 @@ Aim 2
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -1976,7 +2144,70 @@ Aim 2
 \begin_inset Text
 
 \begin_layout Standard
-Fault model
+Develop simulation framework
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2017,34 +2248,7 @@ Fault model
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -2059,7 +2263,7 @@ Fault model
 \begin_inset Text
 
 \begin_layout Standard
-Fault identification
+Preform Monte-Carlo simulation
 \end_layout
 
 \end_inset
@@ -2095,6 +2299,39 @@ Fault identification
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -2118,16 +2355,7 @@ Fault identification
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -2210,7 +2438,7 @@ Aim 3
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -2225,7 +2453,7 @@ Aim 3
 \begin_inset Text
 
 \begin_layout Standard
-Failure analysis of developed methods 
+Implement methods on robots
 \end_layout
 
 \end_inset
@@ -2261,6 +2489,39 @@ Failure analysis of developed methods
 \begin_inset Text
 
 \begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -2284,99 +2545,7 @@ Failure analysis of developed methods
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Asses performance on dual-manipulator system
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
@@ -2391,7 +2560,102 @@ Asses performance on dual-manipulator system
 \begin_inset Text
 
 \begin_layout Standard
-Clinical research on human-robot interaction
+Preform tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Aim 4
 \end_layout
 
 \end_inset
@@ -2459,10 +2723,212 @@ Clinical research on human-robot interaction
 
 \end_inset
 </cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Standard
+Recruit patients
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Clinical trial/data analysis
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+cellcolor{blue}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -2507,7 +2973,7 @@ Human Subjects Involvement and Characteristics
 \begin_layout Standard
 As outlined in the Research Design and Methods section, human subjects will
  be recruited to perform three different activities, walking, jumping in
- place, and squatting, within the workspaces of two robotic manipulators.
+ place, and squatting, within the workspace of two robotic manipulators.
  The subjects will be required to perform each activity twice, once while
  the robots are powered off and in their home position and again while the
  robots turned on and actively tracking a point of interest located on the
@@ -2566,12 +3032,12 @@ Recruitment and Informed Consent
 Subjects will be recruited for this study by announcements posted in leaflets
  around the University of Florida campus.
  In a first interview with the P.I., potential risks and objectives of this
- study will be explained to canidates interested in participation.
+ study will be explained to candidates interested in participation.
  The type of data and method of collection will also be explained.
- Any other questions or concerns a canidate might have will also be answered.
- At the conclusion of the interview, canidates will be provided with a written
- document which contains the same information covered in the interview.
- Canidates will be asked to return at a later date if they still wish to
+ Any other questions or concerns a candidate might have will also be answered.
+ At the conclusion of the interview, candidates will be provided with a
+ written document which contains the same information covered in the interview.
+ Candidates will be asked to return at a later date if they still wish to
  participate in the study after they have had time to consider the information
  from the interview and document.
 \end_layout
@@ -2584,8 +3050,8 @@ Protection Against Risk
 Because of extensive simulation planned in Aims 1 and 3 as well as non-human
  tests in Aim 4, a failure of the real-time collision avoidance algorithm
  during this human trial is highly improbable.
- Despite these sufficent measures, extra steps will be taken to ensure the
- subjects safety.
+ Despite these sufficient measures, extra steps will be taken to ensure
+ the subjects safety.
  First, the manipulators will be fit with custom designed viscoelastic materials
  to absorb the energy of an unexpected impact and minimize injury.
  Second, during real-time tracking of the subject, the manipulators will
@@ -2607,7 +3073,7 @@ Potential Benefits of the Proposed Research to the Subjects and Others
 \end_layout
 
 \begin_layout Standard
-Through participation in the study, each subject will recieve a full gait
+Through participation in the study, each subject will receive a full gait
  analysis.
  Otherwise, there are no other direct benefits to subjects participating
  in this study.
@@ -2625,7 +3091,7 @@ The information that is collected from this study may be used to improve
  with awake and alert patients.
  For instance, registration-based image measurements are a useful clinical
  tool to quantify bone and implant motions.
- To aquire X-ray images for these measurements, clinicians and researchers
+ To acquire X-ray images for these measurements, clinicians and researchers
  rely on standard fluoroscopy equipment which yields superb images of anesthetiz
 ed patients resting on an operating table.
  However, these imaging systems do not observe the patient in motion - the
@@ -2636,8 +3102,8 @@ ed patients resting on an operating table.
 \end_inset
 
  have mounted commercially available fluoroscopic machines to motorized
- bases, which allow the floroscope field-of-view to automaically track the
- movement of the patient on one or two degrees of freedom.
+ bases, which allow the fluoroscope field-of-view to automatically track
+ the movement of the patient on one or two degrees of freedom.
  At the University of Florida, we are developing a six degree-of-freedom,
  manipulator-based X-ray imaging platform to automatically track the movements
  of patients.
@@ -2665,8 +3131,8 @@ Inclusion of Women and Minorities
 \begin_layout Standard
 Subjects will be recruited through announcements posted around the University
  of Florida campus.
- Canidates will be admitted to the study on a first-come basis as long as
- they meet the necessary inclusion/exclusion criteria.
+ Candidates will be admitted to the study on a first-come basis as long
+ as they meet the necessary inclusion/exclusion criteria.
  Therefore, the racial and ethnic distribution is estimated from the demographic
 s of Gainesville, Florida, from the 2005 American Community Survey data
  conducted by the U.S.
@@ -3232,10 +3698,10 @@ Inclusion of Children
 \begin_layout Standard
 Children will be excluded from this study for two reasons.
  First, we hypothesize that children will demonstrate a variety of responses
- to autonomous machines which would either not manifest itself or be severly
+ to autonomous machines which would either not manifest itself or be severely
  repressed in adult populations (e.g.
  fear, apprehension, etc.).
- We believe reponses would also vary across a child specific population
+ We believe responses would also vary across a child specific population
  (e.g.
  between young children 6-9 years old and teenagers).
  Therefore a separate age-specific study in children is warranted and preferable.
