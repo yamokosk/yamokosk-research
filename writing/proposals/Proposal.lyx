@@ -1,0 +1,857 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing double
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Real-time motion planning for manipulator systems in cluttered environments
+\end_layout
+
+\begin_layout Author
+John D.
+ Yamokoski
+\end_layout
+
+\begin_layout Quotation
+
+\newpage
+Everything should be made as simple as possible, but not one bit simpler.
+ 
+\series bold
+-Albert Einstein
+\end_layout
+
+\begin_layout Abstract
+This is my abstract.
+\end_layout
+
+\begin_layout Standard
+
+\newpage
+
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+In the Orthopedic Biomechanics laboratory, we are developing a novel X-ray
+ imaging platform which will be based on the coordinated motion of two 6-DOF
+ commercial manipulators (Figure 1).
+ However, robots operating in close proximity to humans is a difficult control
+ problem.
+ From a control design perspective, the robot workspace becomes cluttered
+ with dynamic obstacles with which collisions are not acceptable.
+ Even a seemingly minor collision between robot and human could cause serious
+ injury or in the extreme case death.
+\end_layout
+
+\begin_layout Standard
+Better integration of planning and control has been recognized as a frontier
+ area of robotics research [ref].
+\end_layout
+
+\begin_layout Standard
+Objectives and approaches: The objective of this research is to create 
+\emph on
+a real-time robotic control system which is inherently safe
+\emph default
+.
+ The proposed framework exploits and unifies three concepts: reproducing
+ kernel Hilbert spaces, nonparametric kernel density estimation, and information
+ theoretic optimality measures.
+ Developed techniques will be illustrated in a brain interface, in which
+ high dimensional spatiotemporal electroencelaphogram activity will be translate
+d to intended commands for a robot.
+ This interface will be designed to facilitate fusion with myoelectrically
+ controlled neural prostheses.
+\end_layout
+
+\begin_layout Standard
+Intellectual merit: Conventional techniques relying on nonlinear programming
+ of semiparametric models with low-order statistical criteria, which is
+ prone to various difficulties including model complexity selection and
+ existence of suboptimal solutions, cannot cope with the challenges of increasin
+gly complex engineering problems.
+ Proposed work facilitates the adaptation of nonlinear models exploiting
+ smooth generalized linear models and principled information processing
+ in a novel unified framework.
+ This will advance the state-of-the-art in nonlinear adaptive signal processing
+ and machine learning.
+ The brain interface testbed will facilitate future collaboration between
+ two currently disconnected neural prostheses communities.
+\end_layout
+
+\begin_layout Standard
+Broader impacts: The theoretical framework will impact signal processing
+ and machine learning, thus will have immediate influence on fields that
+ rely heavily on statistical modeling, data analysis, and processing techniques.
+ Specifically, contributions to the emerging neural engineering field will
+ impact the design of future neural prostheses, as well as fundamental brain
+ and cognition research.
+ The project will help educate graduate engineers with mathematical rigor
+ and an interdisciplinary focus.
+\end_layout
+
+\begin_layout Section
+Problem definition and related work 
+\end_layout
+
+\begin_layout Standard
+Autonomy in robotics is a tough problem.
+ With non-autonomous systems, we must specify exactly how to do a particular
+ task which is often laborious and error-prone.
+ In contrast, complete autonomy would allow us to simply specify what needs
+ to be done and the system would intelligently fill in the missing steps.
+ There are still many outstanding problems yet to be solved on the road
+ to autonomous systems.
+ One in particular, known as the motion planning problem, has received a
+ lot of attention over the years.
+ Its is concerned with finding algorithms which provide robots the ability
+ to plan their own movements given a few conditions or constraints by the
+ user.
+ All current solutions can be categorized as being either global or local
+ methods, or either exact or approximate methods respectively.
+ 
+\end_layout
+
+\begin_layout Standard
+Global or exact methodologies are guaranteed to find a solution to the motion
+ planning problem if one exists.
+ Usually these methods attempt to explicitly represent the free configuration
+ space of the manipulator system.
+ First introduced by Lozano-Pérez 
+\begin_inset LatexCommand \cite{Lozano-Perez1983a}
+
+\end_inset
+
+, the configuration space 
+\begin_inset Formula $\mathcal{C}$
+\end_inset
+
+ abstracts the motion planning problem by encoding the robot's 
+\begin_inset Formula $n$
+\end_inset
+
+ degree of freedom as independent parameters of an 
+\begin_inset Formula $n$
+\end_inset
+
+-dimensional manifold.
+ The free configuration space 
+\begin_inset Formula $\mathcal{C}_{free}$
+\end_inset
+
+ is simply the subset 
+\begin_inset Formula $\mathcal{C}_{free}\subseteq\mathcal{C}$
+\end_inset
+
+ which is void of any obstacles lifted into
+\begin_inset Formula $\mathcal{C}$
+\end_inset
+
+.
+ However, they have several disadvantages.
+ The algorithms necessary for global methods are computationally intensive.
+ Also, the computational cost increases quickly as a function of the degree
+ of freedom of the system in question.
+ In fact, the theoretical complexity of exact methods is exponential in
+ the number of degrees of freedom of the robot, making these methods intractable
+ for real-time planning or collision avoidance 
+\begin_inset LatexCommand \cite{de2000-Computational}
+
+\end_inset
+
+.
+ The alternative is vast number of local or approximate methods {ref}.
+ These are less computationally demanding and have been integrated into
+ a real-time robotic control system {ref}.
+ However, what makes these methods computationally efficient also becomes
+ their main disadvantage: unlike exact or global methods, these can not
+ guarantee to find a solution if one exists.
+ Examples of seemingly simple yet practical workspaces can be constructed
+ to demonstrate where each local method can fail {ref}.
+ 
+\end_layout
+
+\begin_layout Standard
+Despite this major shortcoming, local and approximate methods have thus
+ far provided the best answer to real-time planning and control.
+ Is it impractical to demand optimal or exact solutions from a real-time
+ system? It depends on the time scale involved.
+ Consider a chess playing robot such as Deep Blue.
+ Each turn it must formulate an action or plan based on the current positions
+ of the pieces on the chess board.
+ The game-tree complexity of chess is now evaluated at approximately 10123.
+ (As a comparison, the number of atoms in the Universe is estimated to be
+ between 4x1079 and 1081.) Computing an optimal series of actions, which
+ equates to finding an optimal path in this tree, is simply not possible.
+ 
+\end_layout
+
+\begin_layout Subsection
+Problem definition 
+\end_layout
+
+\begin_layout Standard
+This research is concerned with real-time motion planning for manipulator
+ systems in the real world.
+ This statement requires several points of clarification.
+ Working in reverse, the real world 
+\begin_inset Formula $\mathcal{W}$
+\end_inset
+
+ of the manipulator system referes to a three dimensional Euclidean space,
+\begin_inset Formula $\mathcal{W}=\mathbb{R}^{3}$
+\end_inset
+
+.
+ All objects in this world can be classified as either an obstacle, 
+\begin_inset Formula $\mathcal{O}$
+\end_inset
+
+, or robot, 
+\begin_inset Formula $\mathcal{R}$
+\end_inset
+
+.
+ Both sets of objects are considered closed subsets of 
+\begin_inset Formula $\mathcal{W}$
+\end_inset
+
+.
+ The difference, however, is that bodies in 
+\begin_inset Formula $\mathcal{R}$
+\end_inset
+
+ are controllable via the motion plan.
+ As with many problems, the choice of object representation is often dictated
+ by the operations performed on them.
+ It is not surprising then that there are many proposals concerning the
+ best way to model objects.
+ A sample of these methods include parametric surfaces, semi-algebraic models,
+ and unions of simple geometric primitives (see 
+\begin_inset LatexCommand \cite{Hoffmann1989}
+
+\end_inset
+
+ for a thorough review of solid and boundary representations).
+ Therefore, choice of a particular object model will be deferred until discussio
+n of the solution techniques.
+\end_layout
+
+\begin_layout Standard
+The immediate application of this work will be the real-time planning module
+ for a novel, dual-arm X-ray imaging system being developed by the Orhtopedic
+ Biomechanics Laboratory at the University of Florida.
+ However, to retain generality, this work will also be applicable to any
+ manipulator system composed of one or several independent robotic manipulators.
+ It will be assumed that each manipulator 
+\begin_inset Formula $\mathcal{\mathit{\mathcal{R}_{i}}\subseteq R}$
+\end_inset
+
+ will be composed of a series of rigid bodies 
+\begin_inset Formula $\mathcal{A}_{j}\subseteq\mathcal{A}$
+\end_inset
+
+ connected end-to-end by rigid joints.
+\end_layout
+
+\begin_layout Standard
+Given a set of models, initial conditions, and ability to sense changes
+ in the objects of 
+\begin_inset Formula $\mathcal{W}$
+\end_inset
+
+, this research is is concerned with developing an algorithm to compute,
+ in real-time, a series of action sequences to be carried out by the manipulator
+ system.
+ Furthermore, the planned action sequence should obey physical limits of
+ manipulator system and ultimately converge to some goal location or metric.
+\end_layout
+
+\begin_layout Subsection
+Relationship of Proposed Activities to Current State of Knowledge
+\end_layout
+
+\begin_layout Standard
+A lot of work has been done for mobile robots.
+ Not much for arms.
+\end_layout
+
+\begin_layout Subsubsection
+Early work 
+\end_layout
+
+\begin_layout Standard
+The first motion planning modules in real-time control systems focused on
+ separating the automatic navigation problem into two sequential stages,
+ planning and control.
+ This separation was primarily due the computational compelxity of early
+ planning algorithms.
+ Examples, results, problems.
+ Any vanilla APF-based controller is classified as a local planning method.
+ Global methods, (properties of global methods), include (examples of global
+ methods).
+\end_layout
+
+\begin_layout Subsubsection
+Cell decomposition?
+\end_layout
+
+\begin_layout Subsubsection
+Artificial potential fields 
+\end_layout
+
+\begin_layout Standard
+Artificial potential field (APF) techniques attempt to address the planning
+ and control problems simultaneously.
+ Obstacles and a goal location are assigned user designed repulsive and
+ attractive potentials, respectively.
+ A virtual control force, normally applied to the manipulator's end-effector,
+ is generated by summing the negative gradient of each potential field.
+ By following the negative gradient of each field, the end-effector will
+ be repulsed from obstacles and attracted towards the goal location.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Figure idea: 3D view of a robot arm in a 
+\begin_inset Quotes eld
+\end_inset
+
+cloudy
+\begin_inset Quotes erd
+\end_inset
+
+ environment.
+ The darkness or absence of the clouds idicates the repulsive or attractive
+ strength of the artificial potential field.
+\end_layout
+
+\end_inset
+
+Placed in a discrete control system, the composite potential field can be
+ updated in every control cycle to account for not only static but also
+ dynamic obstacles and yields real-time collision avoidance and regulation
+ behavior.
+ APF methods can be better understood as a subset of impedance control or
+ more generally, force control.
+ Conventional impedance control is a well studied techique for controlling
+ the response a manipulator to an external force normally generated from
+ contact with the environment.
+ APF methods substitute the external forces associated with contact forces
+ for those generated by the virtual potential.
+\end_layout
+
+\begin_layout Standard
+Khatib was the first to propose APFs as a technique to achieve real-time
+ collision avoidance 
+\begin_inset LatexCommand \cite{Khatib1986-90}
+
+\end_inset
+
+.
+ While his contribution was significant, it also revealed the primary drawback
+ of all APF techniques.
+ Naive constuction of the function defining the potential fields can lead
+ to the creation of local minima in the workspace of the robot.
+ Local minima are created when the virtual forces cancel each other.
+ If a local minima occurs on the path of the end effector, its motion will
+ terminate since the net force on the end effector will be zero and the
+ arm will not reache the goal location.
+ Significant effort has been devoted to the elimination of local minima.
+ A small sampling of this work reveals a large variety of the approaches
+ that have been attempted.
+ These include backtracking, random walks 
+\begin_inset LatexCommand \cite{Barraquand1990}
+
+\end_inset
+
+, switching between points on the robot to calculate and apply the control
+ effort 
+\begin_inset LatexCommand \cite{Chang1996}
+
+\end_inset
+
+, behaviour/agent based approaches 
+\begin_inset LatexCommand \cite{Hamilton1998}
+
+\end_inset
+
+, fuzzy logic 
+\begin_inset LatexCommand \cite{Mbede2003-249,Merchan-Cruz2006}
+
+\end_inset
+
+, sliding mode control 
+\begin_inset LatexCommand \cite{Cardiel2004}
+
+\end_inset
+
+, better potential functions 
+\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423,Cardiel2004,Tanner2003}
+
+\end_inset
+
+.
+ Some of these works deserve further discussion.
+ Of primary interest in this research is the work done by Mbede et al.
+ 
+\begin_inset LatexCommand \cite{Mbede2003-249}
+
+\end_inset
+
+.
+ Before their work, few attempts were made to apply modern non-linear control
+ design techniques to APF-based or even impedance controllers.
+ By applying recently developed Lyapunov design techniques, Mbede et al.
+ designed a uniformly, ultimately bounded regulator using a fuzzy rule system
+ to reason about the APF output.
+ They combined this with a neural network to deal with any other dynamic
+ model uncertainties.
+ By employing Lyapunov stability analysis, Galicki developed a trajectory
+ generator which obeyed dynamic constraints of the manipulator and kept
+ the manipulator away from dynamic obstacle through the use of an external
+ penalty function 
+\begin_inset LatexCommand \cite{Galicki2004}
+
+\end_inset
+
+.
+ Despite claims as a real-time method, his algorithm relied on a priori
+ knowledge of the obstacles locations in the worksapce.
+ Hybrid force/velocity method, switching system, desired velocity signal
+ generated by the negative gradient of a potential field function 
+\begin_inset LatexCommand \cite{Palejiya2006-745}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+An APF generates virtual forces on the manipulator, Tsuji and Kaneko extended
+ impedance control is one of the most important frameworks to control the
+ interaction between the manipulators and the environment.
+ Under the conventional impedance control method, it is difficult to cope
+ effectively with such situations, since no external force is exerted until
+ the end-effector makes contact with objects.
+ In this paper, we apply the vision-based impedance control to a redundant
+ manipulator and thus propose a non-contact impedance control which can
+ utilize kinematic redundancy.
+ This method can control the virtual impedance between the object and multiple
+ points set on the arm, including the end-effector, so that the virtual
+ interaction between the whole arm and the environment can be considered.
+\end_layout
+
+\begin_layout Standard
+APF techniques also does not immediately consider the limitations of the
+ robotic system.
+ 
+\begin_inset LatexCommand \cite{Tsuji1996,Tsuji2002}
+
+\end_inset
+
+ Problem they tried to address was that APF do not define a velocity profile
+ nor do they reveal the movement time.
+ They introduced a time-varying potential field of whose qualities they
+ could manipulate to control the time of arrival as well as the velocity
+ profile (
+\begin_inset LatexCommand \cite{Sampei1986}
+
+\end_inset
+
+ time scaling which their work is dependent on).
+ In essence they had more control over the manipulator response (including
+ transient) by developing a time-varying field.
+ Interestingly, their work looked a lot like Lyapunov functions.
+ Are they really manipulating transient performance of non-linear systems?
+ If so, this could be a huge contribution if recast into a more generalized
+ non-linear control framework.
+ Their work relies on earlier work done by Sampei and Furuta with time scaling
+ nonlinear systems.
+ 
+\begin_inset LatexCommand \cite{Sugie2003}
+
+\end_inset
+
+ Builds upon earlier work done by some of the same authors in a coordinate
+ transformation technqiue 
+\begin_inset LatexCommand \cite{fujimoto98obstacle}
+
+\end_inset
+
+ and combined this with the time-scaling approach of Tsuji to enforce joint
+ velocity limits.
+ They also track a reference trajectory.
+ One drawback is that their example was only implemented for a 2 DOF planar
+ arm.
+ This might be due to the fact that their method requires that obstacles
+ be bounded by analytical surfaces.
+ The final control term looks complicated to implement.
+\end_layout
+
+\begin_layout Standard
+Moving on from the local minima problem, APF methods only address the pre-collis
+ion problem.
+ Very recent work by Kulic and Croft, have begun to extended the APF method
+ to consider the post-collision problem by including factors related to
+ the Head Injury Criterion (HIC) into the definition of their potential
+ field 
+\begin_inset LatexCommand \cite{Kulic2006-1}
+
+\end_inset
+
+.
+ But their work still suffers from local minima problems and has not been
+ demonstrated on a real-time platform.
+\end_layout
+
+\begin_layout Standard
+IEEE Literature review for 
+\begin_inset Quotes eld
+\end_inset
+
+Lyapunov
+\begin_inset Quotes erd
+\end_inset
+
+ + 
+\begin_inset Quotes eld
+\end_inset
+
+artificial potential field
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+manipulator
+\begin_inset Quotes erd
+\end_inset
+
+ + 
+\begin_inset Quotes eld
+\end_inset
+
+artificial potential field
+\begin_inset Quotes erd
+\end_inset
+
+ plus some extras:
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Duindam2004}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Fraile1999}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Frixione1998}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Guldner1995,Guldner1997-160}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Lin2003}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Zhang2004}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Ogren2005}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{Ren2003}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{primbs99nonlinear}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \cite{fox95dynamic}
+
+\end_inset
+
+ YTR
+\end_layout
+
+\begin_layout Standard
+Still to do, Web of Science literature review for same topics.
+\end_layout
+
+\begin_layout Subsubsection
+Motion strategies and elastic strips
+\end_layout
+
+\begin_layout Standard
+Elastic stips
+\end_layout
+
+\begin_layout Standard
+Mediavilla et al.
+ introduced what they have termed a strategy-based method 
+\begin_inset LatexCommand \cite{Mediavilla2003}
+
+\end_inset
+
+.
+ It starts by reducing the size of the configuration space through something
+ akin to principle component analysis performed on various motion strategies.
+ A motion strategy is a basic robotic movement such as 
+\begin_inset Quotes eld
+\end_inset
+
+go up
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+fold up
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This analysis is performed off-line and requires a priori knowledge of
+ the tasks the robots are to perform.
+ Then in the on-line stage of their technique, the robots search for feasible
+ paths in the reduced configuration spaces using potential field methods.
+ 
+\end_layout
+
+\begin_layout Section
+Proposed work
+\end_layout
+
+\begin_layout Subsection
+Overview and timeline
+\end_layout
+
+\begin_layout Standard
+This research is concerned with real-time motion planning for manipulator
+ systems in the real world.
+ The immediate application of this work will be the real-time planning module
+ for a novel, dual-arm X-ray imaging system being developed by the Orhtopedic
+ Biomechanics Laboratory at the University of Florida.
+\end_layout
+
+\begin_layout Itemize
+This work has three areas of thrust - Theoretical development, implementation
+ and experimentation, and education.
+\end_layout
+
+\begin_layout Itemize
+Research is not an isolated activity, therefore it is paramount that this
+ work be evaluated by members of the robotic community for its contribution
+ to motion planning research as well as by the biomechanics community for
+ its role as a new diagnostic tool.
+\end_layout
+
+\begin_layout Subsection
+Specific aim 1 - Theoretical development of a real-time planning system
+\end_layout
+
+\begin_layout Subsection
+Specific aim 2 - Implentation and evaluation on the GatorRay Imaging System
+\end_layout
+
+\begin_layout Standard
+Experimental evaluation of any robotic system which,
+\end_layout
+
+\begin_layout Enumerate
+Provably small chance, with an adequate confidence level, of failure.
+\end_layout
+
+\begin_layout Enumerate
+In the unlikely event of failure, the control system will minimize injuries
+ to the person.
+\end_layout
+
+\begin_layout Standard
+Statistical analysis will be similar to that done in the comparitive study
+ by Fraile et al.
+ 
+\begin_inset LatexCommand \cite{Fraile2006}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The core hardware components required to research the robotic imaging system
+ include a pair of six axis robot arms, a real-time motion capture system,
+ and a digital video system as detailed in section I.3.
+ Significant progress already has been made in the design and implementation
+ of the system?s control software.
+ Preliminary studies performed to assess the measurement capabilities of
+ the PA10-6C robot (e.g.
+ static and dynamic accuracy and precision) utilized a control system implemente
+d in Linux with the hard real-time software framework provided by the OROCOS
+ project [61] and RTAI [83].
+ This control framework integrated a real-time motion controller for one
+ robot and a real-time target generator driven by inputs from the motion
+ capture system.
+ This early system demonstrated the integration of the two major components
+ of the final system ? robots and motion capture.
+ Lessons learned from this early design motivate the adoption of more rigorous
+ software design tools, including component-based software engineering (CBSE)
+ principles.
+ Component-based software development provides several key benefits when
+ applied to the design of robotic software control systems, particularly
+ in software reusability and modularity.
+ 
+\end_layout
+
+\begin_layout Standard
+CBSE software components are reusable by design and several open-source
+ projects devoted to CBSE use in robotic systems host repositories of freely
+ available components [59, 62].
+ Devel-opers from around the world have submitted components for common
+ hardware or sensor sys-tems as well as algorithms common to robotics control.
+ Where possible, components from these repositories will be used in the
+ re-design of our control system, accelerating development time.
+ For components that do not yet exist (e.g.
+ interface to the PA10-6C robot), components from similar categories will
+ be used as templates and modified as needed.
+ All novel components cre-ated during the proposed work will be submitted
+ to the same open-source repositories.
+ 
+\end_layout
+
+\begin_layout Standard
+After all necessary components have been created or acquired, they will
+ be assembled into a cohesive software control framework.
+ This final framework also will be modular to allow future integration of
+ new systems (e.g.
+ X-ray hardware or force sensors on the robot arms).
+\end_layout
+
+\begin_layout Standard
+Evaluation: Performance of the control software will be evaluated using
+ a variety of prepro-grammed trajectories (figure 8?s) and real-time tracking
+ tasks (e.g.
+ having one robot track a mo-tion capture marker array placed on the other
+ robot).
+ Quantitative outcome metrics will charac-terize communication and robot
+ motion latencies in addition to demonstration of all required control,
+ communication and measurement functionality for the integrated robotic,
+ motion cap-ture, and video recording systems.
+\end_layout
+
+\begin_layout Standard
+Potential difficulties and workarounds: Preliminary experience integrating
+ these systems es-tablishes the feasibility of the approach.
+ However, the robotic imaging platform is a complex system.
+ The P.I.
+ has secured the cooperation of Prof.
+ Manuel Bermudez in the U.F.
+ Computer and Information Science and Engineering Department to assist in
+ the software design, implemen-tation and testing (see letter of support
+ from Prof.
+ Bermudez).
+\end_layout
+
+\begin_layout Subsection
+Educational thrust
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \bibtex[plain]{Proposal_Library}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

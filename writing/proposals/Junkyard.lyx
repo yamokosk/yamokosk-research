@@ -1,0 +1,606 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+The traditional approach to real-time robot planning and control follows
+ the plan-action-re-plan paradigm.
+ Typical solution times for planning algorithms vary greatly depending on
+ the dimension and complexity of the problem domain, but they can range
+ anywhere from a few seconds to a few minutes.
+ In a well-behaved or highly structured environment, such as an industrial
+ setting, this performance limitation can be tolerated.
+ However, in the highly unstructured and dynamic environment of human interactio
+n, a slow re-planning cycle becomes problematic.
+ Previous literature [ref] has focused on combining local reactive control
+ schemes with global planning algorithms.
+ These approaches have redistributed the computational burden from the planning
+ module to a real-time, reactive controller.
+ 
+\end_layout
+
+\begin_layout Standard
+Design of the reactive controller has taken several forms.
+ One form, introduced by Khatib et al.
+ [12], utilizes artificial potential fields (APFs) embedded in the task-space
+ of the manipulators.
+ There are several drawbacks to APFs, some of which have been partially
+ solved.
+ Naïve application of APFs in cluttered environments leads to local minima
+ in which the manipulator can become stuck.
+ Several groups have attempted to increase the robustness of APFs either
+ by minimizing or eliminating the local extrema they create [13, 14] or
+ tightly coupling APFs with global planners [15].
+\end_layout
+
+\begin_layout Standard
+The first reason is that, with few exceptions, most research focus on either
+ the complexity of the environment (and assume that the robots have trivial
+ dynamics or kinematics) or on the detailed robot dynamics (while assuming
+ trivial environments).
+ Motion planning for a manipulator system in close proximity to humans requires
+ both a detailed robot model as well as a complex environment.
+ Real-time algorithm.
+ Inherently safe.
+\end_layout
+
+\begin_layout Standard
+Assuming that a collision between robots and human are inevatable, a community
+ of researchers have sought through mechanical design to make such it impossible
+ for a robot to harm a person.
+ While proposals have varied, in general these designs share the same set
+ of characteristics including, constructed from light weight materials [ref],
+ actuated by low maximum torque/velocity actuators [ref], or constructed
+ of flexible or compliant links and joints [ref].
+ These designs are well conceived, but often the resultant robot becomes
+ too weak or inaccurate to perform any real task [ref].
+\end_layout
+
+\begin_layout Standard
+The motion planning problem has received a lot of attention over the years.
+ Its is concerned with finding algorithms which provide robots the ability
+ to plan their own movements given a few conditions or constraints by the
+ user.
+\end_layout
+
+\begin_layout Standard
+Safer robots means they can be operated in close proximity 
+\end_layout
+
+\begin_layout Standard
+There are many outstanding problems yet to be solved before truly human-friendly
+ robots on the road to complete autonomous systems.
+ One in particular, known as 
+\end_layout
+
+\begin_layout Standard
+Traditional recommendations, which include measures such as cages, light
+ curtains, and pressure pads, ensure safety by isolating the robot from
+ humans during autonomous operation.
+ Such measures are too conservative for use in a medical setting where the
+ robot's close proximity to humans is dicated by the application.
+\end_layout
+
+\begin_layout Itemize
+Global planners are nice because a solution is found if one exists.
+ The bad is that they are computationally intensive.
+ The robot's interaction with the environment and its ability to react intellige
+ntly to human movement is dictated by the slowest module of the control
+ and planning system.
+\end_layout
+
+\begin_layout Itemize
+Local planning algorithms are computationally efficient but can become stuck
+ or fail to complete the original performance objective.
+\end_layout
+
+\begin_layout Standard
+Despite this major shortcoming, local and approximate methods have thus
+ far provided the best answer to real-time planning and control.
+ Is it impractical to demand optimal or exact solutions from a real-time
+ system? It depends on the time scale involved.
+ Consider a chess playing robot such as Deep Blue.
+ Each turn it must formulate an action or plan based on the current positions
+ of the pieces on the chess board.
+ The game-tree complexity of chess is now evaluated at approximately 10123.
+ (As a comparison, the number of atoms in the Universe is estimated to be
+ between 4x1079 and 1081.) Computing an optimal series of actions, which
+ equates to finding an optimal path in this tree, is simply not possible.
+ 
+\end_layout
+
+\begin_layout Standard
+A slightly different approach has sought to make commercially available
+ robots more safe through intelligent software control.
+ Several algorithms have seen partial success.
+\end_layout
+
+\begin_layout Itemize
+Artificial potential field (APF) techniques attempt to address the planning
+ and control problems simultaneously.
+ Obstacles and a goal location are assigned user designed repulsive and
+ attractive potentials, respectively.
+ A virtual control force, normally applied to the manipulator's end-effector,
+ is generated by summing the negative gradient of each potential field.
+ By following the negative gradient of each field, the end-effector will
+ be repulsed from obstacles and attracted towards the goal location.
+ Placed in a discrete control system, the composite potential field can
+ be updated in every control cycle to account for not only static but also
+ dynamic obstacles and yields real-time collision avoidance and regulation
+ behavior.
+ 
+\end_layout
+
+\begin_layout Itemize
+Naive construction of the potential field functions can lead to local minima.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Local minima problem has been heavily investigated and a few good solutions
+ have been proposed.
+ But are these solutions applicable to real-time implementation? To real
+ world environments? 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+APF techniques also does not immediately consider the limitations of the
+ robotic system.
+ 
+\end_layout
+
+\begin_layout Itemize
+Moving on from the local minima problem, APF methods only address the pre-collis
+ion problem.
+ 
+\end_layout
+
+\begin_layout Itemize
+In the past decade, great advances have been made in the control of non-linear
+ systems through the application of Lyapunov design techniques.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some of these advances have been made by co-investigator Dixon (preliminary
+ results?)
+\end_layout
+
+\begin_layout Itemize
+Preliminary investigations by other research groups have laid the initial
+ ground work for this approach and prove its feasability.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Cite work that marries PF techniques and Lyapunov control design.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+This work proposes to expand on the limitations of the previous attempts.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Artificial potential field (APF) techniques attempt to address the planning
+ and control problems simultaneously.
+ Obstacles and a goal location are assigned user designed repulsive and
+ attractive potentials, respectively.
+ A virtual control force, normally applied to the manipulator's end-effector,
+ is generated by summing the negative gradient of each potential field.
+ By following the negative gradient of each field, the end-effector will
+ be repulsed from obstacles and attracted towards the goal location.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Figure idea: 3D view of a robot arm in a 
+\begin_inset Quotes eld
+\end_inset
+
+cloudy
+\begin_inset Quotes erd
+\end_inset
+
+ environment.
+ The darkness or absence of the clouds idicates the repulsive or attractive
+ strength of the artificial potential field.
+\end_layout
+
+\end_inset
+
+Placed in a discrete control system, the composite potential field can be
+ updated in every control cycle to account for not only static but also
+ dynamic obstacles and yields real-time collision avoidance and regulation
+ behavior.
+ APF methods can be better understood as a subset of impedance control or
+ more generally, force control.
+ Conventional impedance control is a well studied techique for controlling
+ the response a manipulator to an external force normally generated from
+ contact with the environment.
+ APF methods substitute the external forces associated with contact forces
+ for those generated by the virtual potential.
+\end_layout
+
+\begin_layout Standard
+Khatib was the first to propose APFs as a technique to achieve real-time
+ collision avoidance.
+ While his contribution was significant, it also revealed the primary drawback
+ of all APF techniques.
+ Naive constuction of the function defining the potential fields can lead
+ to the creation of local minima in the workspace of the robot.
+ Local minima are created when the virtual forces cancel each other.
+ If a local minima occurs on the path of the end effector, its motion will
+ terminate since the net force on the end effector will be zero and the
+ arm will not reache the goal location.
+ Significant effort has been devoted to the elimination of local minima.
+ A small sampling of this work reveals a large variety of the approaches
+ that have been attempted.
+ These include backtracking, random walks 
+\begin_inset LatexCommand \cite{Barraquand1990}
+
+\end_inset
+
+, switching between points on the robot to calculate and apply the control
+ effort 
+\begin_inset LatexCommand \cite{Chang1996}
+
+\end_inset
+
+, behaviour/agent based approaches 
+\begin_inset LatexCommand \cite{Hamilton1998}
+
+\end_inset
+
+, fuzzy logic 
+\begin_inset LatexCommand \cite{Mbede2003-249,Merchan-Cruz2006}
+
+\end_inset
+
+, sliding mode control 
+\begin_inset LatexCommand \cite{Cardiel2004}
+
+\end_inset
+
+, better potential functions 
+\begin_inset LatexCommand \cite{Connolly1993-931,Volpe1990-1423,Cardiel2004,Tanner2003}
+
+\end_inset
+
+.
+ Some of these works deserve further discussion.
+ Of primary interest in this research is the work done by Mbede et al.
+ 
+\begin_inset LatexCommand \cite{Mbede2003-249}
+
+\end_inset
+
+.
+ Before their work, few attempts were made to apply modern non-linear control
+ design techniques to APF-based or even impedance controllers.
+ By applying recently developed Lyapunov design techniques, Mbede et al.
+ designed a uniformly, ultimately bounded regulator using a fuzzy rule system
+ to reason about the APF output.
+ They combined this with a neural network to deal with any other dynamic
+ model uncertainties.
+ By employing Lyapunov stability analysis, Galicki developed a trajectory
+ generator which obeyed dynamic constraints of the manipulator and kept
+ the manipulator away from dynamic obstacle through the use of an external
+ penalty function 
+\begin_inset LatexCommand \cite{Galicki2004}
+
+\end_inset
+
+.
+ Despite claims as a real-time method, his algorithm relied on a priori
+ knowledge of the obstacles locations in the worksapce.
+ Hybrid force/velocity method, switching system, desired velocity signal
+ generated by the negative gradient of a potential field function 
+\begin_inset LatexCommand \cite{Palejiya2006-745}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Fault detection
+\end_layout
+
+\begin_layout Standard
+From basic failure analysis, the most common failure distribution is the
+ exponential distribution,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+F(t)=1-e^{-\lambda t}\label{eq:3}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the probability of failure.
+ Conventional methods for determining a value for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ includes historical data, government and commercial failure rate data,
+ and finally testing.
+ However, none of these methods are adequate or safe for human/robotic systems.
+ Therefore one goal of Aim 1 is to determine a methodology to safely estimate
+ values for 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Aim 2: Novel model-based fault detection methods
+\end_layout
+
+\begin_layout Subsubsection
+Overview
+\end_layout
+
+\begin_layout Standard
+The research details of Aim 2 are primarily concerned with human safety
+ under normal operating conditions of the robotic system.
+ However, all mechatronic systems are subject to failure.
+ In fact, the recorded mean time to failure for a robotic system is only
+ 500 to 2500 hours 
+\begin_inset LatexCommand \cite{Dhillon1997}
+
+\end_inset
+
+.
+ Therefore another necessary component of a safer system is robot reliability
+ and fault tolerance.
+ Factors that must be considered to ensure the safety of the human under
+ abnormal operating conditions include: detection of abnormal behavior (i.e.,
+ fault detection 
+\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+
+\end_inset
+
+) by either the robot or the human; characterization, quantification, and
+ identification of the fault 
+\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+
+\end_inset
+
+; and then response to the fault 
+\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+
+\end_inset
+
+ such as emergency stop, altering the control objective, or accommodating
+ for the fault through redundancy.
+ Previous literature has focused on fault detection and tolerance in robotic
+ systems, but little attention has focused on modeling the set of faults
+ that can arise from a human-in-the-loop.
+ In this project we are focused on dynamics-based events rather than human
+ factors events (e.g., teleoperator fatigue) that have been previously investigate
+d.
+ A core scientific question for Aim 2 is how can a dynamics-based fault
+ model be developed to capture the effects of an unexpected event.
+\end_layout
+
+\begin_layout Subsubsection
+Approach
+\end_layout
+
+\begin_layout Standard
+Typical models for faults occurring in a dynamic system are expressed as
+ 
+\begin_inset LatexCommand \cite{Dixon2000}
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+M(q)\ddot{q}(t)+N(q,\dot{q})+u_{-1}(t-T_{f})\zeta(t)=\tau(t)\label{eq:3}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In 
+\begin_inset LatexCommand \eqref{eq:3}
+
+\end_inset
+
+, 
+\begin_inset Formula $q(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\dot{q}(t)$
+\end_inset
+
+, 
+\begin_inset Formula $\ddot{q}(t)$
+\end_inset
+
+ denote the joint position, velocity, and acceleration, respectively, 
+\begin_inset Formula $\zeta(t)$
+\end_inset
+
+ represents a fault in the system, 
+\begin_inset Formula $u_{-1}(t-T_{f})$
+\end_inset
+
+ represents a unit step function, 
+\begin_inset Formula $T_{f}$
+\end_inset
+
+ represents the time instant at which a fault occurs, and 
+\begin_inset Formula $\tau(t)$
+\end_inset
+
+ represents the torque input vector.
+ This type of fault model will be insufficient for human-robot systems because
+ the human may exhibit a failure (e.g., fall down or stumble) but the failure
+ will not impact the dynamics of the robot.
+ Efforts in Aim 2 will focus on developing a new fault model that is based
+ on the closed-loop error system for interacting with humans in the workspace.
+ Specifically, models will be developed based on the closed-loop error system
+ of the robot, because the error system will be developed based on the motion
+ and forces generated by the human and the robot.
+ This model will be able to capture changes in the human's motion (e.g., an
+ unexpected limb motion due to muscle spasticity) that do not have a direct
+ effect on the dynamics of the robot.
+ Based on the development of a fault model, efforts in Aim 2 will also focus
+ on the development of a fault identification method that can be used for
+ quantifying faults.
+ Efforts to develop the fault identification method will focus on the constructi
+on of an error system estimate which can be compared to the actual error
+ system (i.e., comparing the learned intent of the human robot interaction
+ versus the states of the actual interaction).
+ Based on our recent advances in developing a new nonlinear estimation technique
+ 
+\begin_inset LatexCommand \cite{Makkar}
+
+\end_inset
+
+, initial efforts will focus on the development of a fault identification
+ method such as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+\widehat{\zeta}(t)=\int(k_{0}+1)e(\sigma)d\sigma+\int k_{1}\mathrm{sgn}(e(\sigma))d\sigma+(k_{0}+1)e(t)+(k_{0}+1)e(T_{f})\label{eq:4}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $k_{0}$
+\end_inset
+
+, 
+\begin_inset Formula $k_{1}$
+\end_inset
+
+ represents positive observer gains, where 
+\begin_inset Formula $\mathrm{sgn}(\cdot)$
+\end_inset
+
+ denotes the vector signum function.
+ That is, the nonlinear approximation method in 
+\begin_inset LatexCommand \eqref{eq:4}
+
+\end_inset
+
+ can be used to identify the fault, and then we will examine the fault signature
+ for classification of the fault.
+ Classified faults will be incorporated in a database with an appropriate
+ action for the robot to execute.
+ The approximation method in 
+\begin_inset LatexCommand \eqref{eq:4}
+
+\end_inset
+
+ will be investigated in lieu of methods such as a neural network because
+ the method in 
+\begin_inset LatexCommand \eqref{eq:4}
+
+\end_inset
+
+ does not result in a function approximation error that could reduce the
+ quality of the identified fault signature.
+\end_layout
+
+\begin_layout Subsubsection
+Expected outcome
+\end_layout
+
+\begin_layout Standard
+A new failure model will result from Aim 3 that will provide a foundation
+ for model-based fault detection methods.
+ Based on the model development, a dynamics based residual generating fault
+ detection, identification, and characterization scheme will be developed
+ to elicit a desired robot response to unexpected events (e.g., muscle spasticity,
+ patient fall).
+\end_layout
+
+\begin_layout Subsubsection
+Automatic identification, characterization, and repose to faults
+\end_layout
+
+\begin_layout Standard
+Factors that must be considered to ensure the safety of the human abnormal
+ operating conditions include: detection of abnormal behavior (i.e., fault
+ detection 
+\begin_inset LatexCommand \cite{Caccavale1997,Caccavale2002,Chan1999,Luca2003,Luca2004,Dixon2000,Frank1991,Freyermuth1991,Polycarpou1995,Shin1999,Schneider1996,Visinsky1994,Visinsky1995}
+
+\end_inset
+
+) by either the robot or the human; characterization, quantification, and
+ identification of the fault 
+\begin_inset LatexCommand \cite{Gertler1995,Gertler1998,Gilbert1988-193,Frank1990,Krishnaswami1994,Krishnaswami1994a,Farrell1993,Terra1998,Trunov2000,Wang1997,Yen2000}
+
+\end_inset
+
+; and then response to the fault 
+\begin_inset LatexCommand \cite{Wu1993,Ting1993,English1996,Paredis1994,Zanaty1993,Wikman1994}
+
+\end_inset
+
+ such as emergency stop, altering the control objective, or accommodating
+ for the fault through redundancy.
+ Previous literature has focused on fault detection and tolerance in robotic
+ systems, but little attention has focused on modeling the set of faults
+ that can arise from a human-in-the-loop.
+ In this project we are focused on dynamics-based events rather than human
+ factors events (e.g., teleoperator fatigue) that have been previously investigate
+d.
+\end_layout
+
+\end_body
+\end_document
