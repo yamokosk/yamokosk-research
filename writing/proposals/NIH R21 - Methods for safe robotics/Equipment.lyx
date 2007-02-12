@@ -1,0 +1,59 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass nih
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Equipment
+\end_layout
+
+\begin_layout Standard
+All equipment below is located at Prof.
+ Banks' (co-P.I.) laboratory and available for use on demand
+\end_layout
+
+\begin_layout Enumerate
+PhaseSpace Motion Capture System - Real-time, 8 camera, active marker, motion
+ capture system running at 480Hz.
+\end_layout
+
+\begin_layout Enumerate
+Motion Analysis Corp.
+ Motion Capture System - Real-time, 8 camera, passive marker motion capture
+ system running up to 2000Hz.
+\end_layout
+
+\begin_layout Enumerate
+Two Mitsubishi PA10-6C six-axis robots - High performance harmonic drive
+ robot with 10kg payload capacity, controller, control software and workstation.
+ 
+\end_layout
+
+\end_body
+\end_document

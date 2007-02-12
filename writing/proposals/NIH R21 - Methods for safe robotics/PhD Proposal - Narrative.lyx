@@ -1,0 +1,53 @@
+#LyX 1.4.3-5 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 0.5in
+\topmargin 0.5in
+\rightmargin 0.5in
+\bottommargin 0.5in
+\secnumdepth 0
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Project narrative
+\end_layout
+
+\begin_layout Standard
+The research objective of this study is to systematically address the concerns
+ of autonomous robot safety, thereby creating safer and more capable robotic
+ systems.
+ While the methods proposed herein will be applicable to all robotic application
+s, systems which are meant to interact with alert and awake people will
+ benefit directly.
+ In the future, making these systems more human-friendly will improve the
+ quality of life for millions who could benefit from the advantages provided
+ by robotic technologies in health care.
+\end_layout
+
+\end_body
+\end_document
