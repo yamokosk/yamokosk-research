@@ -11,7 +11,7 @@
 \fontscheme default
 \graphics default
 \paperfontsize 11
-\spacing single
+\spacing double
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -3766,7 +3766,7 @@ Biography and References Cited
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \bibtex[plain]{Proposal_Library}
+\begin_inset LatexCommand \bibtex[IEEEtran]{PhD Proposal References}
 
 \end_inset
 
