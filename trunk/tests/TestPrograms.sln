@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PA10 Meshes", "PA10Meshes\scripts\PA10Meshes.vcproj", "{9BF70BF6-1EEE-447C-AE30-1E1EAEC5AAD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		debug|Win32 = debug|Win32
+		release|Win32 = release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BF70BF6-1EEE-447C-AE30-1E1EAEC5AAD7}.debug|Win32.ActiveCfg = debug|Win32
+		{9BF70BF6-1EEE-447C-AE30-1E1EAEC5AAD7}.debug|Win32.Build.0 = debug|Win32
+		{9BF70BF6-1EEE-447C-AE30-1E1EAEC5AAD7}.release|Win32.ActiveCfg = release|Win32
+		{9BF70BF6-1EEE-447C-AE30-1E1EAEC5AAD7}.release|Win32.Build.0 = release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
