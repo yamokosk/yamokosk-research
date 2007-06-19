@@ -23,7 +23,7 @@ namespace OBMPL {
 
         // Compute hull
         NxVec3 verts[8] =
-        { 
+        {
             NxVec3(-boxDim.x,-boxDim.y,-boxDim.z),
             NxVec3(boxDim.x,-boxDim.y,-boxDim.z),
             NxVec3(-boxDim.x,boxDim.y,-boxDim.z),
@@ -85,28 +85,29 @@ namespace OBMPL {
         return NULL;
     }*/
 
-	/**	
-	 *	The Body class. The concept here is to encapsulate both the dynamic body description 
+	/**
+	 *	The Body class. The concept here is to encapsulate both the dynamic body description
 	 *	(PhysX's nxActor class) and its associate render object (OGRE's Entity class).
+	 *
+	 *  Design Notes
+	 *
+     *  - The body class doesn't need to actually store a pointer to an nxActor or Entity class.
+     *    Both of these objects are tracked by their respective library managers.
 	 */
-	class Body 
-	{
+	class Body {
 	public:
 		typedef map<string,string> MeshData;
 		typedef MeshData::iterator MeshDataIterator;
 
 		Body(const string& n, Vector3& p, Quaternion& q) : mName(n), mInitPos(p), mInitOrientation(q)  {};
-		
-		void addMesh(const string& id, const string& filename)
-		{
+
+		void addMesh(const string& id, const string& filename) {
 			mMeshNames[id] = filename;
 		}
-
-		int numMeshes()
-		{
+		int numMeshes() {
 			return mMeshNames.size();
 		}
-		
+
 		MeshData mMeshNames;
 		string mName;
 

@@ -33,7 +33,7 @@ using namespace OBMPL;
 class NxOgreFrameListener : public ExampleFrameListener
 {
 public:
-	NxOgreFrameListener(RenderWindow* win, Camera* cam, const std::string &debugText)
+    NxOgreFrameListener(RenderWindow* win, Camera* cam, const std::string &debugText)
         : ExampleFrameListener(win, cam)
     {
 		mDebugText = debugText;
@@ -43,14 +43,14 @@ public:
     {
 		if( ExampleFrameListener::frameStarted(evt) == false ) return false;
 
-		/*Real inc = evt.timeSinceLastFrame * mAnimationSpeed[i]; 
+		/*Real inc = evt.timeSinceLastFrame * mAnimationSpeed[i];
 		if ((mAnimState[i]->getTimePosition() + inc) >= mAnimChop)
 		{
 			// Get pointer to the PhysX SDK
-			
+
 			// Get results from gScene->simulate(gDeltaTime)
 			while (!gScene->fetchResults(NX_RIGID_BODY_FINISHED, false));
-			
+
 			// Loop
 			// Need to reposition the scene node origin since animation includes translation
 			// Calculate as an offset to the end position, rotated by the
@@ -67,7 +67,7 @@ public:
 		} else {
 			mAnimState[i]->addTime(inc);
 		}*/
-        
+
         return true;
     }
 };
@@ -88,7 +88,7 @@ protected:
 
 	NxPhysicsSDK* mPhysicsSDK;
 	NxScene*  mScene;
-	
+
     // Just override the mandatory create scene method
     void createScene(void)
     {
@@ -98,7 +98,7 @@ protected:
 
 		// Link 1
 		Body* linkOne = getLinkOne();
-		node = mSceneMgr->getRootSceneNode()->createChildSceneNode( linkOne->mName );		
+		node = mSceneMgr->getRootSceneNode()->createChildSceneNode( linkOne->mName );
 		for (Body::MeshDataIterator it = linkOne->mMeshNames.begin(); it != linkOne->mMeshNames.end(); ++it)
 		{
 			ent = mSceneMgr->createEntity( it->first, it->second );
@@ -119,7 +119,7 @@ protected:
 		}
 		node->rotate( linkTwo->mInitOrientation );
 		node->translate( linkTwo->mInitPos );
-		
+
     }
 
     void createFrameListener(void)
@@ -127,13 +127,13 @@ protected:
         mFrameListener = new NxOgreFrameListener(mWindow, mCamera, mDebugText);
         mRoot->addFrameListener(mFrameListener);
     }
-	
+
 	void chooseSceneManager(void)
     {
         // Create the SceneManager, in this case a generic one
 		mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "ExampleSMInstance");
     }
-	
+
 	// Init PhysX engine
 	void InitNx()
 	{
@@ -153,15 +153,15 @@ protected:
 		NxSceneDesc sceneDesc;
  		sceneDesc.simType				= NX_SIMULATION_HW;
 		sceneDesc.gravity               = NxVec3(0,-9.8,0);
-		mScene = mPhysicsSDK->createScene(sceneDesc);	
-		if(!mScene){ 
-			sceneDesc.simType				= NX_SIMULATION_SW; 
-			mScene = mPhysicsSDK->createScene(sceneDesc);  
+		mScene = mPhysicsSDK->createScene(sceneDesc);
+		if(!mScene){
+			sceneDesc.simType				= NX_SIMULATION_SW;
+			mScene = mPhysicsSDK->createScene(sceneDesc);
 			if(!mScene) return;
 		}
 
 		// Create the default material
-		NxMaterial* defaultMaterial = mScene->getMaterialFromIndex(0); 
+		NxMaterial* defaultMaterial = mScene->getMaterialFromIndex(0);
 		defaultMaterial->setRestitution(0.5);
 		defaultMaterial->setStaticFriction(0.5);
 		defaultMaterial->setDynamicFriction(0.5);
@@ -227,7 +227,7 @@ protected:
 		b->addMesh("arm2_2","arm2_2.mesh");
 		b->addMesh("arm2_3","arm2_3.mesh");
 		b->addMesh("arm2_4","arm2_4.mesh");
-		
+
 		return b;
 	}
 
