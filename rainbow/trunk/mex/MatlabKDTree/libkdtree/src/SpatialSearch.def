@@ -1,0 +1,2 @@
+LIBRARY	"mexSpatialSearch"
+EXPORTS mexFunction

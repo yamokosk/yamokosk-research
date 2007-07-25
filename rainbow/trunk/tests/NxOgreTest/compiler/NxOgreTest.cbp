@@ -12,8 +12,17 @@
 				<Option type="1" />
 				<Option compiler="msvc8" />
 				<Compiler>
+					<Add option="/MDd" />
+					<Add option="/TP" />
+					<Add option="/Gm" />
+					<Add option="/EHc" />
+					<Add option="/EHs" />
+					<Add option="/Od" />
+					<Add option="/W3" />
+					<Add option="/Zi /D_DEBUG" />
 					<Add option="/Zi" />
 					<Add option="/D_DEBUG" />
+					<Add directory="..\include" />
 				</Compiler>
 				<Linker>
 					<Add option="/DEBUG" />
@@ -33,6 +42,10 @@
 		<Compiler>
 			<Add option="/W3" />
 		</Compiler>
+		<Unit filename="..\include\resource.h" />
+		<Unit filename="..\include\tutorialApplication.h" />
+		<Unit filename="..\include\tutorialApplicationEihort.h" />
+		<Unit filename="..\src\NxOgreTest.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

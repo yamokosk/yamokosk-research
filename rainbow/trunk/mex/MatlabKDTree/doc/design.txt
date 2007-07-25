@@ -1,0 +1,43 @@
+Spatial search
+
+From Matlab:
+Point cloud - Specified in a (number of dimensions) x (number of points) matrix.
+Query points - Specified in a (number of dimensions) x (number of points) matrix.
+Tree/search options - Specified in ("Parameter", value) pairs.
+	
+
+
+Library creates a tree on the fly and then does the search.
+CGAL::Orthogonal_k_neighbor_search< CGAL::Search_traits_2< CGAL::Simple_cartesian<double> > >::Tree Tree;
+CGAL::Orthogonal_k_neighbor_search< CGAL::Search_traits_2< CGAL::Simple_cartesian<double> > > search(tree, query, N);
+
+Distance function requirements:
+OrthogonalDistance
+Definition
+
+Requirements of an orthogonal distance class supporting incremental distance updates. To optimize distance computations transformed distances are used. E.g., for an Euclidean distance the transformed distance is the squared Euclidean distance.
+
+Types
+OrthogonalDistance::FT
+	Number type.
+OrthogonalDistance::Point_d
+	Point type.
+OrthogonalDistance::Query_item
+	Query item type.
+
+Creation
+OrthogonalDistance od ( int d);
+	Constructor implementing distance for d-dimensional points.
+
+Operations
+FT 	od.transformed_distance ( Query_item q, Point_d r)
+		Returns the transformed distance between q and r.
+FT 	od.min_distance_to_rectangle ( Query_item q, Kd_tree_rectangle<Traits> r)
+		Returns the transformed distance between q and the point on the boundary of r closest to q.
+FT 	od.max_distance_to_rectangle ( Query_item q, Kd_tree_rectangle<Traits> r)
+		Returns the transformed distance between q and the point on the boundary of r farthest to q.
+FT 	od.transformed_distance ( FT d) 	Returns the transformed distance.
+FT 	od.inverse_of_transformed_distance ( FT d)
+		Returns the inverse of the transformed distance.
+FT 	od.new_distance ( FT dist, FT old_off, FT new_off, int cutting_dimension)
+		Updates dist incrementally and returns the updated distance.
