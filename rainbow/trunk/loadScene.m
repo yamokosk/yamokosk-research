@@ -49,10 +49,13 @@ if isfield(scene_node, 'ATTRIBUTE')
     end
 end
 
+d = 0;
 for n = 1:length(scene_node.space)
-    scene.space{n} = parseSpace(scene_node.space{n});
+    [scene.space{n}, dyn] = parseSpace(scene_node.space{n});
+    d = dyn + d;
 end
 
+scene.num_variables = d;
 % -------------------------------------------------------------------------
 % DEPRECATED
 % Scene is loaded from XML data.. now need to make all data relative to WCS
@@ -64,7 +67,7 @@ end
 % -------------------------------------------------------------------------
 % Parse a space
 % -------------------------------------------------------------------------
-function sspace = parseSpace(space)
+function [sspace, dyn] = parseSpace(space)
 sspace.name = '';
 
 if isfield(space, 'ATTRIBUTE')
@@ -73,8 +76,10 @@ if isfield(space, 'ATTRIBUTE')
     end
 end
 
+dyn = 0;
 for n = 1:length(space.body) 
-    sspace.body{n} = parseBody(space.body{n});
+    [sspace.body{n}, d] = parseBody(space.body{n});
+    dyn = d + dyn;
 end
 
 end
@@ -82,7 +87,7 @@ end
 % -------------------------------------------------------------------------
 % Parse a body
 % -------------------------------------------------------------------------
-function sbody = parseBody(body)
+function [sbody, dyn] = parseBody(body)
 sbody.name = '';
 sbody.base = 'world';
 
@@ -95,8 +100,9 @@ if isfield(body, 'ATTRIBUTE')
     end
 end
 
+dyn = 0;
 if isfield(body, 'transform')
-    sbody.transform = parseTransform(body.transform{1});
+    [sbody.transform, dyn] = parseTransform(body.transform{1});
 end
 
 if isfield(body, 'geometry')
@@ -139,22 +145,59 @@ end
 % -------------------------------------------------------------------------
 % Parse a transform
 % -------------------------------------------------------------------------
-function stransform = parseTransform(transform)
-transform_type = transform.ATTRIBUTE.type;
+function [stransform, dyn] = parseTransform(transform)
 
-switch transform_type
-    case 'dh'
-        stransform = parseDH(transform);
-    case 'relative'
-        stransform = parseRelative(transform);
-    otherwise
-        warning('Encountered a transform type I have never seen before: %s', transform_type);
+% A transform can have several static and dynamic tags which take the form:
+%   <static type="var_type" value="fix_value" />
+%   <dynamic type="var_type" name="var_name" />
+stransform.type = transform.ATTRIBUTE.type;
+stransform.T_wcs_obj = eye(4);
+dyn = 0;
+
+if isfield(transform, 'static')
+    for s = 1:length(transform.static)
+        stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+    end
 end
+
+if isfield(transform, 'dynamic')
+    dyn = length(transform.dynamic);
+    for d = 1:dyn
+        stransform.dynamic.(transform.dynamic{d}.ATTRIBUTE.type) = transform.dynamic{d}.ATTRIBUTE.name;
+    end
+end
+
+% -------------------------------------------------------------------------
+% DEPRECATED
+%
+% switch transform_type
+%     case 'dh'
+%         stransform = parseDH(transform);
+%     case 'affine'
+%         stransform = parseAffine(transform);
+%     otherwise
+%         warning('Encountered a transform type I have never seen before: %s', transform_type);
+% end
+% -------------------------------------------------------------------------
 
 end % End of parseTransform()
 
 % -------------------------------------------------------------------------
-% Parse DH parameters
+% Parse a value
+% -------------------------------------------------------------------------
+function v = parseValue(str)
+v = [];
+n = 0;
+while(~isempty(str))
+    n = n + 1;
+    [token, str] = strtok(str);
+    v(n) = eval(token);
+end
+
+end % End of parseValue()
+
+% -------------------------------------------------------------------------
+% DEPRECATED: Parse DH parameters
 % -------------------------------------------------------------------------
 function stransform = parseDH(transform)
 for n = 1:length(transform.parameter)
