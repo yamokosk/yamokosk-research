@@ -1,4 +1,4 @@
-function ID = CreateBox(SpaceID, length, width, height)
+function ID = dCreateODECCylinder(SpaceID, Radius, Length)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
@@ -22,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-ID = calllib('MODE','mCreateBox', SpaceID, length, width, height);
+ID = calllib('MODE','mCreateCCylinder',SpaceID, Radius, Length);
