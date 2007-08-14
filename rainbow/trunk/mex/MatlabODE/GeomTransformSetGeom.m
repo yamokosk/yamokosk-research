@@ -1,14 +1,4 @@
-function SetGeomPosition(GeomID, pos)
-%SETGEOMPOSITION   Set the position of a geometry object
-%   SETGEOMPOSITION(GEOMID,POS) sets the position of the center of a
-%   geometry object.
-%
-%   Example
-%      space = CreateSimpleSpace(0);
-%      sphere = CreateSphere(space, 5.0);
-%      SetGeomPosition(sphere, [1,2,3]);
-%
-%   See also GETGEOMPOSITION.
+function ID = GeomTransformSetGeom(T,E)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
@@ -32,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-calllib('MODE','mGeomSetPosition',GeomID, pos(1), pos(2), pos(3));
+calllib('MODE','mGeomTransformSetGeom', T,E);

@@ -30,7 +30,7 @@ MODE_API int mCreatePlane (int SID, double a, double b, double c, double d)
 {
 	// Locate the ODE space object from its ID
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	if (SID != 0) mCHECKINT(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 	
 	// Call ODE library
 	dGeomID dGID = dCreatePlane (dSID, a,b,c,d);
@@ -42,14 +42,14 @@ MODE_API int mCreatePlane (int SID, double a, double b, double c, double d)
 MODE_API void mGeomPlaneSetParams (int GID, double a, double b, double c, double d)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomPlaneSetParams(dGID, a,b,c,d);
 }
 
 MODE_API mxArray* mGeomPlaneGetParams (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dVector4 result = {0};
 	dGeomPlaneGetParams(dGID, result);
@@ -64,7 +64,7 @@ MODE_API mxArray* mGeomPlaneGetParams (int GID)
 MODE_API double mGeomPlanePointDepth (int GID, double x, double y, double z)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomCCylinderPointDepth(dGID, x, y, z);
 }
 

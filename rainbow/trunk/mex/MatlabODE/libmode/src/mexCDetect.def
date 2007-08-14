@@ -51,6 +51,15 @@ EXPORTS
 	; TRIMESH FUNCTIONS
 	mCreateTriMesh
 	
+	; TRANSFORM FUNCTIONS
+	mCreateGeomTransform
+	mGeomTransformSetGeom
+	mGeomTransformGetGeom
+	mGeomTransformSetCleanup
+	mGeomTransformGetCleanup
+	mGeomTransformSetInfo
+	mGeomTransformGetInfo
+
 	; COLLIDE FUNCTIONS
 	mSimpleCollide
 	mCollide
@@ -89,4 +98,5 @@ EXPORTS
 	mBodyVectorFromWorld
 
 	; DEBUG FUNCTIONS
-	mDisplayDebugInfo	
+	mDisplayDebugInfo
+	mDisplayDebugWindow

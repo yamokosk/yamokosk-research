@@ -33,19 +33,19 @@ MODE_API void mGeomDestroy (int id)
 MODE_API void mGeomSetBody (int GID, int BID)
 {
 	dGeomID dGID = NULL; dBodyID dBID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
-	mxAssert(gObjManager.get(BID,dBID), "Specified BodyID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(BID,dBID), "Specified BodyID does not exist.");
 	dGeomSetBody(dGID, dBID);
 }
 
 MODE_API int mGeomGetBody (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dBodyID dBID = dGeomGetBody(dGID);
 	
 	int BID = 0;
-	mxAssert(gObjManager.id(BID,dBID), "Returned BodyID does not exist. (Should never happen!)");
+	mCHECKINT(gObjManager.id(BID,dBID), "Returned BodyID does not exist. (Should never happen!)");
 	// TODO: If this assert ever returns an error, the Manager class has lost track 
 	// of an object. Probably need to implement a cleanup/verification between the
 	// manager and ODE
@@ -55,17 +55,25 @@ MODE_API int mGeomGetBody (int GID)
 MODE_API void mGeomSetPosition (int GID, double x, double y, double z)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomSetPosition(dGID, x, y, z);
 }
 
 MODE_API void mGeomSetRotation (int GID, const mxArray* R)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dMatrix3 dR = {0};
-	MEMCPY(dR, mxGetPr(R), 3*3);
+	double *ptr = mxGetPr(R);
+	//MEMCPY(dR, mxGetPr(R), 3*3);
+	int ind = 0;
+	for (int n=0; n < 11; ++n) {
+		if ( (n != 3) && (n != 7) ) {
+			dR[n] = ptr[ind];
+			ind++;
+		}
+	}
 	
 	dGeomSetRotation(dGID, dR);
 }
@@ -73,7 +81,7 @@ MODE_API void mGeomSetRotation (int GID, const mxArray* R)
 MODE_API void mGeomSetQuaternion (int GID, const mxArray* q)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dQuaternion dq = {0};
 	MEMCPY(dq, mxGetPr(q), 4);
@@ -84,7 +92,7 @@ MODE_API void mGeomSetQuaternion (int GID, const mxArray* q)
 MODE_API mxArray* mGeomGetPosition (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	
 	mxArray* mPos = mxCreateDoubleMatrix(3,1,mxREAL);
 	double* pmPos = mxGetPr(mPos);
@@ -99,13 +107,20 @@ MODE_API mxArray* mGeomGetPosition (int GID)
 MODE_API mxArray* mGeomGetRotation (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	
 	mxArray* mR = mxCreateDoubleMatrix(3,3,mxREAL);
-	double* pmR = mxGetPr(mR);
+	double* ptr = mxGetPr(mR);
 
 	const dReal* dR = dGeomGetRotation(dGID);
-	MEMCPY(pmR, dR, 3*3);
+	//MEMCPY(pmR, dR, 3*3);
+	int ind = 0;
+	for (int n=0; n < 11; ++n) {
+		if ( (n != 3) && (n != 7) ) {
+			ptr[ind] = dR[n];
+			ind++;
+		}
+	}
 	
 	return mR;
 }
@@ -113,7 +128,7 @@ MODE_API mxArray* mGeomGetRotation (int GID)
 MODE_API mxArray* mGeomGetQuaternion (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	mxArray* mq = mxCreateDoubleMatrix(4,1,mxREAL);
 	double* pmq = mxGetPr(mq);
@@ -127,7 +142,7 @@ MODE_API mxArray* mGeomGetQuaternion (int GID)
 MODE_API mxArray* mGeomGetAABB (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	mxArray* mAABB = mxCreateDoubleMatrix(6,1,mxREAL);
 	double* pmAABB = mxGetPr(mAABB);
@@ -142,74 +157,74 @@ MODE_API mxArray* mGeomGetAABB (int GID)
 MODE_API int mGeomIsSpace (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomIsSpace(dGID);
 }
 
 MODE_API int mGeomGetSpace (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dSpaceID dSID = dGeomGetSpace(dGID);
 	int SID = 0;
-	mxAssert(gObjManager.id(SID,dSID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.id(SID,dSID), "Specified GeomID does not exist.");
 	return SID;
 }
 
 MODE_API int mGeomGetClass (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomGetClass(dGID);
 }
 
 MODE_API void mGeomSetCategoryBits (int GID, unsigned long bits)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomSetCategoryBits(dGID, bits);
 }
 
 MODE_API void mGeomSetCollideBits (int GID, unsigned long bits)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomSetCollideBits(dGID, bits);
 }
 
 MODE_API unsigned long mGeomGetCategoryBits (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomGetCategoryBits(dGID);
 }
 
 MODE_API unsigned long mGeomGetCollideBits (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomGetCollideBits(dGID);
 }
 
 MODE_API void mGeomEnable (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomEnable(dGID);
 }
 
 MODE_API void mGeomDisable (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomDisable(dGID);
 }
 
 MODE_API int mGeomIsEnabled (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomIsEnabled(dGID);
 }
 

@@ -28,21 +28,21 @@ extern "C" {
 MODE_API int mSimpleSpaceCreate(int ID)
 {
 	dSpaceID dID = NULL;
-	if (ID != 0) mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	if (ID != 0) mCHECKINT(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 	return gObjManager.add(dSimpleSpaceCreate(dID));
 }
 
 MODE_API int mHashSpaceCreate(int ID)
 {
 	dSpaceID dID = NULL;
-	if (ID !=0) mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	if (ID !=0) mCHECKINT(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 	return gObjManager.add(dHashSpaceCreate(dID));
 }
 
 MODE_API int mQuadTreeSpaceCreate(int ID, const mxArray* Center, const mxArray* Extents, int Depth)
 {
 	dSpaceID dID = NULL;
-	if (ID != 0) mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	if (ID != 0) mCHECKINT(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 
 	dVector3 dCenter, dExtents;
 	MEMCPY(dCenter,mxGetPr(Center),3);
@@ -52,20 +52,20 @@ MODE_API int mQuadTreeSpaceCreate(int ID, const mxArray* Center, const mxArray* 
 
 MODE_API void mSpaceDestroy(int ID)
 {
-	mxAssert(gObjManager.destroy(ID), "Specified SpaceID does not exist.");
+	mCHECKVOID(gObjManager.destroy(ID), "Specified SpaceID does not exist.");
 }
 
 MODE_API void mHashSpaceSetLevels (int ID, mHashLevels s)
 {
 	dSpaceID dID = NULL;
-	mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	mCHECKVOID(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 	dHashSpaceSetLevels(dID, s.minLevel, s.maxLevel);
 }
 
 MODE_API mHashLevels* mHashSpaceGetLevels (int ID)
 {
 	dSpaceID dID = NULL;
-	mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	mCHECKNULL(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 		
 	int min, max = 0;
 	dHashSpaceGetLevels(dID, &min, &max);
@@ -85,14 +85,14 @@ MODE_API void mDeallocateHashLevels(mHashLevels* ptr)
 MODE_API void mSpaceSetCleanup (int ID, int mode)
 {
 	dSpaceID dID = NULL;
-	mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	mCHECKVOID(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 	dSpaceSetCleanup(dID, mode);
 }
 
 MODE_API int mSpaceGetCleanup (int ID)
 {
 	dSpaceID dID = NULL;
-	mxAssert(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
+	mCHECKINT(gObjManager.get(ID,dID), "Specified SpaceID does not exist.");
 
 	return dSpaceGetCleanup(dID);
 }
@@ -100,10 +100,10 @@ MODE_API int mSpaceGetCleanup (int ID)
 MODE_API void mSpaceAdd (int SID, int GID)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	mCHECKVOID(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dSpaceAdd(dSID, dGID);
 }
@@ -111,10 +111,10 @@ MODE_API void mSpaceAdd (int SID, int GID)
 MODE_API void mSpaceRemove (int SID, int GID)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	mCHECKVOID(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dSpaceRemove(dSID, dGID);
 }
@@ -122,10 +122,10 @@ MODE_API void mSpaceRemove (int SID, int GID)
 MODE_API int mSpaceQuery (int SID, int GID)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	mCHECKINT(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	return dSpaceQuery(dSID, dGID);
 }
@@ -133,7 +133,7 @@ MODE_API int mSpaceQuery (int SID, int GID)
 MODE_API int mSpaceGetNumGeoms (int SID)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	mCHECKINT(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 
 	return dSpaceGetNumGeoms(dSID);
 }

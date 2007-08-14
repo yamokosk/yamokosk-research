@@ -22,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-calllib('MODE', 'mGeomSetRotation', GeomID, R);
+calllib('MODE', 'mGeomSetRotation', GeomID, R');

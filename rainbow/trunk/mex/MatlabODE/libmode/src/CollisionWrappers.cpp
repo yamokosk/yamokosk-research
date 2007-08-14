@@ -35,8 +35,8 @@ MODE_API bool mSimpleCollide(int ID1, int ID2)
 {
 	// Locate the ODE geom objects from their IDS
 	dGeomID o1 = NULL, o2 = NULL;
-	mxAssert(gObjManager.get(ID1,o1), "Specified GeomID does not exist.");
-	mxAssert(gObjManager.get(ID2,o2), "Specified GeomID does not exist.");
+	mCHECKBOOL(gObjManager.get(ID1,o1), "Specified GeomID does not exist.");
+	mCHECKBOOL(gObjManager.get(ID2,o2), "Specified GeomID does not exist.");
 
 	// Call ODE dCollide
 	dContactGeom dContactPts;
@@ -50,8 +50,8 @@ MODE_API mContactGeom* mCollide(int ID1, int ID2, int flags)
 {
 	// Locate the ODE geom objects from their IDS
 	dGeomID o1 = NULL, o2 = NULL;
-	mxAssert(gObjManager.get(ID1,o1), "Specified GeomID does not exist.");
-	mxAssert(gObjManager.get(ID2,o2), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(ID1,o1), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(ID2,o2), "Specified GeomID does not exist.");
 
 	// Grab lower 16 bits of flags
 	int numDesiredContactPts = (flags & 0x0000FFFF);
@@ -136,7 +136,7 @@ void DetailedCallback(void* data, dGeomID o1, dGeomID o2)
 MODE_API bool mSimpleSpaceCollide(int SID)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	mCHECKBOOL(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 
 	bool bSelfCollision = false;
 	dSpaceCollide (dSID, (void*)&bSelfCollision, SimpleCallback);
@@ -146,7 +146,7 @@ MODE_API bool mSimpleSpaceCollide(int SID)
 MODE_API mxArray* mSpaceCollide(int SID)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	mCHECKNULL(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 
 	PairContainer CollisionPairs;
 	dSpaceCollide (dSID, (void*)&CollisionPairs, DetailedCallback);
@@ -164,7 +164,7 @@ MODE_API mxArray* mSpaceCollide(int SID)
 MODE_API bool mSimpleSpaceCollide2(int SID1, int SID2)
 {
 	dSpaceID dSID1 = NULL, dSID2 = NULL;
-	mxAssert( gObjManager.get(SID1,dSID1) && gObjManager.get(SID2,dSID2), "Specified SpaceID does not exist.");
+	mCHECKBOOL( gObjManager.get(SID1,dSID1) && gObjManager.get(SID2,dSID2), "Specified SpaceID does not exist.");
 
 	bool bSelfCollision = false;
 	dSpaceCollide2((dGeomID)dSID1, (dGeomID)dSID2, (void*)&bSelfCollision, SimpleCallback);
@@ -174,7 +174,7 @@ MODE_API bool mSimpleSpaceCollide2(int SID1, int SID2)
 MODE_API mxArray* mSpaceCollide2(int SID1, int SID2)
 {
 	dSpaceID dSID1 = NULL, dSID2 = NULL;
-	mxAssert( gObjManager.get(SID1,dSID1) && gObjManager.get(SID2,dSID2), "Specified SpaceID does not exist.");
+	mCHECKNULL( gObjManager.get(SID1,dSID1) && gObjManager.get(SID2,dSID2), "Specified SpaceID does not exist.");
 
 	PairContainer CollisionPairs;
 	dSpaceCollide2((dGeomID)dSID1, (dGeomID)dSID2, (void*)&CollisionPairs, DetailedCallback);

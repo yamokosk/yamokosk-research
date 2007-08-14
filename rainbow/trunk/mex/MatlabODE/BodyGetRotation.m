@@ -22,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-R = calllib('MODE', 'mBodyGetRotation', BodyID);
+R = calllib('MODE', 'mBodyGetRotation', BodyID)';

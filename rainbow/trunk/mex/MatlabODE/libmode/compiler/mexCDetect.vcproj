@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libmx.lib libmex.lib libmat.lib ode.lib"
+				AdditionalDependencies="libmx.lib libmex.lib libmat.lib ode.lib drawstuff.lib winmm.lib opengl32.lib glu32.lib"
 				OutputFile="$(OutDir)\$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;D:\usr\bin\ode-0.8\lib\debuglib&quot;"
@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\GeomTransformWrappers.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\GeomTriMeshWrappers.cpp"
 				>
 			</File>
@@ -236,11 +240,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\include\error.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\ODEManager.h"
 				>
 			</File>
 			<File
 				RelativePath="..\include\ODEMatlabAPI.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\resource.h"
 				>
 			</File>
 		</Filter>
@@ -251,6 +263,10 @@
 			>
 			<File
 				RelativePath="C:\Program Files\MATLAB\R2006a\extern\include\mexversion.rc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\resources.rc"
 				>
 			</File>
 		</Filter>

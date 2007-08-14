@@ -1,4 +1,4 @@
-function radius = GetGeomSphereRadius(GeomID)
+function radius = GeomGetSphereRadius(GeomID)
 %GetGeomSphereRadius   Gets the radius of a sphere object
 %   GetGeomSphereRadius(GeomID) gets the radius a sphere geometry object.
 %

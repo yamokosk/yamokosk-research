@@ -143,8 +143,18 @@ MODE_API double mGeomBoxPointDepth (int, double, double, double);
 // Geometry class wrappers - Triangle Mesh
 MODE_API int mCreateTriMesh (int, const mTriMeshData*);
 
+// Geometry transform wrappers
+MODE_API int mCreateGeomTransform (int);
+MODE_API void mGeomTransformSetGeom (int, int);
+MODE_API int mGeomTransformGetGeom (int);
+MODE_API void mGeomTransformSetCleanup (int, int);
+MODE_API int mGeomTransformGetCleanup (int);
+MODE_API void mGeomTransformSetInfo (int, int);
+MODE_API int mGeomTransformGetInfo (int);
+
 // Debug/Testing functions
 MODE_API void mDisplayDebugInfo(void);
+MODE_API void mDisplayDebugWindow(void);
 
 #ifdef __cplusplus
 }

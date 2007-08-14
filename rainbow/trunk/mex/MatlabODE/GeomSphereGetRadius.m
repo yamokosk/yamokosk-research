@@ -1,4 +1,13 @@
-function BodySetRotation(BodyID, R)
+function radius = GeomSphereGetRadius(GeomID)
+%GetGeomSphereRadius   Gets the radius of a sphere object
+%   GetGeomSphereRadius(GeomID) gets the radius a sphere geometry object.
+%
+%   Example
+%      space = CreateSimpleSpace(0);
+%      sphere = CreateSphere(space, 5.0);
+%      radius = GetGeomSphereRadius(sphere)
+%
+%   See also GETGEOMPOSITION.
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
@@ -22,4 +31,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-calllib('MODE', 'mBodySetRotation', BodyID, R');
+radius = calllib('MODE','mGeomSphereGetRadius',GeomID);

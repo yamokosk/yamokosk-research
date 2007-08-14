@@ -30,7 +30,7 @@ extern "C" {
 MODE_API int mCreateTriMesh (int SID, const mTriMeshData* pMeshData)
 {
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified GeomID does not exist.");
+	if (SID != 0) mCHECKINT(gObjManager.get(SID,dSID), "Specified GeomID does not exist.");
 
 	// Create a copy of the incoming data.. ODE is too lazy to do this itself
 	int VertexCount = mxGetN( pMeshData->vertices );

@@ -1,15 +1,4 @@
-function pos = GetGeomPosition(GeomID)
-%GETGEOMPOSITION   Gets the position of a geometry object
-%   GETGEOMPOSITION(GEOMID) gets the position of the center of a
-%   geometry object.
-%
-%   Example
-%      space = CreateSimpleSpace(0);
-%      sphere = CreateSphere(space, 5.0);
-%      SetGeomPosition(sphere, [1,2,3]);
-%      pos = GetGeomPosition(sphere)
-%
-%   See also GETGEOMPOSITION.
+function ID = CreateGeomTransform(SpaceID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
@@ -33,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-pos = calllib('MODE','mGeomGetPosition',GeomID);
+ID = calllib('MODE','mCreateGeomTransform', SpaceID);

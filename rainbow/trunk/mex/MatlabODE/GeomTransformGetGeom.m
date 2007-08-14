@@ -1,4 +1,4 @@
-function BodySetRotation(BodyID, R)
+function ID = GeomTransformGetGeom(T)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
@@ -22,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-calllib('MODE', 'mBodySetRotation', BodyID, R');
+ID = calllib('MODE','mGeomTransformGetGeom', T);

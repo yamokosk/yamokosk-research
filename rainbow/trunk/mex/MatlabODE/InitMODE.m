@@ -17,7 +17,7 @@
 %   ODE is Copyright © 2001-2004 Russell L. Smith. All rights reserved.
 
 if ~libisloaded('MODE')
-    disp('Loading MODE')
+    %disp('Loading MODE')
 	addpath('D:\projects\rainbow\trunk\mex\MatlabODE\libmode\include');
     hfile = 'ODEMatlabAPI.h';
 	loadlibrary('mexCDetect.dll',hfile,'alias','MODE')

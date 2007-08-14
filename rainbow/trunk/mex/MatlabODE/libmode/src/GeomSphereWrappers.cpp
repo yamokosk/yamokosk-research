@@ -29,7 +29,7 @@ MODE_API int mCreateSphere(int SID, double radius)
 {
 	// Locate the ODE space object from its ID
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	if (SID != 0) mCHECKINT(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 	
 	// Call ODE library
 	dGeomID dGID = dCreateSphere (dSID, radius);
@@ -41,21 +41,21 @@ MODE_API int mCreateSphere(int SID, double radius)
 MODE_API void mGeomSphereSetRadius(int GID, double radius)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomSphereSetRadius(dGID, radius);
 }
 
 MODE_API double mGeomSphereGetRadius(int ID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(ID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(ID,dGID), "Specified GeomID does not exist.");
 	return dGeomSphereGetRadius(dGID);
 }
 
 MODE_API double mGeomSpherePointDepth(int ID, double x, double y, double z)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(ID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(ID,dGID), "Specified GeomID does not exist.");
 	return dGeomSpherePointDepth(dGID, x, y, z);
 }
 

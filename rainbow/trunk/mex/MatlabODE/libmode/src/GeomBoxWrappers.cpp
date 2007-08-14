@@ -30,7 +30,7 @@ MODE_API int mCreateBox (int SID, double x, double y, double z)
 {
 	// Locate the ODE space object from its ID
 	dSpaceID dSID = NULL;
-	mxAssert(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
+	if (SID != 0) mCHECKINT(gObjManager.get(SID,dSID), "Specified SpaceID does not exist.");
 	
 	// Call ODE library
 	dGeomID dGID = dCreateBox (dSID, x,y,z);
@@ -42,14 +42,14 @@ MODE_API int mCreateBox (int SID, double x, double y, double z)
 MODE_API void mGeomBoxSetLengths (int GID, double x, double y, double z)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKVOID(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	dGeomBoxSetLengths(dGID, x,y,z);
 }
 
 MODE_API mxArray* mGeomBoxGetLengths (int GID)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKNULL(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 
 	dVector3 result = {0};
 	dGeomBoxGetLengths(dGID, result);
@@ -64,7 +64,7 @@ MODE_API mxArray* mGeomBoxGetLengths (int GID)
 MODE_API double mGeomBoxPointDepth (int GID, double x, double y, double z)
 {
 	dGeomID dGID = NULL;
-	mxAssert(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
+	mCHECKINT(gObjManager.get(GID,dGID), "Specified GeomID does not exist.");
 	return dGeomBoxPointDepth(dGID, x, y, z);
 }
 

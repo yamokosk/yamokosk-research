@@ -41,11 +41,15 @@
 function scene = loadScene(filename)
 xmlstr=fileread(filename);
 scene_node = xml_parseany(xmlstr);
-scene.units = '';
+scene.lunitsratio = 1;
+scene.runitsratio = 1;
 
 if isfield(scene_node, 'ATTRIBUTE')
-    if isfield(scene_node.ATTRIBUTE, 'units')
-        scene.units = scene_node.ATTRIBUTE.units;
+    if isfield(scene_node.ATTRIBUTE, 'lunits')
+        scene.lunitsratio = unitsratio('in',scene_node.ATTRIBUTE.lunits);
+    end
+    if isfield(scene_node.ATTRIBUTE, 'runits')
+        scene.runitsratio = unitsratio('rad',scene_node.ATTRIBUTE.runits);
     end
 end
 
@@ -61,8 +65,7 @@ scene.num_variables = d;
 % Scene is loaded from XML data.. now need to make all data relative to WCS
 %scene = postProcess(scene);
 % -------------------------------------------------------------------------
-
-end
+end % End loadScene()
 
 % -------------------------------------------------------------------------
 % Parse a space
@@ -77,12 +80,12 @@ if isfield(space, 'ATTRIBUTE')
 end
 
 dyn = 0;
-for n = 1:length(space.body) 
+for n = 1:length(space.body)
     [sspace.body{n}, d] = parseBody(space.body{n});
     dyn = d + dyn;
 end
 
-end
+end % End parseSpace
 
 % -------------------------------------------------------------------------
 % Parse a body
@@ -111,7 +114,7 @@ if isfield(body, 'geometry')
     end
 end
 
-end
+end % End parseBody()
 
 % -------------------------------------------------------------------------
 % Parse a geom
@@ -137,10 +140,11 @@ end
 
 if isfield(geom, 'parameter')
     for n=1:length(geom.parameter)
-        sgeom.(geom.parameter{n}.ATTRIBUTE.type) = eval(geom.parameter{n}.ATTRIBUTE.value);
+        % HACK ALERT!!! - UNITS CRAP
+        sgeom.(geom.parameter{n}.ATTRIBUTE.type) = eval(geom.parameter{n}.ATTRIBUTE.value)*unitsratio('in','mm');
     end
-end 
 end
+end % End parseGeom()
 
 % -------------------------------------------------------------------------
 % Parse a transform
@@ -156,7 +160,26 @@ dyn = 0;
 
 if isfield(transform, 'static')
     for s = 1:length(transform.static)
-        stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+        switch (transform.static{s}.ATTRIBUTE.type)
+            case 'translation' % HACK ALERT - CRAPPY CODE AHEAD.. need to fix the units problem
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = unitsratio('in','mm') * parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'r123'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'r321'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'r312'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'link_length'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = unitsratio('in','mm') * parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'joint_offset'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = unitsratio('in','mm') * parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'twist_angle'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'joint_angle'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 'joint_angle_offset'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);          
+        end
     end
 end
 
@@ -167,18 +190,18 @@ if isfield(transform, 'dynamic')
     end
 end
 
-% -------------------------------------------------------------------------
-% DEPRECATED
-%
-% switch transform_type
-%     case 'dh'
-%         stransform = parseDH(transform);
-%     case 'affine'
-%         stransform = parseAffine(transform);
-%     otherwise
-%         warning('Encountered a transform type I have never seen before: %s', transform_type);
-% end
-% -------------------------------------------------------------------------
+    % -------------------------------------------------------------------------
+    % DEPRECATED
+    %
+    % switch transform_type
+    %     case 'dh'
+    %         stransform = parseDH(transform);
+    %     case 'affine'
+    %         stransform = parseAffine(transform);
+    %     otherwise
+    %         warning('Encountered a transform type I have never seen before: %s', transform_type);
+    % end
+    % ---------------------------------------------------------------------
 
 end % End of parseTransform()
 
@@ -198,41 +221,41 @@ end % End of parseValue()
 
 % -------------------------------------------------------------------------
 % DEPRECATED: Parse DH parameters
+% % -------------------------------------------------------------------------
+% function stransform = parseDH(transform)
+% for n = 1:length(transform.parameter)
+%     stransform.(transform.parameter{n}.ATTRIBUTE.type) = eval(transform.parameter{n}.ATTRIBUTE.value);
+% end
+%
+% end % End of parseDH()
+
 % -------------------------------------------------------------------------
-function stransform = parseDH(transform)
-for n = 1:length(transform.parameter)
-    stransform.(transform.parameter{n}.ATTRIBUTE.type) = eval(transform.parameter{n}.ATTRIBUTE.value);
-end
-
-end % End of parseDH()
-
+% DEPRECATED: Parse relative transformation
 % -------------------------------------------------------------------------
-% Parse relative transformation
-% -------------------------------------------------------------------------
-function stransform = parseRelative(transform)
-
-for j = 1:length(transform.parameter)
-    switch(transform.parameter{j}.ATTRIBUTE.type)
-        case 'translation'
-            str = transform.parameter{j}.ATTRIBUTE.value;
-            p = zeros(3,1);
-            for n=1:3
-                if isempty(str), warning('Translation vector must have three elements: %s', transform.parameter{j}.ATTRIBUTE.value); end;
-                [token, str] = strtok(str);
-                p(n) = eval(token);
-            end
-            stransform.(transform.parameter{j}.ATTRIBUTE.type) = p;
-        case 'rotation'
-            % Get angle if it exists
-            str = transform.parameter{j}.ATTRIBUTE.value;
-            m = zeros(4,1);
-            for n=1:4
-                if isempty(str), warning('Rotation axis vector must have three elements: %s', transform.parameter{j}.ATTRIBUTE.value); end;
-                [token, str] = strtok(str);
-                m(n) = eval(token);
-            end
-            stransform.(transform.parameter{j}.ATTRIBUTE.type) = m;
-    end
-end
-
-end
+% function stransform = parseRelative(transform)
+%
+% for j = 1:length(transform.parameter)
+%     switch(transform.parameter{j}.ATTRIBUTE.type)
+%         case 'translation'
+%             str = transform.parameter{j}.ATTRIBUTE.value;
+%             p = zeros(3,1);
+%             for n=1:3
+%                 if isempty(str), warning('Translation vector must have three elements: %s', transform.parameter{j}.ATTRIBUTE.value); end;
+%                 [token, str] = strtok(str);
+%                 p(n) = eval(token);
+%             end
+%             stransform.(transform.parameter{j}.ATTRIBUTE.type) = p;
+%         case 'rotation'
+%             % Get angle if it exists
+%             str = transform.parameter{j}.ATTRIBUTE.value;
+%             m = zeros(4,1);
+%             for n=1:4
+%                 if isempty(str), warning('Rotation axis vector must have three elements: %s', transform.parameter{j}.ATTRIBUTE.value); end;
+%                 [token, str] = strtok(str);
+%                 m(n) = eval(token);
+%             end
+%             stransform.(transform.parameter{j}.ATTRIBUTE.type) = m;
+%     end
+% end
+%
+% end
