@@ -1,4 +1,4 @@
-function GeomPlaneSetParams(GeomID, v)
+function dGeomPlaneSetParams(GeomID, v)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

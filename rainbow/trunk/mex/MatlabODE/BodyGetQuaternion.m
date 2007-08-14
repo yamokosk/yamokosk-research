@@ -1,4 +1,4 @@
-function q = BodyGetQuaternion(BodyID)
+function q = dBodyGetQuaternion(BodyID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function p = BodyGetPosRelPoint(BodyID, pnt)
+function p = dBodyGetPosRelPoint(BodyID, pnt)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

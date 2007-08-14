@@ -1,4 +1,4 @@
-function HashSpaceSetLevels(SpaceID, minlevel, maxlevel)
+function dHashSpaceSetLevels(SpaceID, minlevel, maxlevel)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

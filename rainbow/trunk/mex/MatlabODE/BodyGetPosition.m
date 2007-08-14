@@ -1,4 +1,4 @@
-function pos = BodyGetPosition(BodyID)
+function pos = dBodyGetPosition(BodyID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

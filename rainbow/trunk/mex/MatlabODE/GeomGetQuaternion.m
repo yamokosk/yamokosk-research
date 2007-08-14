@@ -1,4 +1,4 @@
-function q = GeomGetQuaternion(GeomID)
+function q = dGeomGetQuaternion(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

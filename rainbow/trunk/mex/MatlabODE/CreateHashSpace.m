@@ -1,4 +1,4 @@
-function NewSpaceID = CreateHashSpace(SpaceID)
+function NewSpaceID = dCreateHashSpace(SpaceID)
 %CreateHashSpace   Creates a space object
 %   CreateHashSpace(SpaceID) This space uses an internal data structure 
 %   that records how each geom overlaps cells in one of several three 

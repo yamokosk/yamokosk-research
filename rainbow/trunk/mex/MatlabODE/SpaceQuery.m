@@ -1,4 +1,4 @@
-function GeomInSpace = SpaceQuery(SpaceID, GeomID)
+function GeomInSpace = dSpaceQuery(SpaceID, GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function GeomID = CreateTriMesh(SpaceID, v, ind)
+function GeomID = dCreateTriMesh(SpaceID, v, ind)
 %CreateTriMesh   Create a triangle mesh object
 %   CreateTriMesh creates a triangle mesh geometry object from specified
 %   vertices and the vertex face indices.

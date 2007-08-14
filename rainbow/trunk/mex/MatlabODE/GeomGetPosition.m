@@ -1,4 +1,4 @@
-function pos = GeomGetPosition(GeomID)
+function pos = dGeomGetPosition(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

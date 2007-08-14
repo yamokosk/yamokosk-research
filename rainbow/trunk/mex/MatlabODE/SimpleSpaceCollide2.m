@@ -1,4 +1,4 @@
-function inCollision = SimpleSpaceCollide2(SpaceID1, SpaceID2)
+function inCollision = dSimpleSpaceCollide2(SpaceID1, SpaceID2)
 %SimpleSpaceCollide2   Checks for collision between two spaces
 %   SimpleSpaceCollide2(SpaceID1, SpaceID2) checks for collisions between
 %   two spaces. It simply returns a TRUE or FALSE value if a collision is 

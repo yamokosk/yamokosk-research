@@ -1,4 +1,4 @@
-function GeomCCylinderSetParams(GeomID, Radius, Length)
+function dGeomCCylinderSetParams(GeomID, Radius, Length)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

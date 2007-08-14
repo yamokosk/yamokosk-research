@@ -1,4 +1,4 @@
-function GeomBoxSetLengths(GeomID, legnth, width, height)
+function dGeomBoxSetLengths(GeomID, legnth, width, height)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

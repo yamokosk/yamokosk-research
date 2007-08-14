@@ -1,4 +1,4 @@
-function inCollision = SimpleCollide(ID1, ID2)
+function inCollision = dSimpleCollide(ID1, ID2)
 %SIMPLECOLLIDE   Check for collision between to geometry objects
 %   SIMPLECOLLIDE(ID1,ID2) checks for collision between two ODE geometry 
 %   objects specified by ID1 and ID2. It returns a simple boolean value, 

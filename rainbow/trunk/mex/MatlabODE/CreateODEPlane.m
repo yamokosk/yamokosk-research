@@ -1,4 +1,4 @@
-function ID = CreateODEPlane(SpaceID, v)
+function ID = dCreatePlane(SpaceID, v)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function BodySetQuaternion(BodyID, q)
+function dBodySetQuaternion(BodyID, q)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

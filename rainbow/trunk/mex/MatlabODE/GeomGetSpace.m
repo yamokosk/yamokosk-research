@@ -1,4 +1,4 @@
-function SpaceID = GeomGetSpace(GeomID)
+function SpaceID = dGeomGetSpace(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

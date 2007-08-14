@@ -1,4 +1,4 @@
-function params = GeomPlaneGetParams(GeomID)
+function params = dGeomPlaneGetParams(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

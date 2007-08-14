@@ -1,4 +1,4 @@
-function depth = GeomCCylinderPointDepth(GeomID, pt)
+function depth = dGeomCCylinderPointDepth(GeomID, pt)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

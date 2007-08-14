@@ -1,4 +1,4 @@
-function ID = GeomTransformSetGeom(T,E)
+function ID = dGeomTransformSetGeom(T,E)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

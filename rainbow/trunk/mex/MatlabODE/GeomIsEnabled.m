@@ -1,4 +1,4 @@
-function IsEnabled = GeomIsEnabled(GeomID)
+function IsEnabled = dGeomIsEnabled(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

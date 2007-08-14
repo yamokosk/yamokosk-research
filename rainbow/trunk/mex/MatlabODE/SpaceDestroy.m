@@ -1,4 +1,4 @@
-function SpaceDestroy(SpaceID)
+function dSpaceDestroy(SpaceID)
 %SpaceDestroy   Destroys a space object
 %   SpaceDestroy(SpaceID) destroys a space object and all geoms contained
 %   within it.

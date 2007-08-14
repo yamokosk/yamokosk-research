@@ -1,4 +1,4 @@
-function depth = GeomPlanePointDepth(GeomID, pt)
+function depth = dGeomPlanePointDepth(GeomID, pt)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

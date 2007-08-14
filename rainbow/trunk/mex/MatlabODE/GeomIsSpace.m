@@ -1,4 +1,4 @@
-function IsSpace = GeomIsSpace(GeomID)
+function IsSpace = dGeomIsSpace(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

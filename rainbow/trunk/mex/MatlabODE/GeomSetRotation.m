@@ -1,4 +1,4 @@
-function GeomSetRotation(GeomID, R)
+function dGeomSetRotation(GeomID, R)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

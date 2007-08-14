@@ -1,4 +1,4 @@
-function CollisionPairs = SpaceCollide2(SpaceID1, SpaceID2)
+function CollisionPairs = dSpaceCollide2(SpaceID1, SpaceID2)
 %SpaceCollide2   Checks for collision between two spaces
 %   SpaceCollide2(SpaceID1, SpaceID2) checks for collisions between
 %   two spaces. It returns all the pairs of geom IDs which are in

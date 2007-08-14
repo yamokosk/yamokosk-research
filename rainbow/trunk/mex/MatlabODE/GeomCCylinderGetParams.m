@@ -1,4 +1,4 @@
-function [r, len] = GeomCCylinderGetParams(GeomID)
+function [r, len] = dGeomCCylinderGetParams(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

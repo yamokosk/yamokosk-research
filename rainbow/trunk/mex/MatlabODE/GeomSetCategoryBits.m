@@ -1,4 +1,4 @@
-function GeomSetCategoryBits(GeomID, bits)
+function dGeomSetCategoryBits(GeomID, bits)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function NewSpaceID = CreateSimpleSpace(SpaceID)
+function NewSpaceID = dCreateSimpleSpace(SpaceID)
 %CreateSimpleSpace   Creates a space object
 %   CreateSimpleSpace(SpaceID) creates a space which does not do any 
 %   collision culling - it simply checks every possible pair of geoms for 

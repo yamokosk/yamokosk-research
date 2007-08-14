@@ -1,4 +1,4 @@
-function SpaceAdd(SpaceID, GeomID)
+function dSpaceAdd(SpaceID, GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

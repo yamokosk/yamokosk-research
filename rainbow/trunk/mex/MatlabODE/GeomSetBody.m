@@ -1,4 +1,4 @@
-function GeomSetBody(GeomID, BodyID)
+function dGeomSetBody(GeomID, BodyID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

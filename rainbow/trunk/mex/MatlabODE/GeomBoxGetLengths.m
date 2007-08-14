@@ -1,4 +1,4 @@
-function params = GeomBoxGetLengths(GeomID)
+function params = dGeomBoxGetLengths(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function GeomClass = GeomGetClass(GeomID)
+function GeomClass = dGeomGetClass(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function R = GeomGetRotation(GeomID)
+function R = dGeomGetRotation(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

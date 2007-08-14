@@ -1,4 +1,4 @@
-function v = BodyVectorFromWorld(BodyID, vec)
+function v = dBodyVectorFromWorld(BodyID, vec)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

@@ -1,4 +1,4 @@
-function [pos, normal, depth] = Collide2(ID1, ID2, NumContactPts)
+function [pos, normal, depth] = dCollide2(ID1, ID2, NumContactPts)
 %COLLIDE2   Check for collision between to geometry objects
 %   COLLIDE2(ID1,ID2, NUMCONTACTPTS) checks for collision between two ODE 
 %   geometry objects specified by ID1 and ID2. It returns the position, 

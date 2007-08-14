@@ -1,4 +1,4 @@
-function NewSpaceID = CreateQuadTreeSpace(SpaceID, center, extents, depth)
+function NewSpaceID = dCreateQuadTreeSpace(SpaceID, center, extents, depth)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

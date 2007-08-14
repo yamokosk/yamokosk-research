@@ -1,4 +1,4 @@
-function BodyID = GeomGetBody(GeomID)
+function BodyID = dGeomGetBody(GeomID)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 

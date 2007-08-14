@@ -1,4 +1,4 @@
-function GeomSetPosition(GeomID, pos)
+function dGeomSetPosition(GeomID, pos)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
