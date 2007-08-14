@@ -313,14 +313,20 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 	<space name="Human">
 		<body name="osmi_ref" base="world">
 			<transform type="affine">
-				<static type="r123" value="0 0 -pi/2" />
+				<static type="r123" value="0 0 pi/2" />
 			</transform>
 		</body>
 		
-		<body name="pelvis" base="osmi_ref">
+		<body name="hroot" base="osmi_ref">
 			<transform type="affine">
 				<dynamic type="translation" name="pelvis_trans" />
 				<dynamic type="r123" name="pelvis_rot" />
+			</transform>
+		</body>
+		
+		<body name="pelvis" base="hroot">
+			<transform type="affine">
+				<static type="r123" value="0 0 pi" />
 			</transform>
 		</body>
 

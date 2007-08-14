@@ -1,14 +1,17 @@
 function scene = drawScene(scene)
 
 if isfield(scene, 'disp')
-    if ~ishandle(scene.disp) 
+    if ~ishandle(scene.disp.fig) 
         disp = createWindow();
     else
         disp = scene.disp;
+        figure(disp.fig);
     end
 else
     disp = createWindow();
 end
+
+set(gcf, 'CurrentAxes', disp.GLAxes);
 
 for n = 1:length(scene.space) % For all the spaces
     for b = 1:length(scene.space{n}.body) % For all the bodies
@@ -31,76 +34,83 @@ for n = 1:length(scene.space) % For all the spaces
                 % Geoms are set and forget.. only bodies get updated.
                 if isfield(geom, 'id')
                     idGeom = geom.id;
-                    gclass = GeomGetClass(idGeom);
-                    R = GeomGetRotation(idGeom);
-                    pos = GeomGetPosition(idGeom);
-                    T = eye(4); T(1:3,1:3) = R; T(1:3,4) = pos;
+                    [fv,color] = createGeom(geom);
                     
-                    switch (gclass)
-                        case 0 % Sphere
-                            r = GeomSphereGetRadius(idGeom);
-                            idGeom = createSphere(idSpaceTemp, geom.radius, geom.length);
-                        case 1 % Box
-                            idGeom = CreateSphere(idSpaceTemp, geom.radius);
-                        case 2 % Capsule
-                            idGeom = CreateBox(idSpaceTemp, geom.length, geom.width, geom.height);
-                        case 3 % Plane
-                            idGeom = CreatePlane(idSpaceTemp, [geom.normal_x,geom.normal_y,geom.normal_z,geom.d]);
-                            scene.space{n}.body{b}.geometry{g}.id = idGeom;
-                            break;
-                        case 4 % Transform
-                        otherwise
-                            warning('%s is an unrecognized geometry type', geom.type);
-                    end
-                   
-                    % Create relative transform if we need to
-                    if isfield(geom, 'transform')
-                        T_body_geom = computeTransform(geom.transform);
-                        GeomSetPosition(idGeom, T_body_geom(1:3,4));
-                        GeomSetRotation(idGeom, T_body_geom(1:3,1:3));
-
-                        idTrans = CreateGeomTransform(idSpace);
-                        GeomTransformSetGeom(idTrans, idGeom);
-                        GeomSetBody(idTrans, idBody); % Allows us to set and forget geoms... 
-
-                        % Update structure
-                        scene.space{n}.body{b}.geometry{g}.transform.id = idTrans;
+                    if isfield(geom, 'ghandle')
+                        if ishandle(geom.ghandle)
+                            set(geom.ghandle, 'Vertices', fv.vertices);
+                        else
+                            warning([geom.name ' did not have a valid handle.']);
+                        end                            
                     else
-                        GeomSetBody(idGeom, idBody); % Allows us to set and forget geoms...
+                        scene.space{n}.body{b}.geometry{g}.ghandle = ...
+                            patch(fv, 'FaceColor', color);
                     end
-
-                    % Update structure
-                    scene.space{n}.body{b}.geometry{g}.id = idGeom;
-                end % End if ~isfield(geom,'id')             
+                    
+                end
             end
         end
-
-        % Set body pos/rotation
-        BodySetRotation(idBody, T_wcs_obj(1:3,1:3));
-        BodySetPosition(idBody, T_wcs_obj(1:3,4));
-        
-        % Update structure
-        scene.space{n}.body{b}.T_wcs_obj = T_wcs_obj;
-        scene.space{n}.body{b}.id = idBody;
     end
 
     % Update structure
-    scene.space{n}.id = idSpace;
+    scene.disp = disp;
 end
 
+end % End drawScene()
+
+
+function [fv, c] = createGeom(geom)
+id = geom.id;
+gclass = dGeomGetClass(id);
+
+% Quickly handle if it is a plane
+if (gclass == 4) % Plane
+    fv = createPlane([-60, 60, -72, 72], dGeomPlaneGetParams(id));
+    c = [0,0,1];
+    return;
 end
+
+T = eye(4);
+T(1:3,1:3) = dGeomGetRotation(id);
+T(1:3,4) = dGeomGetPosition(id);
+
+if isfield(geom, 'transform')
+    % Must get the transform's t-matrix
+    T_wcs_trans = eye(4);
+    T_wcs_trans(1:3,1:3) = dGeomGetRotation(geom.transform.id);
+    T_wcs_trans(1:3,4) = dGeomGetPosition(geom.transform.id);
+    T = T_wcs_trans * T;
+end
+
+switch (gclass)
+    case 0 % Sphere
+        fv = createSphere(T, dGeomSphereGetRadius(id));
+        c = [1,0,0];
+    case 1 % Box
+        fv = createBox(T, dGeomBoxGetLengths(id));
+        c = [1,1,0];
+    case 2 % Capsule
+        [r, len] = dGeomCCylinderGetParams(id);
+        fv = createCapsule(T, len, r);
+        c = [0,1,0];
+     otherwise
+        warning([geom.type ' is an unrecognized geometry type']);
+end
+end % End of drawGeom()
+
 
 function disp = createWindow()
-disp.fig = figure('Renderer', 'OpenGL');
+disp.fig = figure('Position', [50, 50, 1024, 768], 'Renderer', 'OpenGL');
 
 % X-Y trajectory
-fig.XYaxes = axes('position',           [.1  .7  .8  .2]);
+%fig.XYAxes = axes('position',           [.1  .7  .8  .2]);
 
 % Scene axes
-disp.glaxes = axes('position',          [.1  .1  .8  .6], ...
-                   'CameraPosition',    [36,60,48], ...
+disp.GLAxes = axes('DataAspectRatio',   [1, 1, 1], ...
+                   'CameraPosition',    [12,60,36], ...
                    'CameraTarget',      [0,0,24], ...
                    'CameraUpVector',    [0,0,1], ...
-                   'GridLineStyle',     '--');
+                   'Visible',           'off');
+grid on;
                
 end % End createWindow()

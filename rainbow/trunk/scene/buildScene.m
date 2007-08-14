@@ -8,7 +8,7 @@ end
 
 for n = 1:length(scene.space)
 	if isfield(scene.space{n},'id') idSpace = scene.space{n}.id;
-    else idSpace = CreateHashSpace(0); end
+    else idSpace = dCreateHashSpace(0); end
 
     for b = 1:length(scene.space{n}.body)
         body = scene.space{n}.body{b};
@@ -24,7 +24,7 @@ for n = 1:length(scene.space)
 
         % Create body in ODE if we have to
         if isfield(body,'id') idBody = body.id;
-        else idBody = CreateBody(); end
+        else idBody = dCreateBody(); end
                 
         % Build the geoms
         if isfield(body,'geometry')
@@ -40,13 +40,13 @@ for n = 1:length(scene.space)
 
                     switch (geom.type)
                         case 'ccylinder'
-                            idGeom = CreateCCylinder(idSpaceTemp, geom.radius, geom.length);
+                            idGeom = dCreateCCylinder(idSpaceTemp, geom.radius, geom.length);
                         case 'sphere'
-                            idGeom = CreateSphere(idSpaceTemp, geom.radius);
+                            idGeom = dCreateSphere(idSpaceTemp, geom.radius);
                         case 'box'
-                            idGeom = CreateBox(idSpaceTemp, geom.length, geom.width, geom.height);
+                            idGeom = dCreateBox(idSpaceTemp, geom.length, geom.width, geom.height);
                         case 'plane'
-                            idGeom = CreatePlane(idSpaceTemp, [geom.normal_x,geom.normal_y,geom.normal_z,geom.d]);
+                            idGeom = dCreatePlane(idSpaceTemp, [geom.normal_x,geom.normal_y,geom.normal_z,geom.d]);
                             scene.space{n}.body{b}.geometry{g}.id = idGeom;
                             break;
                         otherwise
@@ -56,17 +56,18 @@ for n = 1:length(scene.space)
                     % Create relative transform if we need to
                     if isfield(geom, 'transform')
                         T_body_geom = computeTransform(geom.transform);
-                        GeomSetPosition(idGeom, T_body_geom(1:3,4));
-                        GeomSetRotation(idGeom, T_body_geom(1:3,1:3));
+                        dGeomSetPosition(idGeom, T_body_geom(1:3,4));
+                        dGeomSetRotation(idGeom, T_body_geom(1:3,1:3));
 
-                        idTrans = CreateGeomTransform(idSpace);
-                        GeomTransformSetGeom(idTrans, idGeom);
-                        GeomSetBody(idTrans, idBody); % Allows us to set and forget geoms... 
-
+                        idTrans = dCreateGeomTransform(idSpace);
+                        dGeomTransformSetGeom(idTrans, idGeom);
+                        dGeomSetBody(idTrans, idBody); % Allows us to set and forget geoms... 
+                        %dGeomTransformSetInfo(idTrans, 1);
+                        
                         % Update structure
                         scene.space{n}.body{b}.geometry{g}.transform.id = idTrans;
                     else
-                        GeomSetBody(idGeom, idBody); % Allows us to set and forget geoms...
+                        dGeomSetBody(idGeom, idBody); % Allows us to set and forget geoms...
                     end
 
                     % Update structure
@@ -76,8 +77,8 @@ for n = 1:length(scene.space)
         end
 
         % Set body pos/rotation
-        BodySetRotation(idBody, T_wcs_obj(1:3,1:3));
-        BodySetPosition(idBody, T_wcs_obj(1:3,4));
+        dBodySetRotation(idBody, T_wcs_obj(1:3,1:3));
+        dBodySetPosition(idBody, T_wcs_obj(1:3,4));
         
         % Update structure
         scene.space{n}.body{b}.T_wcs_obj = T_wcs_obj;
