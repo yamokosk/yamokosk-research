@@ -1,13 +1,4 @@
-function radius = GeomGetSphereRadius(GeomID)
-%GetGeomSphereRadius   Gets the radius of a sphere object
-%   GetGeomSphereRadius(GeomID) gets the radius a sphere geometry object.
-%
-%   Example
-%      space = CreateSimpleSpace(0);
-%      sphere = CreateSphere(space, 5.0);
-%      radius = GetGeomSphereRadius(sphere)
-%
-%   See also GETGEOMPOSITION.
+function ID = CreateODEPlane(SpaceID, v)
 
 %   MODE (MATLAB interface to ODE) is Copyright (C) 2007 John Yamokoski
 % 
@@ -31,4 +22,4 @@ if ~libisloaded('MODE')
 	error('Collision detection library is not currently loaded!');
 end
 
-radius = calllib('MODE','mGeomSphereGetRadius',GeomID);
+ID = calllib('MODE','mCreatePlane', SpaceID, v(1), v(2), v(3), v(4));

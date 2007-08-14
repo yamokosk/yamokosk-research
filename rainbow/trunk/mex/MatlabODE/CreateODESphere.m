@@ -1,4 +1,4 @@
-function ID = CreateSphere(SpaceID, Radius)
+function ID = CreateODESphere(SpaceID, Radius)
 %CREATESPHERE   Create a sphere geometry object
 %   CREATESPHERE(SPACEID,RADIUS) creates a sphere geometry object inside
 %   the space defined by SPACEID with a radius defined by RADIUS.
