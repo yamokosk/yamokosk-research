@@ -1,16 +1,12 @@
-function ds = union_set(ds,c,n)
+function ds = union_set(ds,to,from)
+% Inputs
+%   ds - class object
+%   c,n - two objects we will place in the same set
 % pull out data we are going to combine
-[a,inda] = find_set(ds,c);
-[b,indb] = find_set(ds,n);
-len = length(ds);
-otherind = setxor(1:len,[inda,indb]);
-othersets = ds.sets(otherind);
+tosetID = find_ind(ds,to);
+[fromset,fromsetID] = find_set(ds,from);
 
-% create new set
-newset = union(a,b);
-
-% redefine ds struct
-ds.sets = othersets;
-ds.sets{end+1} = newset;
-
+% Move b,indb into a,inda
+ds.sets(fromset, tosetID) = 1;
+ds.sets(fromset, fromsetID) = 0;
 end % END UNION_SET

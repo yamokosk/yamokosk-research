@@ -2,11 +2,12 @@ function ds = disjointset(a)
 %DISJOINTSET Disjoint set class constructor.
 %   ds = DISJOINTSET(v) creates a disjoint set from the vector v.
 if nargin == 0
-   ds.sets = {};
+   ds.sets = [];
    ds = class(ds,'disjointset');
 elseif isa(a,'disjointset')
    ds = a;
 else
-   ds.sets = num2cell([1:a]');
+   v =
+   ds.sets = sparse(diag(ones(a,1)));
    ds = class(ds,'disjointset');
 end

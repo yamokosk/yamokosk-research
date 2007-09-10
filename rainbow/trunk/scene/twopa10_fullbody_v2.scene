@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Standard DH notation 
+A	= [0,		450,		0,		0,		0,		0	];	% link length
+alpha	= [-pi/2,	0,		pi/2,		-pi/2,	pi/2,		0	];	% link twist angle
+D	= [317,	0,		0,		480,		0,		70	];	% link offset distance
+theta	= [0,		0,		0,		0,		0,		0	];	% link rotation angle
+offset= [0,		-pi/2,	pi/2,		0,		0,		0	];	% offset for theta (for zero-transform)
+rx	= [0,		-321,		0,		0,		0,		0	];	% CG
+ry	= [117,	-30,		0,		112.2,	0,		0	];
+rz	= [0,		0,		48.5,		0,		-42,		-48	];
+
+Modified DH notation
+A	= [0,		450,		0,		0,	 	0,		0	];	% link length
+alpha	= [0, 		-pi/2,	0,		pi/2,		-pi/2,	pi/2	];	% link twist angle
+D	= [317,	0,		0,		480,		0,		70	];	% link offset distance
+theta	= [0,		0,		0,		0,		0,		0	];	% link rotation angle
+offset= [0,		-pi/2,	pi/2,		0,		0, 		0	];	% offset for theta (for zero-transform)
+rx	= [0,		129,		0,		0,		0,		0	];	% CG
+ry	= [0,		-30,		-48.5,	0,		42,		0	];
+rz	= [-178.5,	0,		0,		-112.2,	0,		-48	];
+
+REMEMBER
+T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
+-->
+
+<scenedescription lunits="mm" runits="rad">
+	<models>
+		<model name="PA10" type="SerialLinkMechanism">
+			<body name="Link1" parent="ROOT">
+				<mass value="" x="0" y="0.117" z="0" />
+				<inertia Ixx="0.1307578" Ixy="-0.00000001" Ixz="-0.00000001" Iyy="0.1068218" Iyz="-0.00000002" Izz="0.0528003" />
+				<joint name="q1" type="hinge">
+					<parameter type="min" value="0" />
+					<parameter type="max" value="0" />
+					<parameter type="columbfric" value="0" />
+					<parameter type="dynfric" value="0" />
+				</joint>
+				<transform type="dh">
+					<link_length value="0" />
+					<twist_angle value="0" />
+					<joint_offset value="317" />
+					<joint_angle value="0" />
+					<joint_angle_offset value="0" />
+				</transform>
+				<geometry type="ccylinder">
+					<parameter type="length" value="388.5-2*130"/>
+					<parameter type="radius" value="130"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -122.75"/>
+					</transform>
+				</geometry>
+			</body>
+			<body name="Link2" parent="Link1">
+				<mass value="" x="0" y="0.117" z="0" />
+				<inertia Ixx="0.1307578" Ixy="-0.00000001" Ixz="-0.00000001" Iyy="0.1068218" Iyz="-0.00000002" Izz="0.0528003" />
+				<joint name="q1" type="hinge">
+					<parameter type="min" value="0" />
+					<parameter type="max" value="0" />
+				</joint>
+				<transform type="dh">
+					<link_length value="0" />
+					<twist_angle value="0" />
+					<joint_offset value="317" />
+					<joint_angle value="0" />
+					<joint_angle_offset value="0" />
+				</transform>
+				<geometry type="ccylinder">
+					<parameter type="length" value="388.5-2*130"/>
+					<parameter type="radius" value="130"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -122.75"/>
+					</transform>
+				</geometry>
+			</body>
+			<body name="Link3" parent="Link2">
+				<mass value="0" />
+				<inertia />
+			</body>
+			<body name="Link4" parent="Link3">
+				<mass value="0" />
+				<inertia />
+			</body>
+			<body name="Link5" parent="Link4">
+				<mass value="0" />
+				<inertia />
+			</body>
+			<body name="Link6" parent="Link5">
+				<mass value="0" />
+				<inertia />
+			</body>
+			<body name="Link7" parent="Link6">
+				<mass value="0" />
+				<inertia />
+			</body>
+			<body name="Payload" parent="Link7">
+				<mass value="0" />
+				<inertia />
+			</body>
+		</model>
+		<model name="Human" type="Humanoid">
+			<body name="pelvis" parent="ROOT">
+				<joint name="p" type="free"/>
+				<transform type="affine">
+					<static type="r123" value="0 0 pi/2" />
+					<dynamic type="translation" name="pelvis_trans" />
+					<dynamic type="r123" name="pelvis_rot" />
+				</transform>
+			</body>
+
+			<body name="rthigh" parent="pelvis">
+				<joint name="rhip" type="ball">
+					<anchor/>
+				</joint>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="440.8-2*83.5"/>
+					<parameter type="radius" value="83.5"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -432/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="rleg" parent="rthigh">
+				<transform type="affine">
+					<static type="translation" value="0 0 -440.8" />
+					<dynamic type="t123" name="rknee"  />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="442.6-2*62.7"/>
+					<parameter type="radius" value="62.7"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -434/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="rfoot" parent="rleg">
+				<transform type="affine">
+					<static type="translation" value="0 0 -442.6" />
+					<dynamic type="t123" name="rankle"  />
+				</transform>
+				<geometry type="box" name="box01" >
+					<parameter type="length" value="99"/>
+					<parameter type="width" value="68.8"/>
+					<parameter type="height" value="273"/>
+					<transform type="affine">
+						<static type="translation" value="0 -68.8/2 -273/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="lthigh" parent="pelvis">
+				<transform type="affine">
+					<static type="translation" value="-90 0 0" />
+					<dynamic type="t123" name="lhip"  />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="440.8-2*83.5"/>
+					<parameter type="radius" value="83.5"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -432/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="lleg" parent="lthigh">
+				<transform type="affine">
+					<static type="translation" value="0 0 -440.8" />
+					<dynamic type="t123" name="lknee"  />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="442.6-2*62.7"/>
+					<parameter type="radius" value="62.7"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -434/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="target" parent="lleg">
+				<transform type="affine">
+					<static type="r123" value="0 pi/2 0"/>
+				</transform>
+			</body>
+			
+			<body name="lfoot" parent="lleg">
+				<transform type="affine">
+					<static type="translation" value="0 0 -442.6" />
+					<dynamic type="t123" name="lankle"  />
+				</transform>
+				<geometry type="box" name="box01" >
+					<parameter type="length" value="99"/>
+					<parameter type="width" value="68.8"/>
+					<parameter type="height" value="273"/>
+					<transform type="affine">
+						<static type="translation" value="0 -68.8/2 -273/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="torso" parent="pelvis">
+				<transform type="affine">
+					<static type="translation" value="0 0 518.1" />
+				</transform>
+				<geometry type="box" name="box01"  >
+					<parameter type="length" value="313"/>
+					<parameter type="width" value="250"/>
+					<parameter type="height" value="518.1"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -476/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="head" parent="torso">
+				<transform type="affine">
+					<static type="translation" value="0 0 118.7" />
+				</transform>
+				<geometry type="sphere" name="sphere01" >
+					<parameter type="radius" value="116.9"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 116.9/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="ruarm" parent="torso">
+				<transform type="affine">
+					<static type="translation" value="233 0 0" />
+					<dynamic type="t123" name="rshoulder" />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="334.6-2*49.7"/>
+					<parameter type="radius" value="49.7"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -334.6/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="rlarm" parent="ruarm">
+				<transform type="affine">
+					<static type="translation" value="0 0 -334.6" />
+					<dynamic type="t123" name="relbow"  />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="262.7-2*48.9"/>
+					<parameter type="radius" value="48.9"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -262.7/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="rhand" parent="rlarm">
+				<transform type="affine">
+					<static type="translation" value="0 0 -262.7" />
+				</transform>
+				<geometry type="box" name="box01" >
+					<parameter type="length" value="55.88"/>
+					<parameter type="width" value="89"/>
+					<parameter type="height" value="193"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -193/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="luarm" parent="torso">
+				<transform type="affine">
+					<static type="translation" value="-233 0 0" />
+					<dynamic type="t123" name="lshoulder"  />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="334.6-2*49.7"/>
+					<parameter type="radius" value="49.7"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -334.6/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="llarm" parent="luarm">
+				<transform type="affine">
+					<static type="translation" value="0 0 -334.6" />
+					<dynamic type="t123" name="lelbow"  />
+				</transform>
+				<geometry type="ccylinder" name="ccylinder01" >
+					<parameter type="length" value="262.7-2*48.9"/>
+					<parameter type="radius" value="48.9"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -262.7/2" />
+					</transform>
+				</geometry>
+			</body>
+			
+			<body name="lhand" parent="llarm">
+				<transform type="affine">
+					<static type="translation" value="0 0 -262.7" />
+				</transform>
+				<geometry type="box" name="box01" >
+					<parameter type="length" value="55.88"/>
+					<parameter type="width" value="89"/>
+					<parameter type="height" value="193"/>
+					<transform type="affine">
+						<static type="translation" value="0 0 -193/2" />
+					</transform>
+				</geometry>
+			</body>
+		</model>
+	</models>
+	<scene>
+		<space name="SourceSpace">
+			<object name="SourceRobot" model="PA10">
+				<transform />
+			</object>
+		</space>
+		<space name="SensorSpace">
+			<object name="SensorRobot" model="PA10">
+				<transform />
+			</object>
+		</space>
+		<space name="HumanSpace">
+			<object name="SourceRobot" model="Human">
+				<transform />
+			</object>
+		</space>
+		<space name="Environment">
+			
+		</space>
+	</scene>	
+</scenedescription>

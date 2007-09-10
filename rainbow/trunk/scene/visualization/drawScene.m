@@ -65,7 +65,7 @@ gclass = dGeomGetClass(id);
 
 % Quickly handle if it is a plane
 if (gclass == 4) % Plane
-    fv = createPlane([-60, 60, -72, 72], dGeomPlaneGetParams(id));
+    fv = createPlane([-2, 2, -4, 4], dGeomPlaneGetParams(id));
     c = [0,0,1];
     return;
 end
@@ -107,8 +107,8 @@ disp.fig = figure('Position', [50, 50, 1024, 768], 'Renderer', 'OpenGL');
 
 % Scene axes
 disp.GLAxes = axes('DataAspectRatio',   [1, 1, 1], ...
-                   'CameraPosition',    [12,60,36], ...
-                   'CameraTarget',      [0,0,24], ...
+                   'CameraPosition',    [.1,1,.6], ...
+                   'CameraTarget',      [0,0,.5], ...
                    'CameraUpVector',    [0,0,1], ...
                    'Visible',           'off');
 grid on;

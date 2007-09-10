@@ -33,7 +33,7 @@
 %                   <transform type="relative">
 %                       <parameter type="translation" value="129 -30 0" />
 %                       <parameter type="rotation" value="pi/2 0 1 0" />
-%                   </transform>
+%                   </transform>value="0 0 0" mutable="true"
 %               </geometry>
 %           </body>
 %       </space>
@@ -46,7 +46,7 @@ scene.runitsratio = 1;
 
 if isfield(scene_node, 'ATTRIBUTE')
     if isfield(scene_node.ATTRIBUTE, 'lunits')
-        scene.lunitsratio = unitsratio('in',scene_node.ATTRIBUTE.lunits);
+        scene.lunitsratio = unitsratio('m',scene_node.ATTRIBUTE.lunits);
     end
     if isfield(scene_node.ATTRIBUTE, 'runits')
         scene.runitsratio = unitsratio('rad',scene_node.ATTRIBUTE.runits);
@@ -141,7 +141,7 @@ end
 if isfield(geom, 'parameter')
     for n=1:length(geom.parameter)
         % HACK ALERT!!! - UNITS CRAP
-        sgeom.(geom.parameter{n}.ATTRIBUTE.type) = eval(geom.parameter{n}.ATTRIBUTE.value)*unitsratio('in','mm');
+        sgeom.(geom.parameter{n}.ATTRIBUTE.type) = eval(geom.parameter{n}.ATTRIBUTE.value)*1e-3;
     end
 end
 end % End parseGeom()
@@ -162,17 +162,19 @@ if isfield(transform, 'static')
     for s = 1:length(transform.static)
         switch (transform.static{s}.ATTRIBUTE.type)
             case 'translation' % HACK ALERT - CRAPPY CODE AHEAD.. need to fix the units problem
-                stransform.static.(transform.static{s}.ATTRIBUTE.type) = unitsratio('in','mm') * parseValue(transform.static{s}.ATTRIBUTE.value);
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = 1e-3 * parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'r123'
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
+            case 't123'
                 stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'r321'
                 stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'r312'
                 stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'link_length'
-                stransform.static.(transform.static{s}.ATTRIBUTE.type) = unitsratio('in','mm') * parseValue(transform.static{s}.ATTRIBUTE.value);
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = 1e-3 * parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'joint_offset'
-                stransform.static.(transform.static{s}.ATTRIBUTE.type) = unitsratio('in','mm') * parseValue(transform.static{s}.ATTRIBUTE.value);
+                stransform.static.(transform.static{s}.ATTRIBUTE.type) = 1e-3 * parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'twist_angle'
                 stransform.static.(transform.static{s}.ATTRIBUTE.type) = parseValue(transform.static{s}.ATTRIBUTE.value);
             case 'joint_angle'

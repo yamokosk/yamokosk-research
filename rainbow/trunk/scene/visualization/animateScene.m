@@ -8,13 +8,14 @@ g = interpGaitVariables(pp,0);
 %rect = getrect(scene.disp.fig);
 %mov = avifile('example.avi');
 
-for n = 1:NF
+for n = 68:119
     g = interpGaitVariables(pp,t(n));
     scene = buildScene(scene,[q; g]);
     scene = drawScene(scene);
     %drawnow;
     %mov(n) = getframe(scene.disp.fig,rect);
-    F(n) = getframe(scene.disp.GLAxes);
+    %F(n) = getframe(scene.disp.GLAxes);
     %mov = addframe(mov,F);    
 end
 %mov = close(mov);
+F = [];

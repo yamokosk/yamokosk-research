@@ -23,8 +23,11 @@ for n = 1:length(scene.space)
         T_wcs_obj = T_wcs_base * T_base_body;
 
         % Create body in ODE if we have to
-        if isfield(body,'id') idBody = body.id;
-        else idBody = dCreateBody(); end
+        if isfield(body,'id') 
+            idBody = body.id;
+        else
+            idBody = dCreateBody(); 
+        end
                 
         % Build the geoms
         if isfield(body,'geometry')
@@ -247,6 +250,9 @@ for s = 1:length(static_fields)
         case 'r312'
             ang = t.static.(str);
             R = rotz(ang(1))*rotx(ang(2))*roty(ang(3));
+        case 't123'
+            ang = t.static.(str);
+            R = (rotx(ang(1))*roty(ang(2))*rotz(ang(3)))';
     end
 end
 
@@ -270,9 +276,34 @@ for d = 1:length(dynamic_fields)
         case 'r312'
             ang = q{ind,2};
             R = rotz(ang(1))*rotx(ang(2))*roty(ang(3));
+        case 't123'
+            ang = q{ind,2};
+            R = (rotx(ang(1))*roty(ang(2))*rotz(ang(3)))';
     end
 end
 
 T = R;
 T(1:3,4) = p;
 end
+
+% function T = getAffineParameters(t,q)
+% 
+% if isfield(t,'static')
+%     static_fields = fieldnames(t.static);
+% else
+%     static_fields = [];
+% end
+% 
+% if isfield(t,'dynamic')
+%     dynamic_fields = fieldnames(t.dynamic);
+% else
+%     dynamic_fields = [];
+% end
+% 
+% all_fields = [static_fields; dynamic_fields];
+% R=eye(4);
+% for ii = 1:length(all_fields)
+%     str = all_fields{ii};
+% 
+% name = t.dynamic.(str);
+% ind = find( strcmp(q(:,1),name) );

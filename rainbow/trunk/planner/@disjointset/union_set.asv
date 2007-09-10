@@ -1,8 +1,0 @@
-function ds = union_set(ds,c,n)
-[a,inda] = find_set(ds,c);
-[b,indb] = find_set(ds,n);
-
-
-newset = union(a,b);
-
-end % END UNION_SET

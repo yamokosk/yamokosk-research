@@ -20,10 +20,6 @@ end
 
 % Random samples
 numSamples = size(S,2);
-xy = [S(1,:)', S(2,:)'];
-plot(S(1,:),S(2,:),'k.');
-hold on;
-pause;
 
 % Setup kd-tree stuff
 numNhbrs = 5;
@@ -34,8 +30,21 @@ initKDTree(S);
 G = sparse(numSamples,numSamples);
 ds = disjointset(numSamples);
 
+h1 = figure(1);
+set(h1,'Color',[1 1 1],'Position',[100, 200, 500, 500]);
+spy(G)
+title('Adjacency graph');
+h2 = figure(2);
+set(h2,'Color',[1 1 1],'Position',[600, 200, 500, 500]);
+spy(ds)
+title('Connected components');
+drawnow;
+
 % PRM construction algorithm
-for ii = 1:numSamples
+startTime = now;
+indices = randperm(numSamples);
+for kk = 1:numSamples
+    ii = indices(kk);
     c = S(:,ii);
     [nbhrs,dist,ind] = searchKDTree(c,numNhbrs);
     
@@ -43,12 +52,27 @@ for ii = 1:numSamples
         if ~same_connected_component(ds,ii,ind(n))
             if lpm(c,nbhrs(:,n),opts)
                 G(ii,ind(n)) = dist(n); % Record new edge
+                %G(ind(n),ii) = dist(n);
                 ds = union_set(ds,ii,ind(n)); % Update connect components
             end
         end
     end
     
-    if (mod(ii,10) == 0) disp(['Iteration: ' num2str(ii)]); gplot(G,xy); drawnow; end
+    if (mod(kk,100) == 0) 
+        elapsedTime = now - startTime;
+        remainingTime = (elapsedTime/kk)*(numSamples-kk);
+        expectedComplete = now + remainingTime;
+        fprintf(1,'Completed %d of %d samples.  Remaining: %s, Expected completion: %s\n',kk,numSamples,datestr(remainingTime,13),datestr(expectedComplete,21)); 
+        figure(1);
+        spy(G);
+        title('Adjacency graph');
+        figure(2);
+        spy(ds);
+        title('Connected components');
+        drawnow;
+    end
 end
 
+savefile = ['PRMComplete-' datestr(now,30) '.mat'];
+save(savefile, 'G', 'ds'); 
 resetKDTree;
