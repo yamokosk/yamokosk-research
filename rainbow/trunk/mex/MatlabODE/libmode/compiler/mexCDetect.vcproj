@@ -143,7 +143,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libmx.lib libmex.lib libmat.lib ode.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;D:\usr\bin\ode-0.8\lib\releaselib&quot;"
+				AdditionalLibraryDirectories="&quot;C:\usr\bin\ode-0.8\lib\releaselib&quot;"
 				ModuleDefinitionFile="..\src\mexCDetect.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -262,7 +262,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="C:\Program Files\MATLAB\R2006a\extern\include\mexversion.rc"
+				RelativePath="..\include\mexversion.rc"
 				>
 			</File>
 			<File
