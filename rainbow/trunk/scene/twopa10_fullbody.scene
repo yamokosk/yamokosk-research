@@ -27,7 +27,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 <scene lunits="mm" runits="rad">
 
 	<space name="Environment">
-		<body name="src_stand" parent="world">
+		<body name="src_stand" prox="world">
 			<transform>
 				<translation value="1000 0 584.2/2"/>
 			</transform>
@@ -38,7 +38,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="sen_stand" parent="world">
+		<body name="sen_stand" prox="world">
 			<transform>
 				<translation value="-1000 0 584.2/2"/>
 			</transform>
@@ -49,7 +49,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 
-		<body name="floor" parent="world">
+		<body name="floor" prox="world">
 			<geometry type="plane" name="plane01">
 				<parameter type="normal_x" value="0" />
 				<parameter type="normal_y" value="0" />
@@ -60,7 +60,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 	</space>
 	
 	<space name="source">
-		<body name="src1" parent="world">
+		<body name="src1" prox="world">
 			<transform>
 				<translation value="1000 0 584.3"/>
 				<rotation type="z" value="pi"/>
@@ -79,7 +79,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 
-		<body name="src2" parent="src1">
+		<body name="src2" prox="src1">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="-pi/2"/>
@@ -97,7 +97,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 
-		<body name="src3" parent="src2">
+		<body name="src3" prox="src2">
 			<transform>
 				<translation value="450 0 0"/>
 				<rotation type="x" value="0"/>
@@ -115,7 +115,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="src4" parent="src3">
+		<body name="src4" prox="src3">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="pi/2"/>
@@ -133,7 +133,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="src5" parent="src4">
+		<body name="src5" prox="src4">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="-pi/2"/>
@@ -151,7 +151,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="src6" parent="src5">
+		<body name="src6" prox="src5">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="pi/2"/>
@@ -161,7 +161,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</transform>
 		</body>
 		
-		<body name="emitter" parent="src6">
+		<body name="emitter" prox="src6">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="pi"/>
@@ -177,11 +177,29 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 				</transform>
 			</geometry>
 		</body>
+		
+		<body name="emitter2" prox="src6">
+			<transform>
+				<translation value="0 0 0"/>
+				<rotation type="x" value="pi"/>
+				<translation value="0 0 0"/>
+				<rotation type="z" value="0"/>
+				<rotation type="z" value="0"/>
+			</transform>
+			<geometry type="ccylinder" name="ccylinder01">
+				<parameter type="length" value="185.5-2*40"/>
+				<parameter type="radius" value="40"/>
+				<transform>
+					<translation value="0 0 -185.5/2+40"/>
+				</transform>
+			</geometry>
+		</body>
+		
 	</space>
 
 	
 	<space name="sensor">
-		<body name="sen1" parent="world">
+		<body name="sen1" prox="world">
 			<transform>
 				<translation value="-1000 0 584.3"/>
 				<rotation type="z" value="pi"/>
@@ -200,7 +218,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 
-		<body name="sen2" parent="sen1">
+		<body name="sen2" prox="sen1">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="-pi/2"/>
@@ -218,7 +236,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 
-		<body name="sen3" parent="sen2">
+		<body name="sen3" prox="sen2">
 			<transform>
 				<translation value="450 0 0"/>
 				<rotation type="x" value="0"/>
@@ -236,7 +254,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="sen4" parent="sen3">
+		<body name="sen4" prox="sen3">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="pi/2"/>
@@ -254,7 +272,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="sen5" parent="sen4">
+		<body name="sen5" prox="sen4">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="-pi/2"/>
@@ -272,7 +290,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="sen6" parent="sen5">
+		<body name="sen6" prox="sen5">
 			<transform>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="pi/2"/>
@@ -282,7 +300,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</transform>
 		</body>
 		
-		<body name="detector" parent="sen6">
+		<body name="detector" prox="sen6">
 			<geometry type="box" name="box01" >
 				<parameter type="length" value="264.2"/>
 				<parameter type="width" value="306.2"/>
@@ -295,7 +313,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 	</space>
 	
 	<space name="Human">
-		<body name="pelvis" parent="world">
+		<body name="pelvis" prox="world">
 			<transform>
 				<rotation type="z" value="pi/2" />
 				<translation value="0 0 0" mutable="true" name="pelvis_trans" />
@@ -303,7 +321,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</transform>
 		</body>
 
-		<body name="rthigh" parent="pelvis">
+		<body name="rthigh" prox="pelvis">
 			<transform>
 				<translation value="90 0 0" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="rhip" />
@@ -317,7 +335,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="rleg" parent="rthigh">
+		<body name="rleg" prox="rthigh">
 			<transform>
 				<translation value="0 0 -440.8" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="rknee"  />
@@ -331,7 +349,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="rfoot" parent="rleg">
+		<body name="rfoot" prox="rleg">
 			<transform>
 				<translation value="0 0 -442.6" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="rankle"  />
@@ -346,7 +364,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="lthigh" parent="pelvis">
+		<body name="lthigh" prox="pelvis">
 			<transform>
 				<translation value="-90 0 0" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="lhip"  />
@@ -360,7 +378,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="lleg" parent="lthigh">
+		<body name="lleg" prox="lthigh">
 			<transform>
 				<translation value="0 0 -440.8" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="lknee"  />
@@ -374,13 +392,13 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="target" parent="lleg">
+		<body name="target" prox="lleg">
 			<transform>
 				<rotation type="y" value="pi/2"/>
 			</transform>
 		</body>
 		
-		<body name="lfoot" parent="lleg">
+		<body name="lfoot" prox="lleg">
 			<transform>
 				<translation value="0 0 -442.6" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="lankle"  />
@@ -395,7 +413,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="torso" parent="pelvis">
+		<body name="torso" prox="pelvis">
 			<transform>
 				<translation value="0 0 518.1" />
 			</transform>
@@ -409,7 +427,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="head" parent="torso">
+		<body name="head" prox="torso">
 			<transform>
 				<translation value="0 0 118.7" />
 			</transform>
@@ -421,7 +439,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="ruarm" parent="torso">
+		<body name="ruarm" prox="torso">
 			<transform>
 				<translation value="233 0 0" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="rshoulder" />
@@ -435,7 +453,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="rlarm" parent="ruarm">
+		<body name="rlarm" prox="ruarm">
 			<transform>
 				<translation value="0 0 -334.6" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="relbow"  />
@@ -449,7 +467,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="rhand" parent="rlarm">
+		<body name="rhand" prox="rlarm">
 			<transform>
 				<translation value="0 0 -262.7" />
 			</transform>
@@ -463,7 +481,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="luarm" parent="torso">
+		<body name="luarm" prox="torso">
 			<transform>
 				<translation value="-233 0 0" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="lshoulder"  />
@@ -477,7 +495,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="llarm" parent="luarm">
+		<body name="llarm" prox="luarm">
 			<transform>
 				<translation value="0 0 -334.6" />
 				<rotation type="e123t" value="0 0 0" mutable="true" name="lelbow"  />
@@ -491,7 +509,7 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 			</geometry>
 		</body>
 		
-		<body name="lhand" parent="llarm">
+		<body name="lhand" prox="llarm">
 			<transform>
 				<translation value="0 0 -262.7" />
 			</transform>

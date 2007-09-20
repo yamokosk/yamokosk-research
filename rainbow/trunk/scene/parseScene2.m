@@ -18,10 +18,12 @@ end
 
 % Find a list of all space elements.
 allSpaceItems = tree.getElementsByTagName('space');
+allVarList = [];
 try
 for k = 0:allSpaceItems.getLength-1
     thisSpaceItem = allSpaceItems.item(k);
-    sceneStruct.spaces{k+1} = parseSpace(thisSpaceItem);
+    [sceneStruct.spaces{k+1}, spaceVarList] = parseSpace(thisSpaceItem);
+    allVarList = [allVarList; spaceVarList];
 end
 catch
     err = lasterror;
@@ -29,23 +31,27 @@ catch
     lasterror('reset');
 end
 
+sceneStruct.vars = allVarList;
 
-function spaceStruct = parseSpace(spaceItem);
+
+function [spaceStruct, spaceVarList] = parseSpace(spaceItem);
 
 att = parseAttributes(spaceItem);
 spaceStruct = struct('name',        att.name, ...
                      'id',          -1);
 
 allBodyItems = spaceItem.getElementsByTagName('body');
+spaceVarList = [];
 for m = 0:allBodyItems.getLength-1
     thisBodyItem = allBodyItems.item(m);
         
-    spaceStruct.bodies{m+1} = parseBody(thisBodyItem);
+    [spaceStruct.bodies{m+1}, bodyVarList] = parseBody(thisBodyItem);
+    spaceVarList = [spaceVarList; bodyVarList];
 end % End body loop
 
 
                  
-function bodyStruct = parseBody(bodyItem)
+function [bodyStruct, bodyVarList] = parseBody(bodyItem)
 
 att = parseAttributes(bodyItem);
 if (~isfield(att, 'name'))
@@ -55,7 +61,8 @@ end
 bodyStruct = struct('name',         att.name, ...
                     'parent',       'world', ... 
                     'id',           -1, ...
-                    'T_prox_body',  eye(4));
+                    'T_prox_body',  eye(4), ...
+                    'T_world_body', eye(4));
 
 if (isfield(att, 'parent'))
     bodyStruct.parent = att.parent;
@@ -63,17 +70,23 @@ end
 
 allChildItems = bodyItem.getChildNodes;
 numBodyTransforms = 0; numGeoms = 1;
+bodyVarList = [];
 for c = 0:allChildItems.getLength-1
     thisChildItem = allChildItems.item(c);
     
     if thisChildItem.getNodeType == thisChildItem.ELEMENT_NODE
         switch (char(thisChildItem.getNodeName))
             case 'transform'
-                bodyStruct.T_prox_body = parseTransform(thisChildItem);
+                [bodyStruct.transform, mutableVarNames, bodyStruct.T_prox_body] = parseTransform(thisChildItem);
                 numBodyTransforms = numBodyTransforms + 1;
                 
                 if (numBodyTransforms > 1)
                     error('Tag body (%s) has too many transform tags', att.name);
+                end
+                
+                if (~isempty(mutableVarNames))
+                    numMutableVars = length(mutableVarNames);
+                    bodyVarList = [mutableVarNames, repmat({att.name}, numMutableVars, 1)];
                 end
             case 'geometry'
                 bodyStruct.geoms{numGeoms} = parseGeom(thisChildItem);
@@ -140,9 +153,11 @@ end
 %     
 % end
 
-function [tStruct, T] = parseTransform(theNode)
+function [tStruct, mutableVarNames, T] = parseTransform(theNode)
 allChildItems = theNode.getChildNodes;
-T = eye(4); numTransforms = 1;
+T = eye(4); mutableVarNames = {};
+numTransforms = 1; numMutableVars = 1;
+
 for c = 0:allChildItems.getLength-1
     thisChildItem = allChildItems.item(c);
     
@@ -163,32 +178,38 @@ for c = 0:allChildItems.getLength-1
                 tStruct(numTransforms) = struct('type', 'translation', ... 
                                                 'subtype', 'translation', ...
                                                 'mutable', eval(att.mutable), ...
-                                                'name', att.name
+                                                'name', att.name, ...
                                                 'value', parseValue(att.value));
             case 'rotation'
-%                 switch (att.type)
-%                     case 'x'
-%                         T = T * rotx(parseValue(att.value));
-%                     case 'y'
-%                         T = T * roty(parseValue(att.value));
-%                     case 'z'
-%                         T = T * rotz(parseValue(att.value));
-%                     case 'e123'
-%                         v = parseValue(att.value);
-%                         T = T * rotx(v(1)) * roty(v(2)) * rotz(v(3));
-%                     case 'e123t'
-%                         v = parseValue(att.value);
-%                         T = T * rotx(-v(1)) * roty(-v(2)) * rotz(-v(3));
-%                     otherwise
-%                         error('Tag rotation has an unrecognized type: %s', att.type);
-%                 end
+                switch (att.type)
+                    case 'x'
+                        T = T * rotx(parseValue(att.value));
+                    case 'y'
+                        T = T * roty(parseValue(att.value));
+                    case 'z'
+                        T = T * rotz(parseValue(att.value));
+                    case 'e123'
+                        v = parseValue(att.value);
+                        T = T * rotx(v(1)) * roty(v(2)) * rotz(v(3));
+                    case 'e123t'
+                        v = parseValue(att.value);
+                        T = T * rotx(-v(1)) * roty(-v(2)) * rotz(-v(3));
+                    otherwise
+                        error('Tag rotation has an unrecognized type: %s', att.type);
+                end
                 tStruct(numTransforms) = struct('type', 'rotation', ... 
                                                 'subtype', att.type, ...
                                                 'mutable', eval(att.mutable), ...
-                                                'name', att.name
+                                                'name', att.name, ...
                                                 'value', parseValue(att.value));
             otherwise
                 error('Tag transform has an unrecognized child tag: %s', char(thisChildItem.getNodeName));
+        end
+        
+        % Record in a separate list the mutable variable names
+        if (tStruct(numTransforms).mutable)
+            mutableVarNames(numMutableVars,1) = {tStruct(numTransforms).name};
+            numMutableVars = numMutableVars + 1;
         end
         numTransforms = numTransforms + 1;
         
