@@ -1,10 +1,10 @@
 function [pp_gait, conrad_time] = loadGaitData()
 
 % Get Conrad's data
-deg2rad = unitsratio('rad','deg');
+deg2rad = pi/180; %unitsratio('rad','deg');
 %m2in = unitsratio('in','m');
 
-pelvis_trans = load('gaitdata\PelvisTrans.txt');
+pelvis_trans = load('gaitdata\PelvisTrans.txt')*1000;
 pelvis_trans(:,3) = pelvis_trans(:,3) + .069;
 pelvis_trans(:,2) = pelvis_trans(:,2) + .2;
 %$pelvis_trans = [pelvis_trans(:,2), pelvis_trans(:,1), pelvis_trans(:,3)];

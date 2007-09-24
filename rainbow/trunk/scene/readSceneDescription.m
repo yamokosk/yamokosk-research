@@ -73,18 +73,20 @@ try
                 thisGeomItem = allGeomItems.item(geomIndex);
                 thisGeomAttrib = parseAttributes(thisGeomItem);
                 
-                geomData(geomCount) = struct('name',            thisGeomAttrib.name, ...
+                geomData{geomCount} = struct('name',            thisGeomAttrib.name, ...
                                              'type',            thisGeomAttrib.type, ...
                                              'bodyID',          bodyCount, ...
-                                             'params',          [], ...
                                              'T_body_geom',     eye(4), ...
                                              'T_world_geom',    eye(4), ...
-                                             'validWorldPose',  false);
+                                             'validWorldPose',  false, ...
+                                             'ghandle',         []);
                 
                 allParamItems = thisGeomItem.getElementsByTagName('parameter');
                 for paramIndex = 0:allParamItems.getLength-1
                     thisParamItem = allParamItems.item(paramIndex);
-                    geomData(geomCount).params{paramIndex+1} = parseAttributes(thisParamItem);                
+                    %geomData(geomCount).params{paramIndex+1} = parseAttributes(thisParamItem);             
+                    paramStruct = parseAttributes(thisParamItem);
+                    geomData{geomCount}.params.(paramStruct.type) = eval(paramStruct.value);
                 end % End param loop
                 
                 allTransformItems = thisGeomItem.getElementsByTagName('transform');
@@ -95,7 +97,8 @@ try
                 if (allTransformItems.getLength == 1)
                     geomTransformItem = allTransformItems.item(0);
                     [transformStruct, mutableVarNames, T_prox_body] = parseTransform(geomTransformItem);
-                    geomData(geomCount).T_body_geom = T_prox_body;
+                    %geomData(geomCount).T_body_geom = T_prox_body;
+                    geomData{geomCount}.T_body_geom = T_prox_body;
                     
                     if (~isempty(mutableVarNames))
                         error('Geom %s has a mutable variable! Only bodies are allowed to have mutable variables', thisGeomAttrib.name);

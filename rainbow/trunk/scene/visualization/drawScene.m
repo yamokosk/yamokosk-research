@@ -1,5 +1,7 @@
 function scene = drawScene(scene)
 
+scene = updateScene(scene);
+
 if isfield(scene, 'disp')
     if ~ishandle(scene.disp.fig) 
         disp = createWindow();
@@ -10,88 +12,45 @@ if isfield(scene, 'disp')
 else
     disp = createWindow();
 end
-
 set(gcf, 'CurrentAxes', disp.GLAxes);
 
-for n = 1:length(scene.space) % For all the spaces
-    for b = 1:length(scene.space{n}.body) % For all the bodies
-        body = scene.space{n}.body{b};
-        
-        % Get body id
-        if isfield(body,'id') 
-            idBody = body.id;
-        else
-            warning([body.name ' has no ID! Skipping it.']);
-            continue;
-        end
-        
-        % For the body, draw all of its geoms
-        if isfield(body,'geometry')
-            
-            for g = 1:length(body.geometry)
-                geom = body.geometry{g};
-
-                % Geoms are set and forget.. only bodies get updated.
-                if isfield(geom, 'id')
-                    idGeom = geom.id;
-                    [fv,color] = createGeom(geom);
-                    
-                    if isfield(geom, 'ghandle')
-                        if ishandle(geom.ghandle)
-                            set(geom.ghandle, 'Vertices', fv.vertices);
-                        else
-                            warning([geom.name ' did not have a valid handle.']);
-                        end                            
-                    else
-                        scene.space{n}.body{b}.geometry{g}.ghandle = ...
-                            patch(fv, 'FaceColor', color);
-                    end
-                    
-                end
-            end
-        end
+for n = 1:length(scene.geomData) % For all the geoms
+    body = scene.bodyData(scene.geomData{n}.bodyID);
+    scene.geomData{n}.T_world_geom = body.T_world_body * scene.geomData{n}.T_body_geom;
+    
+    [fv,color] = createGeom(scene.geomData{n});
+    
+    if ishandle(scene.geomData{n}.ghandle)
+        set(scene.geomData{n}.ghandle, 'Vertices', fv.vertices);
+    else
+        scene.geomData{n}.ghandle = patch(fv, 'FaceColor', color);
     end
-
-    % Update structure
-    scene.disp = disp;
 end
+
+% Update structure
+scene.disp = disp;
 
 end % End drawScene()
 
 
 function [fv, c] = createGeom(geom)
-id = geom.id;
-gclass = dGeomGetClass(id);
 
 % Quickly handle if it is a plane
-if (gclass == 4) % Plane
-    fv = createPlane([-2, 2, -4, 4], dGeomPlaneGetParams(id));
+if ( strcmp(geom.type, 'plane') )
+    fv = createPlane([-2, 2, -4, 4], [geom.params.normal_x,geom.params.normal_y,geom.params.normal_z,geom.params.d]);
     c = [0,0,1];
     return;
 end
 
-T = eye(4);
-T(1:3,1:3) = dGeomGetRotation(id);
-T(1:3,4) = dGeomGetPosition(id);
-
-if isfield(geom, 'transform')
-    % Must get the transform's t-matrix
-    T_wcs_trans = eye(4);
-    T_wcs_trans(1:3,1:3) = dGeomGetRotation(geom.transform.id);
-    T_wcs_trans(1:3,4) = dGeomGetPosition(geom.transform.id);
-    T = T_wcs_trans * T;
-end
-
-switch (gclass)
-    case 0 % Sphere
-        fv = createSphere(T, dGeomSphereGetRadius(id));
+switch (geom.type)
+    case 'sphere'
+        fv = createSphere(geom.T_world_geom, geom.params.radius);
         c = [1,0,0];
-    case 1 % Box
-        fv = createBox(T, dGeomBoxGetLengths(id));
+    case 'box'
+        fv = createBox(geom.T_world_geom, [geom.params.length, geom.params.width, geom.params.height]);
         c = [1,1,0];
-    case 2 % Capsule
-        [r, len] = dGeomCCylinderGetParams(id);
-        fv = createCapsule(T, len, r);
+    case 'ccylinder'
+        fv = createCapsule(geom.T_world_geom, geom.params.length, geom.params.radius);
         c = [0,1,0];
      otherwise
         warning([geom.type ' is an unrecognized geometry type']);

@@ -202,7 +202,6 @@ T_ij = f(a_ij,  alpha_ij, S_j, theta_j)
 		<body name="sen1" prox="world">
 			<transform>
 				<translation value="-1000 0 584.3"/>
-				<rotation type="z" value="pi"/>
 				<translation value="0 0 0"/>
 				<rotation type="x" value="0"/>
 				<translation value="0 0 317"/>
