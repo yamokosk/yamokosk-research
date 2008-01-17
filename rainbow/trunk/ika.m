@@ -37,13 +37,13 @@ Good_Solutions = All_Solutions(GoodIndex,:);
 
 function [angles, good_soln] = ikine_pa10(Robot,T_1_tool,verbose) 
 %   REVERSE_PA10     Reverse position analysis for the PA-10
-%       [ANGLES, GOOD_SOLN] = REVERSE_PA10(ROBOT,T_F_TOOL) performs 
+%       [ANGLES, GOOD_SOLN] = REVERSE_PA10(ROBOT,T_1_TOOL) performs 
 %       reverse position analysis for the Mitsubishi PA-10C using Crane's 
 %       method. The inputs are:
 %
 %       Robot - Robot object created using the Matlab Robot Toolbox
 %
-%       T_f_tool - Transformation matrix from fixed to the tool frame
+%       T_1_tool - Transformation matrix from 1st frame to the tool frame
 %
 %       REVERSE_PA10 will return a 4x6 matrix called ANGLES which will
 %       contain all possible solutions for the specified input parameters.
@@ -364,7 +364,7 @@ function [a71, S7, S1, alp71, th7, gam1] = close_loop(robot, T_1_tool)
 %               chain.
 %
 %   USAGE:
-%   [a71, S7, S1, alp71, th71, gam1] = CLOSE_LOOP(ROBOT,T_WCS_TOOL)
+%   [a71, S7, S1, alp71, th71, gam1] = CLOSE_LOOP(ROBOT,T_1_TOOL)
 %   
 %   INPUTS:
 %       Robot - Robot object created using the Matlab Robot Toolbox
