@@ -7,10 +7,11 @@ function new_tree = rdt(tree,opts)
 % General RDT methods
 for i = 1:opts.iter
     % Node selection
-    node = node_selection(tree, opts);
+    [Ne,Ns] = node_selection(tree, opts);
     
     % Node expansion
-    branch = node_expansion(node, tree, opts);
+    % branch = node_expansion(node, tree, opts);
+    branch = opts.local_planner(Ne, Ns);
     
     % Evaluation
     tree = node_evaluation(branch, opts);
@@ -23,15 +24,16 @@ new_tree = [];
 % branch. Selection of a particular node is usually based on
 % probabilistic criteria that may require use of a valid distance
 % metric
-function node = node_selection(tree,opts)
-rand_node = opts.node_generator();
-node = opts.selection_metric(rand_node,tree);
+function [Ne,Ns] = node_selection(tree,opts)
+Ns = opts.node_generator();
+ind = opts.selection_metric(rand_node,tree);
+Ne = tree.node_list(:,ind);
 
 % A local planning method is used to extend a feasible trajectory from
 % the selected node. The local goal for this trajectory branch is
 % determined probabilistically.
-function branch = node_expansion(node, tree, opts)
-branch = [];
+%function branch = node_expansion(Ne, Ns, opts)
+%branch = opts.local_planner(Ne,Ns);
 
 
 % The new branch is evaluated according to performance criteria and
