@@ -151,6 +151,7 @@ kane()
 accelerations = [u1'; u2'; u3'; u4'; u5'; u6']
 
 solve(zero,accelerations)
+zee(zero)
 output accelerations
 code Algebraic() planar_robots_eom.c
 
@@ -159,12 +160,11 @@ code Algebraic() planar_robots_eom.c
 %accelerations = [u1'; u2'; u3'; u4'; u5'; u6']
 %solve(zero,accelerations)
 
-%state = [q1,q2,q3,q4,q5,q6,u1,u2,u3,u4,u5,u6]
+%X = [q1,q2,q3,q4,q5,q6,u1,u2,u3,u4,u5,u6]
 %f = [u1;u2;u3;u4;u5;u6;accelerations]
-%control = [T1, T2, T3, T4, T5, T6]
-
-%dfdu = D(f,control)
-%dfdX = D(f,state)
+%U = [T1,T2,T3,T4,T5,T6]
+%dfdu = zee(D(f,U))
+%dfdX = zee(D(f,X))
 
 %output dfdu, dfdX
 %code Algebraic() planar_robots_diff.c

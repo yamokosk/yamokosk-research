@@ -11,4 +11,4 @@ D = genD(func, x, opts);
 % if (numrows(D) ~= 1) 
 %     error('BUG! Should not get here');
 % end
-G = D(:,length(x));
+G = D(:,1:length(x));

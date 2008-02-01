@@ -20,7 +20,7 @@ void     output(double Up[]);
 double   BETA,C1,C2,C3,C4,C5,C6,L1,L2,LN,M1,M2,M3,R,T1,T2,T3,T4,T5,T6,V1,V2,V3,
   V4,V5,V6,Q1,Q2,Q3,Q4,Q5,Q6,U1,U2,U3,U4,U5,U6;
 double   TF1,TF2,TF3,TF4,TF5,TF6,U1p,U2p,U3p,U4p,U5p,U6p;
-double   z[182];
+double   z[188];
 
 
 /* ................................ MAIN ............................. */
@@ -340,5 +340,6 @@ void evaluate(void)
   U4p = z[181];
   U5p = z[180];
   U6p = z[179];
+
 }
 
