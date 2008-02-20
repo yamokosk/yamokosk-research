@@ -1,4 +1,4 @@
-function xr = rand_planar_state(Prob)
+function xr = planar_rand_state(Prob)
 % Random state generator for planar robot environment
 udata = Prob.userdata;
 
