@@ -23,7 +23,7 @@ q2 = [atan2(s2, c2); atan2(-s2, c2)];
 % q1
 k1 = l1 + l2*c2;
 k2 = l2*s2;
-q1 = [atan2(y,x) - atan2(k2,k1); atan2(y,x) - atan2(-k2,k1)]
+q1 = [atan2(y,x) - atan2(k2,k1); atan2(y,x) - atan2(-k2,k1)];
 
 % q3
 phi = [atan2(s123, c123); atan2(s123, c123)];
