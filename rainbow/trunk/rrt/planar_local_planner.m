@@ -4,8 +4,79 @@ function [Ni,We] = planar_local_planner(Ne, Nr, Prob)
 t0 = Ne(1); x0 = Ne(2:end);
 tf = Nr(1); xf = Nr(2:end);
 
-% Convert 
+
+
 [U,Path] = connect_min_effort(to, Xo, tf, Xf, N, @planar_robots_ode);
 
 branch.Path = Path;
 branch.control = U;
+
+
+
+function [q,qp] = map_task_2_joint_space(X, R_w_0, R_0_3)
+P_w0_t = X(1:2);
+V_t = [X(3:4); 0];
+
+% Map p -> q
+% q2
+c2 = (x^2 + y^2 - l1^2 -l2^2) / (2*l1*l2);
+if ( abs(c2) > 1 )
+    q = [];
+    qp = [];
+    return;
+end
+s2 = sqrt(1 - c2^2);
+q2 = [atan2(s2, c2); atan2(-s2, c2)];
+
+% q1
+k1 = l1 + l2*c2;
+k2 = l2*s2;
+q1 = [atan2(y,x) - atan2(k2,k1); atan2(y,x) - atan2(-k2,k1)]
+
+% q3
+c123 = R(1,1);
+s123 = R(2,1);
+phi = [atan2(s123, c123); atan2(s123, c123)];
+q3 = phi - theta_1 + theta_2;
+
+q = [];
+if (~isempty(q))
+    % Map v -> qp
+    zhat = [0;0;1]; % Planar robot so all joint axes point in pos z-direction
+
+    % Rotation matricies
+    R_0_1 = rotz(q(1));
+    R_1_2 = rotz(q(2));
+    %R_2_3 = rotz(q(3));
+
+    % Constant joint to joint position vectors for the planar PA-10
+    P_r0_j1 = [l0;0;0]; % .317
+    P_j1_j2 = [l1;0;0]; %.45
+    P_j2_j3 = [l2;0;0]; % .48
+
+    % Position vectors to locate joints in world coordinate system
+    P_w0_j1 = P_w0_r0 + R_w_0 * P_r0_j1;
+    P_w0_j2 = P_w0_j1 + R_w_0 * R_0_1 * P_j1_j2;
+    P_w0_j3 = P_w0_j2 + R_w_0 * R_0_1 * R_1_2 * P_j2_j3;
+
+    % Position vectors to locate target point in relation to joint centers
+    P_j1_t = P_w0_t - P_w0_j1;
+    P_j2_t = P_w0_t - P_w0_j2;
+    P_j3_t = P_w0_t - P_w0_j3;
+
+    % Linear velocity jacobian matrix
+    Jv = [cross(zhat,P_j1_t), cross(zhat,P_j2_t), cross(zhat,P_j3_t)];
+
+    % Rotation velocity jacobian matrix
+    %Jw = repmat(zhat,1,3);
+    Jw = [];
+
+    % Total jacobian and its generalized inverse
+    J = [Jv; Jw];
+    Jinv = J' * pinv( J * J' );
+    
+    % Compute joint velocities
+    qp = Jinv * V_t;
+else
+    qp = [];
+end
