@@ -17,29 +17,7 @@ function [q,qp] = map_task_2_joint_space(X, R_w_0, R_0_3)
 P_w0_t = X(1:2);
 V_t = [X(3:4); 0];
 
-% Map p -> q
-% q2
-c2 = (x^2 + y^2 - l1^2 -l2^2) / (2*l1*l2);
-if ( abs(c2) > 1 )
-    q = [];
-    qp = [];
-    return;
-end
-s2 = sqrt(1 - c2^2);
-q2 = [atan2(s2, c2); atan2(-s2, c2)];
 
-% q1
-k1 = l1 + l2*c2;
-k2 = l2*s2;
-q1 = [atan2(y,x) - atan2(k2,k1); atan2(y,x) - atan2(-k2,k1)]
-
-% q3
-c123 = R(1,1);
-s123 = R(2,1);
-phi = [atan2(s123, c123); atan2(s123, c123)];
-q3 = phi - theta_1 + theta_2;
-
-q = [];
 if (~isempty(q))
     % Map v -> qp
     zhat = [0;0;1]; % Planar robot so all joint axes point in pos z-direction
