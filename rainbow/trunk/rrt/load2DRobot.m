@@ -1,4 +1,9 @@
-function robot_obj = load2DRobot(name)
+function [r1,r2] = planar_load_robots()
+l0 = .317;
+l1 = .45;
+l2 = .48;
+l3 = .3;
+
 % USAGE: robot_obj = load2DRobot('pa10');
 
 % 2D robot constants

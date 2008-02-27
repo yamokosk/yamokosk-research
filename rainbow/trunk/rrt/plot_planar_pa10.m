@@ -1,29 +1,47 @@
-function fig = plot_planar_pa10(q,h)
+function fig = plot_planar_pa10(q, rs, h)
 
+fig = [];
 if (isempty(h))
-    fig = figure();
+    fig = gcf;
+    if ( ~strcmp('planar_plot', get(fig, 'UserData')) )
+        close(fig);
+        fig = createWindow();
+    end
 else
     fig = h;
-    figure(fig);
 end
 
-[T_0_3, T_0_1, T_0_2] = fkine_planar_pa10(q);
+[T_w_t, T_w_1, T_w_2, T_w_3] = fkine_planar_pa10(q, rs);
 
-j1 = T_0_1(1:2,4);
-j2 = T_0_2(1:2,4);
-j3 = T_0_3(1:2,4);
+xcoords = [T_w_1(1,4), T_w_2(1,4), T_w_3(1,4); ...
+           T_w_2(1,4), T_w_3(1,4), T_w_t(1,4)];
+ycoords = [T_w_1(2,4), T_w_2(2,4), T_w_3(2,4); ...
+           T_w_2(2,4), T_w_3(2,4), T_w_t(2,4)];
+colors = ['k','r','g','b'];
+nameprefix = {'link_1_', 'link_2_', 'link_3_', 'link_4_'};
 
-% Draw circles at joint centers
-plot([j1(1); j2(1); j3(1)], [j1(2); j2(2); j3(2)],'o');
+% Get existing line segments.. if they exist
+if (~isempty(rs.ghandles))
+    % just update vertex data
+	for n = 1:length(rs.ghandles)
+        set(links(n), 'XData', xcoords(:,n));
+        set(links(n), 'YData', ycoords(:,n));
+    end
+else
+    rs.ghandles = line(xcoords, ycoords);
+    
+    for n = 1:length(rs.ghandles)
+        set(rs.ghandles(n), 'Color', colors(n));
+        set(rs.ghandles(n), 'LineWidth', 5);
+        set(rs.ghandles(n), 'UserData', [nameprefix{n}, rs.name]);
+    end
+end
 
-% Link 0-1
-line([0; j1(1)], [0; j1(2)]);
 
-% Link 1-2
-line([j1(1); j2(1)], [j1(2); j2(2)]);
 
-% Link 2-3
-line([j2(1); j3(1)], [j2(2); j3(2)]);
+function fig = createWindow()
+fig = figure('UserData', 'planar_plot');
 
-% Tool
-%line(x3,y2);
+% Scene axes
+set(gca, 'DataAspectRatio',   [1, 1, 1]);
+axis([-2 2 -1.133 1.133]);

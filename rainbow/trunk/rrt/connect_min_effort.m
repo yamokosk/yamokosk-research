@@ -1,13 +1,16 @@
-function [t, U_opt,X_opt] = connect_min_effort(t0, x0, tf, xf, N, odefun, costfun)
+function [t, U_opt,X_opt] = connect_min_effort(t0, x0, tf, xf, odefun, costfun, udata)
 
 problem.FUNCS.ode   = func2str(odefun);
 problem.FUNCS.cost  = func2str(costfun);
 problem.name        = 'CONNECT';
 problem.independent_variable = 'increasing';
-problem.Derivatives = 'automatic';
+%problem.Derivatives = 'automatic';
 problem.autoscale   = 'on';
 
 ns = length(x0);
+
+rmin = [udata.r1.qmin'; udata.r1.qpmin'; udata.r2.qmin'; udata.r2.qpmin];
+rmax = [udata.r1.qmax'; udata.r1.qpmax'; udata.r2.qmax'; udata.r2.qpmax];
 
 phases(1).nodes = N;
 phases(1).time.min        = [0 t0];
