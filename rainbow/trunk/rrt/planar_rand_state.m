@@ -1,29 +1,32 @@
-function [qr,rind] = planar_rand_state(Prob)
+function [Xr,rind] = planar_rand_state(Prob)
 udata = Prob.userdata;
-test = binornd(1,0.5);
-rind = randint(1,1,[1,udata.traj.n]);
+rindm = randint(100,1,[1,udata.traj.n],sum(50*clock));
 
-if test > 0.5
-    % Generate completely random joint configuration
-    q1 = (udata.r1.qmax - udata.r1.qmin).*rand(1,3) + udata.r1.qmin;
-    q2 = (udata.r2.qmax - udata.r2.qmin).*rand(1,3) + udata.r2.qmin;
-    
-    % Now generate random task space velocity vector in the left to right
-    % direction
-    theta = (pi/(3*3)) * randn;
-    speed = 0.8*rand;
-    v = [speed*cos(theta); speed*sin(theta)];
-    
-    % Get the corresponding joint speeds
-    [Jsrc, Jinv_src] = jacobian_planar_pa10(q1, udata.r1);
-    qp1 = Jinv_src * v;
-    
-    [Jsen, Jinv_sen] = jacobian_planar_pa10(q2, udata.r2);
-    qp2 = Jinv_sen * v;
-    
-    % Report the new point
-    qr = [udata.traj.t(rind); q1'; qp1; q2'; qp2];
-else
+for n = 1:100
+    %test = binornd(1,0.5);
+    rind = rindm(n);
+    %fprintf('Trying new rind: %d\n', rind);
+    % if test > 0.5
+    %     % Generate completely random joint configuration
+    %     q1 = (udata.r1.qmax - udata.r1.qmin).*rand(1,3) + udata.r1.qmin;
+    %     q2 = (udata.r2.qmax - udata.r2.qmin).*rand(1,3) + udata.r2.qmin;
+    %
+    %     % Now generate random task space velocity vector in the left to right
+    %     % direction
+    %     theta = (pi/(3*3)) * randn;
+    %     speed = 0.8*rand;
+    %     v = [speed*cos(theta); speed*sin(theta)];
+    %
+    %     % Get the corresponding joint speeds
+    %     [Jsrc, Jinv_src] = jacobian_planar_pa10(q1, udata.r1);
+    %     qp1 = Jinv_src * v;
+    %
+    %     [Jsen, Jinv_sen] = jacobian_planar_pa10(q2, udata.r2);
+    %     qp2 = Jinv_sen * v;
+    %
+    %     % Report the new point
+    %     qr = [udata.traj.t(rind); q1'; qp1; q2'; qp2];
+    % else
     % Random state generator for planar robot environment
 
     % Step 0. Randomly select desired target point
@@ -55,8 +58,9 @@ else
     R1 = udata.r1.l1 + udata.r1.l2 + udata.r1.l3;
     [t1,t2] = ray_circle_int(P_wcs_dhat0(1:2), P_wcs_dhat_X1(1:2), C1, R1);
     if isempty(t1)
-        qr = []; xr = [];
-        return;
+        qr = [];
+        %fprintf('\trind: %d failed. No intersection with source\n', rind);
+        continue;
     end
 
     % Robot #2
@@ -65,8 +69,9 @@ else
     R2 = udata.r2.l1 + udata.r2.l2 + udata.r2.l3;
     [t3,t4] = ray_circle_int(P_wcs_dhat0(1:2), P_wcs_dhat_X2(1:2), C2, R2);
     if isempty(t3)
-        qr = []; xr = [];
-        return;
+        qr = [];
+        %fprintf('\trind: %d failed. No intersection with sensor\n', rind);
+        continue;
     end
 
     % Deal with sen then src
@@ -92,21 +97,23 @@ else
     % Step 3. Use inverse kinematics to compute the robot joint angles
     Qsrc = ikine_planar_pa10(T_wcs_src, udata.r1);
     if (isempty(Qsrc))
-        qr = []; xr = [];
-        return;
+        qr = [];
+        %fprintf('\trind: %d failed. No ikine solution for source\n', rind);
+        continue;
     end
 
     Qsen = ikine_planar_pa10(T_wcs_sen, udata.r2);
     if (isempty(Qsen))
-        qr = []; xr = [];
-        return;
+        qr = [];
+        %fprintf('\trind: %d failed. No ikine solution for sensor\n', rind);
+        continue;
     end
 
     % Step 4. Count results
     nsrc = size(Qsrc,1);
     nsen = size(Qsen,1);
     ncol = nsrc * nsen;
-    qr = zeros(12+1,ncol); % 12 states + 1 for time
+    Xr = zeros(12+1,ncol); % 12 states + 1 for time
     counter = 1;
 
     % Step 5. Generate a perturbed task space velocity
@@ -117,15 +124,30 @@ else
     for src = 1:nsrc
         [Jsrc,Jinv_src] = jacobian_planar_pa10(Qsrc(src,:), udata.r1);
         for sen = 1:nsen
-            qr(1,counter) = udata.traj.t(rind);
-            qr(2:4,counter) = Qsrc(src,:)';
-            qr(5:7,counter) = Jinv_src * V_task(:,counter);
+            qr(1,1) = udata.traj.t(rind);
+            qr(2:4,1) = Qsrc(src,:)';
+            qr(5:7,1) = Jinv_src * V_task(:,counter);
 
             [Jsen,Jinv_sen] = jacobian_planar_pa10(Qsen(sen,:), udata.r2);
-            qr(8:10,counter) = Qsen(sen,:)';
-            qr(11:13,counter) = Jinv_sen * V_task(:,counter);
+            qr(8:10,1) = Qsen(sen,:)';
+            qr(11:13,1) = Jinv_sen * V_task(:,counter);
 
+            % scale state
+            if (isfield(Prob, 'x_range'))
+                Xr(:,counter) = (2*qr - (Prob.x_ub + Prob.x_lb)) ./ Prob.x_range;
+            else
+                Xr(:,counter) = qr;
+            end
+            
             counter = counter + 1;
         end
     end
+    
+    rpick = randint(1,1,[1,ncol]);
+    Xr = Xr(:,rpick);
+    %fprintf('rind that I used: %d\n\n', rind);
+    return;
 end
+
+error('Could not generate a random state after 100 attempts');
+% end

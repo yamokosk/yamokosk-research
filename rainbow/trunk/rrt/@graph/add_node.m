@@ -6,7 +6,7 @@ function [G,ind] = add_node(G,N,Wn)
 % stored in row format in Wn. If Wn is not specified, the weights are
 % assumed to be 0.
 nnodes = size(N,2);
-ind = 1:nnodes + size(G.node_data,2);
+ind = [1:nnodes] + size(G.node_data,2);
 G.node_data = [G.node_data, N];
 
 if (nargin < 3)

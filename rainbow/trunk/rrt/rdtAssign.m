@@ -71,24 +71,38 @@ if nargin < 12
 end
 
 Prob.ns = length(x0);
-Prob.x0 = x0;
-Prob.xf = xf;
-Prob.x_lb = lb;
-Prob.x_ub = ub;
+
+if (isempty(lb)) Prob.x_lb = -inf*ones(size(x0));
+else Prob.x_lb = lb; end
+
+if (isempty(ub)) Prob.x_ub = inf*ones(size(x0));
+else Prob.x_ub = ub; end
+
+Prob.x_range = ub - lb;
 Prob.iter = iter;
-Prob.old_tree = old_tree;
+Prob.G = old_tree;
 Prob.userdata = userdata;
 
+% Scale x0 and xf between -1 and 1
+Prob.x0 = (2*x0 - (ub + lb)) ./ Prob.x_range;
+if (isempty(xf)) Prob.xf = NaN*ones(size(x0));
+else
+    Prob.xf = (2*xf - (ub + lb)) ./ Prob.x_range;; 
+end
+
+% Function checker
+isfhandle = @(fun)(isa(fun, 'function_handle'));
+
 % odefun
-if ishandle(odefun)
-    if ( nargin(odefun) ~= 4 ) error('Argument odefun must accept 4 arguments.'); end
+if isfhandle(odefun)
+    if ( nargin(odefun) ~= 1 ) error('Argument odefun must accept 1 arguments.'); end
 else
     error('Argument odefun must be a function handle.');
 end
 Prob.odefun = odefun;
 
 % node_generator
-if ishandle(ngen)
+if isfhandle(ngen)
     if ( nargin(ngen) ~= 1 ) error('Argument node_generator must accept 1 arguments.'); end
 else
     error('Argument node_generator must be a function handle.');
@@ -96,7 +110,7 @@ end
 Prob.node_generator = ngen;
 
 % node_evaluate
-if ishandle(neval)
+if isfhandle(neval)
     if ( nargin(neval) ~= 2 ) error('Argument node_evaluate accept 2 arguments.'); end
 else
     error('Argument node_evaluate must be a function handle.');
@@ -104,16 +118,16 @@ end
 Prob.node_evaluate = neval;
 
 % node_select
-if ishandle(nsel)
-    if ( nargin(nsel) ~= 3 ) error('Argument node_select accept 3 arguments.'); end
+if isfhandle(nsel)
+    if ( nargin(nsel) ~= 4 ) error('Argument node_select accept 3 arguments.'); end
 else
     error('Argument node_select must be a function handle.');
 end
-Prob.node_evaluate = nsel;
+Prob.node_select = nsel;
 
 % local_planner
-if ishandle(lp)
-    if ( nargin(odefun) ~= 3 ) error('Argument local_planner accept 3 arguments.'); end
+if isfhandle(lp)
+    if ( nargin(lp) ~= 3 ) error('Argument local_planner accept 3 arguments.'); end
 else
     error('Argument local_planner must be a function handle.');
 end
