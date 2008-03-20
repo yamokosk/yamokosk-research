@@ -1,6 +1,6 @@
-function Prob = rdtAssign(x0, xf, lb, ub, ...
+function Prob = rdtAssign(x0, xf, x_lb, x_ub, u_lb, u_ub, ...
                           odefun, ngen, neval, nsel, lp, ...
-                          iter, old_tree, userdata)
+                          iter, name, old_tree, userdata, OutputFcn)
 % rdtAssign - Defines the problem structure for the RDT algorithm
 %
 %   Prob = rdtAssign(x0, xf, lb, ub, odefun, ngen, neval, nsel, lp) creates 
@@ -57,37 +57,54 @@ function Prob = rdtAssign(x0, xf, lb, ub, ...
 %   store any other data which will be ultimately passed to any of the
 %   above function handles.
 
-if nargin < 12
-    userdata = [];
-    if nargin < 11
-        old_tree = [];
-        if nargin < 10
-            iter=20;
-            if nargin < 9
-                error('At minimum, the first 7 arguments must be specified');
+if nargin < 16
+    OutputFcn = @rdtOutput;
+    if nargin < 15
+        userdata = [];
+        if nargin < 14
+            old_tree = [];
+            if nargin < 13
+                name = 'Default';
+                if nargin < 12
+                    iter=20;
+                    if nargin < 11
+                        error('At minimum, the first 7 arguments must be specified');
+                    end
+                end
             end
         end
     end
 end
 
+Prob.name = name;
 Prob.ns = length(x0);
 
-if (isempty(lb)) Prob.x_lb = -inf*ones(size(x0));
-else Prob.x_lb = lb; end
+if (isempty(x_lb)) Prob.x_lb = -inf*ones(size(x0));
+else Prob.x_lb = x_lb; end
 
-if (isempty(ub)) Prob.x_ub = inf*ones(size(x0));
-else Prob.x_ub = ub; end
+if (isempty(x_ub)) Prob.x_ub = inf*ones(size(x0));
+else Prob.x_ub = x_ub; end
 
-Prob.x_range = ub - lb;
+Prob.x_range = x_ub - x_lb;
 Prob.iter = iter;
 Prob.G = old_tree;
 Prob.userdata = userdata;
 
-% Scale x0 and xf between -1 and 1
-Prob.x0 = (2*x0 - (ub + lb)) ./ Prob.x_range;
+Prob.u_lb = u_lb;
+Prob.u_ub = u_ub;
+
+% % Scale x0 and xf between -1 and 1
+% Prob.x0 = (2*x0 - (ub + lb)) ./ Prob.x_range;
+% if (isempty(xf)) Prob.xf = NaN*ones(size(x0));
+% else
+%     Prob.xf = (2*xf - (ub + lb)) ./ Prob.x_range;; 
+% end
+
+% Don't pre-scale states...
+Prob.x0 = x0;
 if (isempty(xf)) Prob.xf = NaN*ones(size(x0));
 else
-    Prob.xf = (2*xf - (ub + lb)) ./ Prob.x_range;; 
+    Prob.xf = xf; 
 end
 
 % Function checker
@@ -95,7 +112,8 @@ isfhandle = @(fun)(isa(fun, 'function_handle'));
 
 % odefun
 if isfhandle(odefun)
-    if ( nargin(odefun) ~= 1 ) error('Argument odefun must accept 1 arguments.'); end
+    fname = func2str(odefun);
+    if ( nargin(odefun) ~= 1 ) error([fname ' must accept 1 arguments.']); end
 else
     error('Argument odefun must be a function handle.');
 end
@@ -103,7 +121,8 @@ Prob.odefun = odefun;
 
 % node_generator
 if isfhandle(ngen)
-    if ( nargin(ngen) ~= 1 ) error('Argument node_generator must accept 1 arguments.'); end
+    fname = func2str(ngen);
+    if ( nargin(ngen) ~= 1 ) error([fname ' must accept 1 arguments.']); end
 else
     error('Argument node_generator must be a function handle.');
 end
@@ -111,7 +130,8 @@ Prob.node_generator = ngen;
 
 % node_evaluate
 if isfhandle(neval)
-    if ( nargin(neval) ~= 2 ) error('Argument node_evaluate accept 2 arguments.'); end
+    fname = func2str(neval);
+    if ( nargin(neval) ~= 2 ) error([fname ' must accept 2 arguments.']); end
 else
     error('Argument node_evaluate must be a function handle.');
 end
@@ -119,7 +139,8 @@ Prob.node_evaluate = neval;
 
 % node_select
 if isfhandle(nsel)
-    if ( nargin(nsel) ~= 4 ) error('Argument node_select accept 3 arguments.'); end
+    fname = func2str(nsel);
+    if ( nargin(nsel) ~= 4 ) error([fname ' must accept 3 arguments.']); end
 else
     error('Argument node_select must be a function handle.');
 end
@@ -127,11 +148,21 @@ Prob.node_select = nsel;
 
 % local_planner
 if isfhandle(lp)
-    if ( nargin(lp) ~= 3 ) error('Argument local_planner accept 3 arguments.'); end
+    fname = func2str(lp);
+    if ( nargin(lp) ~= 3 ) error([fname ' must accept 3 arguments.']); end
 else
     error('Argument local_planner must be a function handle.');
 end
 Prob.local_planner = lp;
+
+% Output function
+if isfhandle(OutputFcn)
+    fname = func2str(OutputFcn);
+    if ( nargin(OutputFcn) ~= 6 ) error([fname ' must accept 6 arguments.']); end
+else
+    error('Argument OutputFcn must be a function handle.');
+end
+Prob.output_fcn = OutputFcn;
 
 % Reset random generators
 rand('state',sum(200*clock))

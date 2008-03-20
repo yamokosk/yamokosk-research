@@ -1,4 +1,8 @@
 function Prob = rdt(Prob)
+
+% Initialize output function
+Prob.output_fcn(0, [], [], [], 'init', Prob);
+
 G_new = [];
 if isempty(Prob.G) 
     G_new = graph();
@@ -8,96 +12,81 @@ else
     G_new = Prob.G; 
 end
 
+% The RDT loop
 iter = Prob.iter;
-fprintf('Iteration     Status\n');
-fprintf('---------     ------\n');
-
-% General RDT methods
 for i = 1:iter
     % Node selection
-    [Ne,Ne_id,Nr,G_new] = node_selection(G_new, Prob);
+    [Neighbors, ID, QueryStates, G_new] = node_selection(G_new, Prob);
+    [nstates, nconnects] = size(QueryStates);
     
     % Node expansion
-    %   Ni - intermediate nodes on path from Ne to Nr
-    [Ni,We] = Prob.local_planner(Ne, Nr, Prob);
+    for j = 1:nconnects
+        [Path, EdgeWeights, ExitFlag, ExitMsg] = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
     
-    % Evaluation
-    G_new = node_evaluation(Ne_id, Ni, We, G_new, Prob);
-    
-    % Print info about this iteration
-    if (isempty(Ni))
-        fprintf('  %d           Failed\n', i);
-    else
-        fprintf('  %d           Completed\n', i);
-        gcf; hold on;
-        N = size(Ni,2);
-        Xsrc = zeros(2,N);
-        Xsen = zeros(2,N);
-        for n = 1:N
-            qsrc = ( Prob.x_range(2:4).*Ni(2:4,n) + Prob.x_ub(2:4) + Prob.x_lb(2:4) ) ./ 2;
-            Tsrc = fkine_planar_pa10(qsrc,Prob.userdata.r1);
-            plot_planar_pa10(qsrc, Prob.userdata.r1, gcf);
-            Xsrc(:,n) = Tsrc(1:2,4);
-            
-            qsen = ( Prob.x_range(8:10).*Ni(8:10,n) + Prob.x_ub(8:10) + Prob.x_lb(8:10) ) ./ 2;
-            Tsen = fkine_planar_pa10(qsen,Prob.userdata.r2);
-            plot_planar_pa10(qsen, Prob.userdata.r2, gcf);
-            Xsen(:,n) = Tsen(1:2,4);
-            drawnow;
+        status = 'Failed';
+        if (ExitFlag == 0)
+            % Evaluation
+            status = 'Complete';
+            G_new = node_evaluation(ID(j), Path, EdgeWeights, G_new, Prob);
         end
-        a = 2;
-        %plot(Xsrc(1,:), Xsrc(2,:), 'k.-');
-        %plot(Xsen(1,:), Xsen(2,:), 'r.-');
+        
+        % Iteration output
+        if ( Prob.output_fcn('Connect', status, Path, ExitMsg, 'connect', Prob) ) break; end
     end
     
-    
+    % Iteration output
+    if ( Prob.output_fcn('Iteration', 'Complete', [], [], 'iter', Prob) ) break; end
 end
 
 Prob.G = G_new;
+
+% Notify output function we are done
+Prob.output_fcn(0, [], [], [], 'done', Prob);
 
 
 % A node from the existing tree is selected as a location to add a
 % branch. Selection of a particular node is usually based on
 % probabilistic criteria that may require use of a valid distance
 % metric
-function [Ne,Ne_id,Nr,G] = node_selection(G, Prob)
+function [Neighbors,ID,QueryStates,G] = node_selection(G, Prob)
 
-for n = 1:100
-    Nr = Prob.node_generator(Prob);     % Generate random node
-    Wr = Prob.node_evaluate(Nr, Prob);  % Evaluate the new node
-    Ne_id = Prob.node_select(Nr, G.V, G.Wv, Prob);   % Select an existing node from the tree based
-                                                     % on this randomly generated node
-    if (Ne_id > 0)
-        G = add_node(G, Nr, Wr);            % Add node
-        Ne = G.V(Ne_id);                    % Get copy of existing node
-        break;
+for ii = 1:5
+    % Generate random nodes
+    Xr = Prob.node_generator(Prob);
+    
+    % Get the nearest neighbors to the randomly generated states from
+    % the existing tree.
+    ID = Prob.node_select(Xr, G.V, G.Wv, Prob);
+    ind = find(ID > 0);
+    
+    if ( ~isempty(ind) )
+        ID = ID(ind);
+        Neighbors = G.V(ID);
+        QueryStates = Xr(:,ind);
+        return;
     end
 end
+error('Gave up selecting a new node for expansion after five attempts.');
 
 
 % The new branch is evaluated according to performance criteria and
 % often for connection to the goal configuration. Additionally, the new
 % branch may be subdivided into multiple segments, thus adding several
 % new nodes to the existing tree.
-function G_new = node_evaluation(Ne_id, Ni, We, G_new, Prob)
-ni = size(Ni,2); % number of intermediate nodes
+function G_new = node_evaluation(ID, Path, EdgeWeights, G_new, Prob)
 
-if (ni > 0)
-    Ni = Ni(:,2:end-1);
-    We = We(2:end-1);
-    ni = size(Ni,2);
-    
-    % Evaluate the new nodes
-    Wn = Prob.node_evaluate(Ni, Prob);
-    % Add new nodes to tree
-    [G_new,ind] = add_node(G_new, Ni, Wn');
-    % Connect ne to ni(1)
-    G_new = add_edge(G_new, Ne_id, ind(1), We(1));
-    
-    for i = 2:ni
-        G_new = add_edge(G_new, ind(i-1), ind(i), We(i));
-    end 
-end
-    
+% The first node should already be in the tree. So first evaluate and add
+% the new nodes
+NewNodes = Path(:,2:end);
+NewNodeWeights = Prob.node_evaluate(NewNodes, Prob);
+[G_new,NewNodeIDs] = add_node(G_new, NewNodes, NewNodeWeights);
 
+% Next make an edge between existing node in the tree and our first new
+% node.
+G_new = add_edge(G_new, ID, NewNodeIDs(1), EdgeWeights(1));
 
+% Then use a for loop to add the rest of the edges
+nedges = length(NewNodeIDs);
+for i = 2:nedges
+    G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), EdgeWeights(i));
+end 

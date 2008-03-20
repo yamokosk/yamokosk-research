@@ -12,9 +12,12 @@
 #define	RADtoDEG	57.2957795130823208767981548141051703324054724665643215
 #define _NAN        9.99E+305
 
-void     define(const double *Torque, const double *Q, const double *U);
-void	 evaluate(void);
-void     output(double Up[]);
+#define P_TRQ   prhs[0]     
+#define P_Q     prhs[1]     
+#define P_QP    prhs[2]     
+#define P_QPP   plhs[0]     
+
+void	 evaluateZees(void);
 
 const double	G = 9.801;
 double	Q1,Q2,Q3,T1,T2,T3,U1,U2,U3;
@@ -24,74 +27,57 @@ double	z[96];
 /* ................................ MAIN ............................. */
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
-	int nrows = 3; int ncols = 1;
-	int m = 0;
-	double *Torque, *Q, *U, *Up;
+    int nrows=0, ncols=0, n=0;
+	double *pTorque=NULL, *pQ=NULL, *pQP=NULL, *pQPP=NULL;
 
-    /* Assign pointers to each input and output. */
-	Torque = mxGetPr(prhs[0]);
-	Q  = mxGetPr(prhs[1]);
-	U = mxGetPr(prhs[2]);
-    if (mxGetM(prhs[0]) != 3)
-    {
-        mexErrMsgTxt("Not enough torques specified.");
-    }
-
-    if (mxGetM(prhs[1]) != 3)
-    {
-        mexErrMsgTxt("Not enough Qs specified.");
-    }
-
-    if (mxGetM(prhs[2]) != 3)
-    {
-        mexErrMsgTxt("Not enough Qps specified.");
-    }
+    // Check input for correct number of rows and columns
+    if (mxGetM( P_TRQ ) != 3)   mexErrMsgTxt("Not enough torques specified.");
+    if (mxGetM( P_Q ) != 3)     mexErrMsgTxt("Not enough Qs specified.");
+    if (mxGetM( P_QP ) != 3)    mexErrMsgTxt("Not enough Qps specified.");
  	
-	/* Evaluate output quantities */
-	define(Torque,Q,U);
-	evaluate();
+    if ( ( mxGetN( P_TRQ ) != mxGetN( P_Q ) ) || ( mxGetN( P_TRQ ) != mxGetN( P_QP ) ) )
+        mexErrMsgTxt("U, Q, and QP must all have the same number of columns.");
+    
+    // Assign pointers to each input and output.
+	pTorque = mxGetPr( P_TRQ );
+	pQ  = mxGetPr( P_Q );
+	pQP = mxGetPr( P_QP );
+    
+    // Create storage for solutions
+    nrows = mxGetM(P_Q); ncols = mxGetN(P_Q);
+	P_QPP = mxCreateDoubleMatrix(nrows, ncols, mxREAL);
+	pQPP = mxGetPr(P_QPP);
+    
+    // Evaluate the EOM for each column in the input data
+    for (n=0; n < ncols; ++n)
+    {
+        // Define joint torques from input
+        T1 = *(pTorque + n*3);
+        T2 = *(pTorque + n*3 + 1);
+        T3 = *(pTorque + n*3 + 2);
+
+        // Define joint angles from input
+        Q1 = *(pQ + n*3);
+        Q2 = *(pQ + n*3 + 1);
+        Q3 = *(pQ + n*3 + 2);
 	
-   	/* Create matrix for the return argument. */
-	plhs[0] = mxCreateDoubleMatrix(nrows,ncols, mxREAL);
-	Up = mxGetPr(plhs[0]);
-
-    output(Up);
-}
-
-/* ............................. DEFINITIONS ........................... */
-
-void define(const double *Torque, const double *Q, const double *U)
-{
-	// define joint torques from input
-	T1 = Torque[0];
-	T2 = Torque[1];
-	T3 = Torque[2];
-
-	// define joint angles from input
-	Q1 = Q[0];
-	Q2 = Q[1];
-	Q3 = Q[2];
-	
-	// define joint velocities from input
-	U1 = U[0];
-	U2 = U[1];
-	U3 = U[2];
-}
-
-/* ................................ OUTPUT ............................. */
-
-void output(double Up[])
-{
-	Up[0]=U1p;
-	Up[1]=U2p;
-	Up[2]=U3p;
+        // Define joint velocities from input
+        U1 = *(pQP + n*3);
+        U2 = *(pQP + n*3 + 1);
+        U3 = *(pQP + n*3 + 2);
+        
+        evaluateZees();
+        
+        // Record output
+        pQPP[n*3]       = U1p;
+        pQPP[n*3 + 1]   = U2p;
+        pQPP[n*3 + 2]   = U3p;
+    }
 }
 
 /* ................................ EQNS .............................. */
-
-void evaluate(void)
+void evaluateZees(void)
 {
-/* Evaluate constants */
   z[5] = cos(Q3);
   z[6] = sin(Q3);
   z[9] = pow(z[5],2) + pow(z[6],2);
@@ -173,8 +159,7 @@ void evaluate(void)
   z[81] = z[66] - z[75];
   z[76] = z[9]*(10.35*z[29]-2.750000000000001*z[33]-z[7]);
   z[68] = 0.6798346300000001*pow(z[7],2) + 1.05*pow(z[33],2) + 1.60785*pow(
-  z[21],2) + 2.07*pow(z[29],2) + 3.08*pow(z[24],2) + 3.12*pow(z[27],2) + 4.86*
-  pow(z[22],2);
+  z[21],2) + 2.07*pow(z[29],2) + 3.08*pow(z[24],2) + 3.12*pow(z[27],2) + 4.86*pow(z[22],2);
   z[72] = 0.08600000000000001*z[7]*z[8] + 0.23571*z[8]*z[22] + 1.05*z[33]*
   z[34] + 1.132824*z[8]*z[24] + 1.4976*z[27]*z[28] + 2.07*z[29]*z[30];
   z[83] = z[68]*z[73] - z[69]*z[72];

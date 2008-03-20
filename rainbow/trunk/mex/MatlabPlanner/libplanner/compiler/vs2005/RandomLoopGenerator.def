@@ -1,2 +1,0 @@
-LIBRARY	"mexRandomLoopGenerator"
-EXPORTS mexFunction

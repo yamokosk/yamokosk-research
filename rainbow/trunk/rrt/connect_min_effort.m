@@ -1,42 +1,87 @@
-function [t, U_opt, X_opt] = connect_min_effort(t0, x0, tf, xf, N, odefun, costfun, udata)
+function [T, U, X, exitflag, exitmsg] = connect_min_effort(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, N, odefun, costfun)
 
-problem.FUNCS.ode   = func2str(odefun);
-problem.FUNCS.cost  = func2str(costfun);
-problem.name        = 'CONNECT';
-if (tf > t0)
-    problem.independent_variable = 'increasing';
-else
-    problem.independent_variable = 'decreasing';
+direction = 'increasing';
+if (tspan(2) < tspan(1))
+    direction = 'decreasing';
 end
-% Can only use automatic derivatives if not using mex files for dynamics or
-% cost function.
-%problem.Derivatives = 'automatic'; 
-%problem.autoscale   = 'on';
-problem.autoscale   = 'on';
 
-%rmin = [udata.r1.qmin'; -udata.r1.qpmax'; udata.r2.qmin'; -udata.r2.qpmax'];
-%rmax = [udata.r1.qmax'; udata.r1.qpmax'; udata.r2.qmax'; udata.r2.qpmax'];
+% Define bounds and guess
+tmin = [tspan(1), tspan(1)];
+tmax = [tspan(2), tspan(2)];
+xmin = [x0, x_lb, xf];
+xmax = [x0, x_ub, xf];
 
-%umin = [-udata.r1.umax'; -udata.r2.umax'];
-%umax = [udata.r1.umax'; udata.r2.umax'];
+alpha = linspace(0,1,N);
+xguess = [x0'; xf'];
+uguess = zeros(2, length(u_lb));
+% xguess = zeros(N, length(x0));
+% uguess = zeros(N, length(u_lb));
 
-phases(1).nodes = N;
-phases(1).time.min        = [t0 t0];
-phases(1).time.max        = [tf tf];
-phases(1).states.min      = [x0 -1*ones(size(x0)) xf]; % Probably want to put lower and upper bounds in here
-phases(1).states.max      = [x0 ones(size(x0)) xf];
-phases(1).controls.min    = -1*ones(6,1);
-phases(1).controls.max    = ones(6,1);
+% for n = 1:N
+%     xguess(n,:) = (x0 + alpha(n) * (xf - x0))';
+% end
 
-guess(1).time          = [t0; tf];
-guess(1).states        = [x0'; xf'];
-guess(1).controls      = zeros(2,6);
+% Create the structs required by GPOCS
+phases = struct( 'nodes',       N, ...
+                 'time',        struct('min', tmin, 'max', tmax), ...
+                 'states',      struct('min', xmin, 'max', xmax), ...
+                 'controls',    struct('min', u_lb, 'max', u_ub) );
 
-problem.phases   = phases;
-problem.guess    = guess;
-problem          = gpocs('snopt7',problem,0);
-solution         = problem.solution;
+guess = struct( 'time',     [tspan(1); tspan(2)], ...
+                'states',	[x0'; xf'], ...
+                'controls',	uguess );
 
-t = solution.time;
-U_opt = solution.controls;
-X_opt = solution.states;
+problem = struct( 'FUNCS',                  struct('ode', func2str(odefun), 'cost', func2str(costfun)), ...
+                  'name',                   'CONNECT_MIN_EFFORT', ...
+                  'independent_variable',   direction, ...
+                  'autoscale',              'on', ...
+                  'phases',                 phases, ...
+                  'guess',                  guess);
+
+try
+%     Must call GPOCS in a try-catch right now because sometimes GPOCS
+%     crashes with the following error.. which I don't yet understand
+%     fully:
+%     
+%       something about cross-over state identified.
+    problem = gpocs('snopt7',problem,0);
+catch
+   err = lasterror;
+   T = []; U = []; X = [];
+   exitflag = 999;
+   exitmsg = err.message;
+   return;
+end
+solution = problem.solution;
+
+% Parse snopt summary file (snoptpri.txt) and find the exit message.
+% Ideally lookind for the following:
+%   SNOPTB EXIT   0 -- finished successfully
+fid = fopen('snoptpri.txt');
+line = fgetl(fid);
+while ( ~feof(fid) )
+    ind = strfind(line, 'SNOPTB EXIT');
+    if ( ~isempty(ind) )
+        fclose(fid);
+        ind = strfind(line, '0 -- finished successfully');
+        
+        if ( ~isempty(ind) )
+            exitflag = 0;
+            exitmsg = 'finished successfully';
+            T = solution.time;
+            U = solution.controls;
+            X = solution.states;
+        else
+            exitflag = 1;
+            exitmsg = [line '\n'];
+            T = [];
+            U = [];
+            X = [];
+        end
+        
+        !del snopt*.txt
+        return;
+    end
+    line = fgetl(fid);
+end
+error('The SNOPT algorithm did write results to a file that I could read!');
