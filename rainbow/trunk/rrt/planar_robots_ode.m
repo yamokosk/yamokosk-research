@@ -1,9 +1,0 @@
-function xdot = planar_robots_ode(sol)
-xdot = zeros(size(sol.states));
-xdot(:,1:3) = sol.states(:,4:6);
-xdot(:,7:9) = sol.states(:,10:12);
-q = [sol.states(:,1:3), sol.states(:,7:9)]';
-qp = [sol.states(:,4:6), sol.states(:,10:12)]';
-qpp = planar_robots_eom( sol.controls', q, qp)';
-xdot(:,4:6) = qpp(:,1:3);
-xdot(:,10:12) = qpp(:,4:6);
