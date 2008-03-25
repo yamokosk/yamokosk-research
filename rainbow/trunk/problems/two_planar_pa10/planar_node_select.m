@@ -28,8 +28,11 @@ for n = 1:nquery
     % Compute distances two different ways
     %   With time included
     %D = sqrt(sum( squeeze(dChi(:,:,n)).^2 ))';
+    %   With time and only joint angles
+    rows = [1,2,3,4,8,9,10];
+    D = sqrt(sum( squeeze(dChi(rows,:,n)).^2 ))';
     %   Without time included
-    D = sqrt(sum( squeeze(dChi(2:end,:,n)).^2 ))';
+    %D = sqrt(sum( squeeze(dChi(2:end,:,n)).^2 ))';
     D_sorted = sortrows( [D(ind), indices(ind)] );
     
     if ( ~isempty(D_sorted) )

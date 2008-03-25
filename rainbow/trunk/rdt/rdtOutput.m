@@ -12,8 +12,8 @@ switch (flag)
     case 'init'
         fprintf('Iteration     Status     Comment\n');
         fprintf('---------     ------     -------\n');
-        figure(2); set(2,'Position',[50,50,560,420]); grid on; view(45,45);
-        figure(3); set(3,'Position',[620,50,560,420]); grid on; view(45,45);
+%         figure(2); set(2,'Position',[50,50,560,420]); grid on; view(45,45);
+%         figure(3); set(3,'Position',[620,50,560,420]); grid on; view(45,45);
     case 'done'
         fprintf('RDT complete.\n');
     case 'iter'
@@ -42,10 +42,10 @@ switch (flag)
             plot(Xsrc(1,:), Xsrc(2,:), 'k.-');
             plot(Xsen(1,:), Xsen(2,:), 'r.-');
             
-            figure(2); hold on;
-            plot3(Qsrc(1,:),Qsrc(2,:),Qsrc(3,:),'*-')
-            figure(3); hold on;
-            plot3(Qsen(1,:),Qsen(2,:),Qsen(3,:),'*-')
+%             figure(2); hold on;
+%             plot3(Qsrc(1,:),Qsrc(2,:),Qsrc(3,:),'*-')
+%             figure(3); hold on;
+%             plot3(Qsen(1,:),Qsen(2,:),Qsen(3,:),'*-')
             drawnow;
         end
     otherwise

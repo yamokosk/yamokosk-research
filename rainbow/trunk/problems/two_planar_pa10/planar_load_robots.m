@@ -3,10 +3,10 @@ function [r1,r2] = planar_load_robots()
 r1 = planar_load_robot('top');
 r2 = planar_load_robot('bottom');
 
-r1.T_0 = transl(0,1.133,0) * rotz(-pi/2);
+r1.T_0 = transl(0,1.200,0) * rotz(-pi/2);
 r1.T_t = transl(r1.l3,0,0);
 
-r2.T_0 = transl(0,-1.133,0) * rotz(pi/2);
+r2.T_0 = transl(0,-1.00,0) * rotz(pi/2);
 r2.T_t = transl(r2.l3,0,0);
 
 function r = planar_load_robot(name)

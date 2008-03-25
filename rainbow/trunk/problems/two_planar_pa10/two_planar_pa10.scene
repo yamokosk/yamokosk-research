@@ -2,74 +2,58 @@
 
 <scene>
 
-	<space name="environment" type="simple">
-		<body name="src_stand" parent="world">
-			<transform>
-				<translation value="1139.8 0 571.5/2"/>
-			</transform>
-			<!-- Table legs -->
-			<geometry type="box" name="src_stand_leg1">
-				<parameter type="length" value="38.1"/>
-				<parameter type="width" value="38.1"/>
-				<parameter type="height" value="571.5"/>
-				<parameter type="color" value="100 100 100" />
-				<transform>
-					<translation value="196.85 273.05 0"/>
-				</transform>
-			</geometry>
-		</body>
-		
-	</space>
-	
 	<!-- Source robot (no payload) -->
 	<space name="pa10_source" type="simple">
 		<!-- Base body, no joints -->
-		<body name="sen0" parent="world">
+		<body name="src0" parent="world">
 			<transform>
-				<translation value="-1139.8 0 601.345"/>
+				<translation value="0 1200.0 0"/>
+				<rotation type="z" value="-pi/2"/>
+				<rotation type="y" value="pi/2"/>
 			</transform>
-			<geometry type="mesh" name="src0_01">
-				<parameter type="filename" value="../models/pa10_model/b0_01.obj"/>
+			<!--<geometry type="mesh" name="src0_01">
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_01.obj"/>
 				<parameter type="color" value="200 200 200" />
 			</geometry>
 			<geometry type="mesh" name="src0_02">
-				<parameter type="filename" value="../models/pa10_model/b0_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src0_03">
-				<parameter type="filename" value="../models/pa10_model/b0_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src0_04">
-				<parameter type="filename" value="../models/pa10_model/b0_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src0_05">
-				<parameter type="filename" value="../models/pa10_model/b0_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src0_06">
-				<parameter type="filename" value="../models/pa10_model/b0_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_06.obj"/>
 				<parameter type="color" value="73 185 255" />
-			</geometry>
+			</geometry>-->
 		</body>
 		
 		<!-- Link 01, Joint 1 -->
 		<body name="src1" parent="src0">
 			<transform>
-				<translation value="0 0 317"/>
+				<!--<translation value="0 0 317"/>-->
+				<translation value="0 0 0"/>
 				<rotation type="z" value="pi/2"/> <!-- Planar configuration - fixed joint -->
 			</transform>
 			<geometry type="mesh" name="src1_01">
-				<parameter type="filename" value="../models/pa10_model/b1_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b1_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src1_02">
-				<parameter type="filename" value="../models/pa10_model/b1_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b1_02.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 			<geometry type="mesh" name="src1_03">
-				<parameter type="filename" value="../models/pa10_model/b1_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b1_03.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 		</body>
@@ -78,35 +62,35 @@
 		<body name="src2" parent="src1">
 			<transform>
 				<rotation type="x" value="-pi/2"/>
-				<rotation type="z" value="pi/4" mutable="1" name="q_src_2"/>
+				<rotation type="z" value="0" mutable="1" name="q_src_2"/>
 				<rotation type="z" value="-pi/2"/>
 			</transform>
 			<geometry type="mesh" name="src2_01">
-				<parameter type="filename" value="../models/pa10_model/b2_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src2_02">
-				<parameter type="filename" value="../models/pa10_model/b2_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src2_03">
-				<parameter type="filename" value="../models/pa10_model/b2_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src2_04">
-				<parameter type="filename" value="../models/pa10_model/b2_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src2_05">
-				<parameter type="filename" value="../models/pa10_model/b2_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src2_06">
-				<parameter type="filename" value="../models/pa10_model/b2_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_06.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 			<geometry type="mesh" name="src2_07">
-				<parameter type="filename" value="../models/pa10_model/b2_07.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_07.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 		</body>
@@ -115,31 +99,31 @@
 		<body name="src3" parent="src2">
 			<transform>
 				<translation value="450 0 0"/>
-				<rotation type="z" value="pi/2" mutable="1" name="q_src_3"/>
+				<rotation type="z" value="0" mutable="1" name="q_src_3"/>
 				<rotation type="z" value="pi/2"/>
 			</transform>
 			<geometry type="mesh" name="src3_01">
-				<parameter type="filename" value="../models/pa10_model/b3_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src3_02">
-				<parameter type="filename" value="../models/pa10_model/b3_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src3_03">
-				<parameter type="filename" value="../models/pa10_model/b3_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src3_04">
-				<parameter type="filename" value="../models/pa10_model/b3_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src3_05">
-				<parameter type="filename" value="../models/pa10_model/b3_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src3_06">
-				<parameter type="filename" value="../models/pa10_model/b3_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_06.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 		</body>
@@ -152,19 +136,19 @@
 				<rotation type="z" value="0"/> <!-- Planar configuration - fixed joint -->
 			</transform>
 			<geometry type="mesh" name="src4_01">
-				<parameter type="filename" value="../models/pa10_model/b4_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src4_02">
-				<parameter type="filename" value="../models/pa10_model/b4_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src4_03">
-				<parameter type="filename" value="../models/pa10_model/b4_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_03.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 			<geometry type="mesh" name="src4_04">
-				<parameter type="filename" value="../models/pa10_model/b4_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_04.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 		</body>
@@ -173,38 +157,38 @@
 		<body name="src5" parent="src4">
 			<transform>
 				<rotation type="x" value="-pi/2"/>
-				<rotation type="z" value="-pi/4" mutable="1" name="q_src_5"/>
+				<rotation type="z" value="0" mutable="1" name="q_src_5"/>
 			</transform>
 			<geometry type="mesh" name="src5_01">
-				<parameter type="filename" value="../models/pa10_model/b5_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_02">
-				<parameter type="filename" value="../models/pa10_model/b5_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_03">
-				<parameter type="filename" value="../models/pa10_model/b5_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_04">
-				<parameter type="filename" value="../models/pa10_model/b5_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_05">
-				<parameter type="filename" value="../models/pa10_model/b5_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_06">
-				<parameter type="filename" value="../models/pa10_model/b5_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_06.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_07">
-				<parameter type="filename" value="../models/pa10_model/b5_07.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_07.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="src5_08">
-				<parameter type="filename" value="../models/pa10_model/b5_08.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_08.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 		</body>
@@ -233,50 +217,53 @@
 		<!-- Base body, no joints -->
 		<body name="sen0" parent="world">
 			<transform>
-				<translation value="-1139.8 0 601.345"/>
+				<translation value="0 -1000.0 0"/>
+				<rotation type="z" value="pi/2"/>
+				<rotation type="y" value="pi/2"/>
 			</transform>
-			<geometry type="mesh" name="sen0_01">
-				<parameter type="filename" value="../models/pa10_model/b0_01.obj"/>
+			<!--<geometry type="mesh" name="sen0_01">
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_01.obj"/>
 				<parameter type="color" value="200 200 200" />
 			</geometry>
 			<geometry type="mesh" name="sen0_02">
-				<parameter type="filename" value="../models/pa10_model/b0_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen0_03">
-				<parameter type="filename" value="../models/pa10_model/b0_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen0_04">
-				<parameter type="filename" value="../models/pa10_model/b0_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen0_05">
-				<parameter type="filename" value="../models/pa10_model/b0_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen0_06">
-				<parameter type="filename" value="../models/pa10_model/b0_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_06.obj"/>
 				<parameter type="color" value="73 185 255" />
-			</geometry>
+			</geometry>-->
 		</body>
 		
 		<!-- Link 01, Joint 1 -->
 		<body name="sen1" parent="sen0">
 			<transform>
-				<translation value="0 0 317"/>
+				<!--<translation value="0 0 317"/>-->
+				<translation value="0 0 0"/>
 				<rotation type="z" value="pi/2"/> <!-- Planar configuration - fixed joint -->
 			</transform>
 			<geometry type="mesh" name="sen1_01">
-				<parameter type="filename" value="../models/pa10_model/b1_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b1_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen1_02">
-				<parameter type="filename" value="../models/pa10_model/b1_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b1_02.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 			<geometry type="mesh" name="sen1_03">
-				<parameter type="filename" value="../models/pa10_model/b1_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b1_03.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 		</body>
@@ -285,35 +272,35 @@
 		<body name="sen2" parent="sen1">
 			<transform>
 				<rotation type="x" value="-pi/2"/>
-				<rotation type="z" value="pi/4" mutable="1" name="q_sen_2"/>
+				<rotation type="z" value="0" mutable="1" name="q_sen_2"/>
 				<rotation type="z" value="-pi/2"/>
 			</transform>
 			<geometry type="mesh" name="sen2_01">
-				<parameter type="filename" value="../models/pa10_model/b2_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen2_02">
-				<parameter type="filename" value="../models/pa10_model/b2_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen2_03">
-				<parameter type="filename" value="../models/pa10_model/b2_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen2_04">
-				<parameter type="filename" value="../models/pa10_model/b2_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen2_05">
-				<parameter type="filename" value="../models/pa10_model/b2_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen2_06">
-				<parameter type="filename" value="../models/pa10_model/b2_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_06.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 			<geometry type="mesh" name="sen2_07">
-				<parameter type="filename" value="../models/pa10_model/b2_07.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b2_07.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 		</body>
@@ -322,31 +309,31 @@
 		<body name="sen3" parent="sen2">
 			<transform>
 				<translation value="450 0 0"/>
-				<rotation type="z" value="pi/2" mutable="1" name="q_sen_3"/>
+				<rotation type="z" value="0" mutable="1" name="q_sen_3"/>
 				<rotation type="z" value="pi/2"/>
 			</transform>
 			<geometry type="mesh" name="sen3_01">
-				<parameter type="filename" value="../models/pa10_model/b3_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen3_02">
-				<parameter type="filename" value="../models/pa10_model/b3_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen3_03">
-				<parameter type="filename" value="../models/pa10_model/b3_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen3_04">
-				<parameter type="filename" value="../models/pa10_model/b3_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen3_05">
-				<parameter type="filename" value="../models/pa10_model/b3_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen3_06">
-				<parameter type="filename" value="../models/pa10_model/b3_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b3_06.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 		</body>
@@ -359,19 +346,19 @@
 				<rotation type="z" value="0"/> <!-- Planar configuration - fixed joint -->
 			</transform>
 			<geometry type="mesh" name="sen4_01">
-				<parameter type="filename" value="../models/pa10_model/b4_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen4_02">
-				<parameter type="filename" value="../models/pa10_model/b4_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen4_03">
-				<parameter type="filename" value="../models/pa10_model/b4_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_03.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 			<geometry type="mesh" name="sen4_04">
-				<parameter type="filename" value="../models/pa10_model/b4_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b4_04.obj"/>
 				<parameter type="color" value="255 255 255" />
 			</geometry>
 		</body>
@@ -380,38 +367,38 @@
 		<body name="sen5" parent="sen4">
 			<transform>
 				<rotation type="x" value="-pi/2"/>
-				<rotation type="z" value="-pi/4" mutable="1" name="q_sen_5"/>
+				<rotation type="z" value="0" mutable="1" name="q_sen_5"/>
 			</transform>
 			<geometry type="mesh" name="sen5_01">
-				<parameter type="filename" value="../models/pa10_model/b5_01.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_01.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_02">
-				<parameter type="filename" value="../models/pa10_model/b5_02.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_02.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_03">
-				<parameter type="filename" value="../models/pa10_model/b5_03.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_03.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_04">
-				<parameter type="filename" value="../models/pa10_model/b5_04.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_04.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_05">
-				<parameter type="filename" value="../models/pa10_model/b5_05.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_05.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_06">
-				<parameter type="filename" value="../models/pa10_model/b5_06.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_06.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_07">
-				<parameter type="filename" value="../models/pa10_model/b5_07.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_07.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 			<geometry type="mesh" name="sen5_08">
-				<parameter type="filename" value="../models/pa10_model/b5_08.obj"/>
+				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b5_08.obj"/>
 				<parameter type="color" value="73 185 255" />
 			</geometry>
 		</body>
@@ -437,53 +424,13 @@
 	
 	<!-- Payloads for both robots. These are put in a separate space so we can collision check them against the robot's spaces -->
 	<space name="payloads" type="simple">
-		<!--<body name="camera" parent="src6">
+		<body name="xray_tube" parent="src6">
 			<transform>
 				<translation value="0 0 1.27"/>
 				<rotation type="x" value="pi"/>
 			</transform>
-			<geometry type="cylinder" name="mounting_plate">
-				<parameter type="length" value="12.7"/>
-				<parameter type="radius" value="107.95/2"/>
-				<parameter type="color" value="200 200 200" />
-				<transform>
-					<translation value="0 0 -12.7/2"/>
-				</transform>
-			</geometry>
-			<geometry type="box" name="camera_plate">
-				<parameter type="length" value="12.7"/>
-				<parameter type="width" value="63.5"/>
-				<parameter type="height" value="152.4"/>
-				<parameter type="color" value="200 200 200" />
-				<transform>
-					<translation value="50.8-12.7/2 0 -152.4/2-12.7"/>
-				</transform>
-			</geometry>
-			<geometry type="box" name="camera_body">
-				<parameter type="length" value="50.8"/>
-				<parameter type="width" value="44.45"/>
-				<parameter type="height" value="50.8"/>
-				<parameter type="color" value="0 0 0" />
-				<transform>
-					<translation value="12.7 0 -139.7"/>
-				</transform>
-			</geometry>
-			<geometry type="cylinder" name="camera_lense">
-				<parameter type="length" value="44.45"/>
-				<parameter type="radius" value="34.925/2"/>
-				<parameter type="color" value="0 0 0" />
-				<transform>
-					<translation value="6.35 0 -165.1-44.45/2"/>
-				</transform>
-			</geometry>
-		</body>-->
-        <body name="xray_tube" parent="src6">
-			<transform>
-				<translation value="0 0 1.27"/>
-				<rotation type="x" value="pi"/>
-			</transform>
-			<geometry type="cylinder" name="xray_tube_01">
-				<parameter type="length" value="200"/>
+			<geometry type="ccylinder" name="xray_tube_01">
+				<parameter type="length" value="200-130"/>
 				<parameter type="radius" value="130/2"/>
 				<parameter type="color" value="200 200 200" />
 				<transform>
@@ -508,151 +455,26 @@
 		</body>	
 	</space>
 	
-	<!-- The human definition -->
+	<!-- Obstacle definition -->
 	<space name="obstacles" type="simple">
-		<body name="pelivs" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lRPP" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLPP" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRAS" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLAS" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRPP" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLPP" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRAS" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLAS" />
+		<body name="obs1" parent="world">
+			<transform>
+				<translation value="100 300 0" />
 			</transform>
-			<geometry type="box" name="pelvis_01">
+			<geometry type="ccylinder" name="obs1_cyl1">
 				<parameter type="length" value="200" />
-				<parameter type="width" value="400" />
-				<parameter type="height" value="100" />
+				<parameter type="radius" value="75" />
 				<parameter type="color" value="221 119 17" />
 			</geometry>
 		</body>
-		<body name="rthigh" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lRTH1" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRTH2" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRTH3" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRTH4" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRTH1" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRTH2" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRTH3" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRTH4" />
+		<body name="obs2" parent="world">
+			<transform>
+				<translation value="-100 -200 0" />
 			</transform>
-			<geometry type="cylinder" name="rthigh_01">
-				<parameter type="length" value="415"/>
-				<parameter type="radius" value="83.5"/>
+			<geometry type="ccylinder" name="obs2_cyl1">
+				<parameter type="length" value="200" />
+				<parameter type="radius" value="75" />
 				<parameter type="color" value="221 119 17" />
-				<transform>
-					<translation value="0 0 415/2" />
-				</transform>
-			</geometry>
-		</body>
-		<body name="rshank" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lRSK1" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRSK2" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRSK3" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRSK4" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRSK1" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRSK2" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRSK3" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRSK4" />
-			</transform>
-			<geometry type="cylinder" name="rshank_01">
-				<parameter type="length" value="391"/>
-				<parameter type="radius" value="62.7"/>
-				<parameter type="color" value="221 119 17" />
-				<transform>
-					<translation value="0 0 391/2" />
-				</transform>
-			</geometry>
-		</body>
-		<body name="rfoot" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lRFT1" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRFT2" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lRFT3" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRFT1" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRFT2" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gRFT3" />
-			</transform>
-			<geometry type="box" name="rfoot_01" >
-				<parameter type="length" value="68.8"/>
-				<parameter type="width" value="273"/>
-				<parameter type="height" value="99"/>
-				<parameter type="color" value="221 119 17" />
-				<transform>
-					<translation value="68.8/2 273/2 0" />
-				</transform>
-			</geometry>
-		</body>
-		<body name="lthigh" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lLTH1" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLTH2" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLTH3" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLTH4" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLTH1" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLTH2" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLTH3" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLTH4" />
-			</transform>
-			<geometry type="cylinder" name="lthigh_01">
-				<parameter type="length" value="415"/>
-				<parameter type="radius" value="83.5"/>
-				<parameter type="color" value="221 119 17" />
-				<transform>
-					<translation value="0 0 415/2" />
-				</transform>
-			</geometry>
-		</body>
-		<body name="lshank" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lLSK1" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLSK2" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLSK3" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLSK4" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLSK1" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLSK2" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLSK3" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLSK4" />
-			</transform>
-			<geometry type="cylinder" name="lshank_01">
-				<parameter type="length" value="391"/>
-				<parameter type="radius" value="62.7"/>
-				<parameter type="color" value="221 119 17" />
-				<transform>
-					<translation value="0 0 391/2" />
-				</transform>
-			</geometry>
-		</body>
-        <body name="target" parent="lshank">
-            <transform>
-                <rotation type="x" value="-pi/2"/>
-            </transform>
-            <!--<geometry type="cylinder" name="target_01">
-					<parameter type="length" value="200"/>
-					<parameter type="radius" value="50"/>
-			</geometry>-->
-        </body>
-		<body name="lfoot" parent="OSMI_FIX">
-			<transform type="marker">
-				<marker type="local"  value="0 0 0" mutable="1" name="lLFT1" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLFT2" />
-				<marker type="local"  value="0 0 0" mutable="1" name="lLFT3" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLFT1" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLFT2" />
-				<marker type="global"  value="0 0 0" mutable="1" name="gLFT3" />
-			</transform>
-			<geometry type="box" name="lfoot_01" >
-				<parameter type="length" value="68.8"/>
-				<parameter type="width" value="273"/>
-				<parameter type="height" value="99"/>
-				<parameter type="color" value="221 119 17" />
-				<transform>
-					<translation value="-68.8/2 273/2 0" />
-				</transform>
 			</geometry>
 		</body>
 	</space>
@@ -661,12 +483,9 @@
 	<collisionpairs>
 		<pair space1="payloads" space2="pa10_sensor"/>
 		<pair space1="payloads" space2="pa10_source"/>
-		<pair space1="environment" space2="payloads"/>
-		<pair space1="environment" space2="pa10_sensor"/>
-		<pair space1="environment" space2="pa10_source"/>
-		<pair space1="human" space2="pa10_sensor"/>
-		<pair space1="human" space2="pa10_source"/>
-		<pair space1="human" space2="payloads"/>
+		<pair space1="obstacles" space2="pa10_sensor"/>
+		<pair space1="obstacles" space2="pa10_source"/>
+		<pair space1="payloads" space2="obstacles"/>
 	</collisionpairs>
 	
 </scene>

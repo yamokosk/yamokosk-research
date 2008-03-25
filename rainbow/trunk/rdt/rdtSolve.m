@@ -24,7 +24,7 @@ for i = 1:iter
         [Path, EdgeWeights, ExitFlag, ExitMsg] = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
     
         status = 'Failed';
-        if (ExitFlag == 0)
+        if ((ExitFlag == 0) && (size(Path,2) > 1))
             % Evaluation
             status = 'Complete';
             G_new = node_evaluation(ID(j), Path, EdgeWeights, G_new, Prob);

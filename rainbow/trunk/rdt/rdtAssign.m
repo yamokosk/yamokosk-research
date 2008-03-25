@@ -1,6 +1,6 @@
-function Prob = rdtAssign(x0, xf, x_lb, x_ub, u_lb, u_ub, ...
-                          odefun, ngen, neval, nsel, lp, ...
-                          iter, name, old_tree, userdata, OutputFcn)
+function Prob = rdtAssign(x0, xf, x_lb, x_ub, u_lb, u_ub, iter, ...
+						  name, old_tree, userdata, ...
+                          odefun, ngen, neval, nsel, lp, OutputFcn)
 % rdtAssign - Defines the problem structure for the RDT algorithm
 %
 %   Prob = rdtAssign(x0, xf, lb, ub, odefun, ngen, neval, nsel, lp) creates 
@@ -57,24 +57,24 @@ function Prob = rdtAssign(x0, xf, x_lb, x_ub, u_lb, u_ub, ...
 %   store any other data which will be ultimately passed to any of the
 %   above function handles.
 
-if nargin < 16
-    OutputFcn = @rdtOutput;
-    if nargin < 15
-        userdata = [];
-        if nargin < 14
-            old_tree = [];
-            if nargin < 13
-                name = 'Default';
-                if nargin < 12
-                    iter=20;
-                    if nargin < 11
-                        error('At minimum, the first 7 arguments must be specified');
-                    end
-                end
-            end
-        end
-    end
-end
+% if nargin < 16
+%     OutputFcn = @rdtOutput;
+%     if nargin < 15
+%         userdata = [];
+%         if nargin < 14
+%             old_tree = [];
+%             if nargin < 13
+%                 name = 'Default';
+%                 if nargin < 12
+%                     iter=20;
+%                     if nargin < 11
+%                         error('At minimum, the first 7 arguments must be specified');
+%                     end
+%                 end
+%             end
+%         end
+%     end
+% end
 
 Prob.name = name;
 Prob.ns = length(x0);
