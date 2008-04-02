@@ -34,12 +34,20 @@ const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q",
 				ERROR_MSG(INVALID_ARG, "Initrobot matrix was not defined");			\
 																					\
 			int dof = mxGetM( prhs[0] );											\
-			if ( mxGetN( prhs[0] ) != 23 )											\
+			if ( mxGetN( prhs[0] ) != 24 )											\
 				ERROR_MSG(INVALID_ARG, "Initrobot matrix has incorrect number of columns");	\
 																					\
-			Matrix initrobot(dof, 23);												\
-			MxArrayToNMMatrix(initrobot, mxGetPr( prhs[0] ), dof, 23);				\
+			Matrix fromMatlab = NMArrayFromMxArray( prhs[0] );						\
+			ColumnVector q_fixed = fromMatlab.Column(24);							\
+			Matrix initrobot = fromMatlab.Columns(1,23);							\
 			Robot robj( initrobot );												\
+																					\
+			for (int nji=1; nji <= 6; ++nji) {										\
+				if ( robj.links[nji].get_immobile() ) {								\
+					mexPrintf("found immobile joint at %d\n", nji);					\
+					robj.set_q(q_fixed(nji), nji);									\
+				}																	\
+			}																		\
 			nrhs--;
 
 #define ROBOOP_MEX_FUNC_STOP                                                        \

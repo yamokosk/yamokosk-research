@@ -27,8 +27,10 @@ function mat = mat_from_struct(obj)
 % 22 Cf motor Coulomb friction coefficient
 % 23 immobile flag for the kinematics and inverse kinematics
 % (if true joint is locked, if false joint is free)
+%
+% I'm adding a 24th for the value of q if the joint is locked
         
-mat = zeros(obj.dof,23);
+mat = zeros(obj.dof,24);
 
 c = struct2cell(obj.links);
 
@@ -47,3 +49,4 @@ mat(:,18) = squeeze(I(3,3,:));  % Izz
 
 mat(:,19:22) = cell2mat( c(13:16,:) )';
 mat(:,23) = cell2mat( c(18,:) )';
+mat(:,24) = cell2mat( c(6,:) )';
