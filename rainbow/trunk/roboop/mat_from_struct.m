@@ -35,7 +35,7 @@ c = struct2cell(obj.links);
 mat(:,1:5) = cell2mat( c(1:5,:) )';
 mat(:,6:8) = cell2mat( c(7:9,:) )';
 mat(:,9) = cell2mat( c(12,:) )';
-mat(:,10:12) = cell2mat( c(10,:)' );
+mat(:,10:12) = cell2mat( c(10,:) )';
 
 I = reshape(cell2mat(c(17,:)), 3, 3, obj.dof);
 mat(:,13) = squeeze(I(1,1,:));  % Ixx
