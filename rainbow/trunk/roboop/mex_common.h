@@ -15,46 +15,44 @@ using namespace RBD_LIBRARIES;
 #include <sstream>
 #include <stdexcept>
 
+#include "mex_error.h"
+
 // DEFINES
 #define NUM_ROBOT_FIELDS 5
 const char *robot_field_names[] = {"name", "DH", "dof", "available_dof", "links"};
 #define NUM_LINK_FIELDS 18
 const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q", "theta_min", "theta_max",
                                   "joint_offset", "r", "p", "m", "Im", "Gr", "B", "Cf", "I", "immobile"};
-                                  
-#define ERROR_MSG(str)                                                              \
-    std::ostringstream msg;                                                         \
-	msg << mexFunctionName() << ":: " << str;                                       \
-	mexErrMsgTxt(msg.str().c_str());
 
 #define DUMP_ME(x, fmt) printf("%s:%u: %s=" fmt, __FILE__, __LINE__, #x, x)
 
-#define ROBOOP_MEX_FUNC_START \
-    void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])    \
-    {                                                                               \
-        try {                                                                       \
-            if ( !mxIsChar( prhs[0] ) )                                             \
-                mexErrMsgTxt("First argument must be the roboop conf file.");       \
-                                                                                    \
-            char* conffile = mxArrayToString(prhs[0]);                              \
-            Robot robj(conffile, "mex_roboop");                         \
-            mxFree( conffile );                                                     \
-            nrhs--;
+#define ROBOOP_MEX_FUNC_START														\
+	void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])	\
+	{																				\
+		try {																		\
+			if ( !mxIsNumeric( prhs[0] ) )											\
+				ERROR_MSG(INVALID_ARG, "Initrobot matrix was not defined");			\
+																					\
+			int dof = mxGetM( prhs[0] );											\
+			if ( mxGetN( prhs[0] ) != 23 )											\
+				ERROR_MSG(INVALID_ARG, "Initrobot matrix has incorrect number of columns");	\
+																					\
+			Matrix initrobot(dof, 23);												\
+			MxArrayToNMMatrix(initrobot, mxGetPr( prhs[0] ), dof, 23);				\
+			Robot robj( initrobot );												\
+			nrhs--;
 
 #define ROBOOP_MEX_FUNC_STOP                                                        \
         } catch(Exception) {                                                        \
             std::ostringstream msg;                                                 \
-            msg << mexFunctionName() << ":: " << Exception::what();                 \
-            mexErrMsgTxt(msg.str().c_str());                                        \
+            msg << "Newmat error: " << Exception::what() << std::endl      			\
+				<< "Should a column vector be a row vector? Or vice-versa?";		\
+            ERROR_MSG(NEWMAT_ERROR, msg.str().c_str());								\
         } catch (const std::runtime_error& e) {                                     \
             std::ostringstream msg;                                                 \
-            msg << mexFunctionName() << ":: " << e.what();                          \
-            mexErrMsgTxt(msg.str().c_str());                                        \
-        } catch (...) {                                                             \
-            std::ostringstream msg;                                                 \
-            msg << mexFunctionName() << ":: Unknown failure during operation";      \
-            mexErrMsgTxt(msg.str().c_str());                                        \
-        }                                                                           \
+            msg << "Runtime error: " << e.what();									\
+            ERROR_MSG(RUNTIME_ERROR, msg.str().c_str());							\
+		}																			\
     }
         
 #define RHS_ARG_1   prhs[1]
@@ -90,5 +88,38 @@ void NMMatrixToMxArray(double *MX, const Matrix& T, int nr, int nc)
 {
 	for (int r=0; r<nr; ++r) {
 		for (int c=0; c<nc; ++c) _MX(r,c,nr) = T(r+1,c+1);
+	}
+}
+
+mxArray* mxArrayFromNMArray(const Matrix& nmMatrix)
+{
+	mxArray* mlMatrix = mxCreateDoubleMatrix(nmMatrix.Nrows(), nmMatrix.Ncols(), mxREAL);
+	NMMatrixToMxArray(mxGetPr(mlMatrix), nmMatrix, nmMatrix.Nrows(), nmMatrix.Ncols());
+	return mlMatrix;
+}
+
+ReturnMatrix NMArrayFromMxArray(const mxArray* mlMatrix)
+{
+	int rows = mxGetM(mlMatrix);
+	int cols = mxGetN(mlMatrix);
+	
+	if ( rows == 1 ) {
+		// Row vector
+		RowVector out(cols);
+		MxArrayToNMMatrix(out, mxGetPr(mlMatrix), rows, cols);
+		out.Release();
+		return out;
+	} else if ( cols == 1 ) {
+		// Column vector
+		ColumnVector out(rows);
+		MxArrayToNMMatrix(out, mxGetPr(mlMatrix), rows, cols);
+		out.Release();
+		return out;
+	} else {
+		// Plain-jane matrix
+		Matrix out(rows, cols);
+		MxArrayToNMMatrix(out, mxGetPr(mlMatrix), rows, cols);
+		out.Release();
+		return out;
 	}
 }
