@@ -1,5 +1,37 @@
+/*
+mexROBOOP -- A Matlab wrapper of the RoboOp C++ library
+Copyright (C) 2008	J.D. Yamokoski
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as
+published by the Free Software Foundation; either version 2.1 of the
+License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+-------------------------------------------------------------------------------
+Revision_history:
+
+2008/03/10: J.D. Yamokoski
+	- Created.
+-------------------------------------------------------------------------------
+*/
+
 #include "mex_common.h"
 
+#define NUM_ROBOT_FIELDS 5
+const char *robot_field_names[] = {"name", "DH", "dof", "available_dof", "links"};
+#define NUM_LINK_FIELDS 18
+const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q", "theta_min", "theta_max",
+                                  "joint_offset", "r", "p", "m", "Im", "Gr", "B", "Cf", "I", "immobile"};
+								  
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {                                                                            
 	try {                                                 

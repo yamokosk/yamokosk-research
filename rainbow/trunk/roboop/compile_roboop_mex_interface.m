@@ -1,7 +1,11 @@
-clear mex
-mex mex_roboop.cpp -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop
-mex mex_inv_kin.cpp -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop
-mex mex_jacobian.cpp -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop
-mex mex_jacobian_dot.cpp -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop
-mex mex_jacobian_DLS_inv.cpp -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop
-mex mex_kine.cpp -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop
+clear function
+
+source_files = ls('*.cpp');
+num_files = size(source_files,1);
+
+for n = 1:num_files
+    str = ['mex ' strtrim(source_files(n,:)) ' -IC:\roboop-1.31.0\include -IC:\roboop-1.31.0\newmat -LC:\roboop-1.31.0\lib -lnewmat -lroboop'];
+    fprintf('Compiling %s... ', strtrim( source_files(n,:) ));
+    eval(str);
+    fprintf(' done.\n');
+end

@@ -1,3 +1,29 @@
+/*
+mexROBOOP -- A Matlab wrapper of the RoboOp C++ library
+Copyright (C) 2008	J.D. Yamokoski
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as
+published by the Free Software Foundation; either version 2.1 of the
+License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+-------------------------------------------------------------------------------
+Revision_history:
+
+2008/03/10: J.D. Yamokoski
+	- Created.
+-------------------------------------------------------------------------------
+*/
+
 // Required matlab include
 #include "mex.h"
 
@@ -18,15 +44,37 @@ using namespace RBD_LIBRARIES;
 #include "mex_error.h"
 
 // DEFINES
-#define NUM_ROBOT_FIELDS 5
-const char *robot_field_names[] = {"name", "DH", "dof", "available_dof", "links"};
-#define NUM_LINK_FIELDS 18
-const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q", "theta_min", "theta_max",
-                                  "joint_offset", "r", "p", "m", "Im", "Gr", "B", "Cf", "I", "immobile"};
-
 #define DUMP_ME(x, fmt) printf("%s:%u: %s=" fmt, __FILE__, __LINE__, #x, x)
 
-#define ROBOOP_MEX_FUNC_START														\
+// Convience defines for the LHS and RHS Matlab arguments
+#define RHS_ARG_2   prhs[1]
+#define RHS_ARG_3   prhs[2]
+#define RHS_ARG_4   prhs[3]
+#define RHS_ARG_5   prhs[4]
+#define RHS_ARG_6   prhs[5]
+#define RHS_ARG_7   prhs[6]
+#define RHS_ARG_8   prhs[7]
+#define RHS_ARG_9   prhs[8]
+#define RHS_ARG_10  prhs[9]
+
+#define LHS_ARG_1   plhs[0]
+#define LHS_ARG_2   plhs[1]
+#define LHS_ARG_3   plhs[2]
+#define LHS_ARG_4   plhs[3]
+#define LHS_ARG_5   plhs[4]
+#define LHS_ARG_6   plhs[5]
+#define LHS_ARG_7   plhs[6]
+#define LHS_ARG_8   plhs[7]
+#define LHS_ARG_9   plhs[8]
+
+/* The ROBOT_MEX_FUNC_START and ROBOT_MEX_FUNC_STOP macros are here to make
+ * the wrapping of all the RoboOp Robot class functions easier. The Start macro 
+ * does two important things. 1. It takes in the initrobot matrix which describes
+ * the robot and creates a Robot object for use in the wrapping function.
+ * 2. If there are any immobile joints that were specified in the conf file,
+ * it sets there values here so member functions return expected values.
+ */
+#define ROBOOP_ROBOT_MEX_FUNC_START													\
 	void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])	\
 	{																				\
 		try {																		\
@@ -42,15 +90,13 @@ const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q",
 			Matrix initrobot = fromMatlab.Columns(1,23);							\
 			Robot robj( initrobot );												\
 																					\
-			for (int nji=1; nji <= 6; ++nji) {										\
+			for (int nji=1; nji <= robj.get_dof(); ++nji) {							\
 				if ( robj.links[nji].get_immobile() ) {								\
-					mexPrintf("found immobile joint at %d\n", nji);					\
 					robj.set_q(q_fixed(nji), nji);									\
 				}																	\
-			}																		\
-			nrhs--;
+			}																		
 
-#define ROBOOP_MEX_FUNC_STOP                                                        \
+#define ROBOOP_ROBOT_MEX_FUNC_STOP                                                  \
         } catch(Exception) {                                                        \
             std::ostringstream msg;                                                 \
             msg << "Newmat error: " << Exception::what() << std::endl      			\
@@ -63,26 +109,20 @@ const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q",
 		}																			\
     }
         
-#define RHS_ARG_1   prhs[1]
-#define RHS_ARG_2   prhs[2]
-#define RHS_ARG_3   prhs[3]
-#define RHS_ARG_4   prhs[4]
-#define RHS_ARG_5   prhs[5]
-#define RHS_ARG_6   prhs[6]
-#define RHS_ARG_7   prhs[7]
-#define RHS_ARG_8   prhs[8]
-#define RHS_ARG_9   prhs[9]
+/* The following are just a collection of functions to ease the conversions to
+ * and from Newmat and Matlab arrays.
+ */
+#define COLUMN_VECTOR	0
+#define ROW_VECTOR		1
 
-#define LHS_ARG_1   plhs[0]
-#define LHS_ARG_2   plhs[1]
-#define LHS_ARG_3   plhs[2]
-#define LHS_ARG_4   plhs[3]
-#define LHS_ARG_5   plhs[4]
-#define LHS_ARG_6   plhs[5]
-#define LHS_ARG_7   plhs[6]
-#define LHS_ARG_8   plhs[7]
-#define LHS_ARG_9   plhs[8]
-
+#define ASSERT_VECTOR_TYPE(mxObj,nmType)											\
+	if ( (nmType == COLUMN_VECTOR) && (mxGetN(mxObj) > 1) ) {						\
+		ERROR_MSG(INVALID_ARG, "Expecting column vector for argument " #mxObj);		\
+	}																				\
+	if ( (nmType == ROW_VECTOR) && (mxGetM(mxObj) > 1) ) {							\
+		ERROR_MSG(INVALID_ARG, "Expecting row vector for argument " #mxObj);		\
+	}
+ 
 #define _MX(i,j,off) MX[(j)*off+i]
 
 void MxArrayToNMMatrix(Matrix& T, const double *MX, int nr, int nc)
