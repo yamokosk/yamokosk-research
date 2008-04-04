@@ -1,0 +1,34 @@
+# Problem name
+name	TwoPlanarPA10
+
+# State upper and lower bounds. Format:
+#	x = [t, q_src_1, q_src_2, q_src_3, u_src_1, u_src_2, u_src_3, q_sen_1, q_sen_2, q_sen_3, u_sen_1, u_sen_2, u_sen_3]
+x_lb	0 -1.1170 -1.8675 -2.8798 -0.9948 -1.9897 -6.2832 -1.1170 -1.8675 -2.8798 -0.9948 -1.9897 -6.2832
+x_ub	6  2.1642  2.7576  2.8798  0.9948  1.9897  6.2832  2.1642  2.7576  2.8798  0.9948  1.9897  6.2832
+
+# Control upper and lower bounds. Format:
+#	u = [tau_src_1, tau_src_2, tau_src_3, tau_sen_1, tau_sen_2, tau_sen_3] 
+u_lb	-232.0 -100.0 -14.5 -232.0 -100.0 -14.5
+u_ub	 232.0  100.0  14.5  232.0  100.0  14.5
+
+# Number of iterations
+iterations	30
+
+# Functions to use
+#	ode_function - Computes x_dot = f(x,u,t)
+ode_function	planar_robots_ode
+
+#	node_generator - Returns a randomly generated state
+node_generator	planar_rand_state
+
+#	node_evaluator - Returns a scalar fitness for the given state
+node_evaluator	planar_cost
+
+#	node_selector - Returns a state, usually closest, to another given state y
+node_selector	planar_node_select
+
+#	local_planner - Given two states x and y return a valid path between the two
+local_planner	planar_local_planner
+
+#	output_function - Used to display algorithm status information
+output_function

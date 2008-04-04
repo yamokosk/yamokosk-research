@@ -78,17 +78,35 @@ using namespace RBD_LIBRARIES;
 	void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])	\
 	{																				\
 		try {																		\
-			if ( !mxIsNumeric( prhs[0] ) )											\
-				ERROR_MSG(INVALID_ARG, "Initrobot matrix was not defined");			\
+			if ( !mxIsStruct( prhs[0] ) )											\
+				ERROR_MSG(INVALID_ARG, "Initrobot structure was not defined");		\
 																					\
-			int dof = mxGetM( prhs[0] );											\
-			if ( mxGetN( prhs[0] ) != 24 )											\
+			int initRobotFieldNum, baseTransFieldNum, toolTransFieldNum;			\
+																					\
+			if ( (initRobotFieldNum = mxGetFieldNumber(prhs[0], "initrobot")) < 0 )	\
+				ERROR_MSG(INVALID_ARG, "initrobot field not specified");			\
+																					\
+			if ( (baseTransFieldNum = mxGetFieldNumber(prhs[0], "T_f_base")) < 0 )	\
+				ERROR_MSG(INVALID_ARG, "T_f_base field not specified");				\
+																					\
+			if ( (toolTransFieldNum = mxGetFieldNumber(prhs[0], "T_EE_tool")) < 0 )	\
+				ERROR_MSG(INVALID_ARG, "T_EE_tool field not specified");			\
+																					\
+			mxArray *mxInitRobot = mxGetFieldByNumber(prhs[0], 0, initRobotFieldNum);	\
+																					\
+			int dof = mxGetM( mxInitRobot );										\
+			if ( mxGetN( mxInitRobot ) != 24 )										\
 				ERROR_MSG(INVALID_ARG, "Initrobot matrix has incorrect number of columns");	\
 																					\
-			Matrix fromMatlab = NMArrayFromMxArray( prhs[0] );						\
-			ColumnVector q_fixed = fromMatlab.Column(24);							\
-			Matrix initrobot = fromMatlab.Columns(1,23);							\
+			Matrix mxRobotParams = NMArrayFromMxArray( mxInitRobot );				\
+			ColumnVector q_fixed = mxRobotParams.Column(24);						\
+			Matrix initrobot = mxRobotParams.Columns(1,23);							\
 			Robot robj( initrobot );												\
+																					\
+			mxArray *mxBaseTrans = mxGetFieldByNumber(prhs[0], 0, baseTransFieldNum);	\
+			robj.T_f_base = NMArrayFromMxArray(mxBaseTrans);						\
+			mxArray *mxToolTrans = mxGetFieldByNumber(prhs[0], 0, toolTransFieldNum);	\
+			robj.T_6_tool = NMArrayFromMxArray(mxToolTrans);						\
 																					\
 			for (int nji=1; nji <= robj.get_dof(); ++nji) {							\
 				if ( robj.links[nji].get_immobile() ) {								\

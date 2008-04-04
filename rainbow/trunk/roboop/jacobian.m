@@ -44,6 +44,6 @@ if nargin < 4
     end
 end
 
-mat = mat_from_struct(robj);
+toMex = createStructForMex(robj);
 
-J = mex_jacobian(mat, q, endlink, ref);
+J = mex_jacobian(toMex, q, endlink, ref);

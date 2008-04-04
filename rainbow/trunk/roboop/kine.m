@@ -19,6 +19,6 @@ if nargin < 3
 	link = robj.dof;
 end
 
-mat = mat_from_struct(robj);
+toMex = createStructForMex(robj);
 
-T = mex_kine(mat, q, link);
+T = mex_kine(toMex, q, link);

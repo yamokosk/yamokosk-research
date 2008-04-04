@@ -14,6 +14,6 @@ if nargin < 4
 	ref = 0;
 end
 
-mat = mat_from_struct(robj);
+toMex = createStructForMex(robj);
 
-J_dot = mex_jacobian_dot(mat, q, q_dot, ref);
+J_dot = mex_jacobian_dot(toMex, q, q_dot, ref);

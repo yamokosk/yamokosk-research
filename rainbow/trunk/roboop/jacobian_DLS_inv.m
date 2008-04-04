@@ -34,6 +34,6 @@ if nargin < 5
     end
 end
 
-mat = mat_from_struct(robj);
+toMex = createStructForMex(robj);
 
-J_inv = mex_jacobian_DLS_inv(mat, q, eps, lambda_max, ref);
+J_inv = mex_jacobian_DLS_inv(toMex, q, eps, lambda_max, ref);

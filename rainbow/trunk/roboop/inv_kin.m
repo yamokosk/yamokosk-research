@@ -1,9 +1,9 @@
-function [Q, converged] = inv_kin(robj, T_obj, mj, endlink);
+function [Q, converged] = inv_kin(robj, T_f_tool, mj, endlink);
 %   Syntax
 %       
-%       [Q, converged] = inv_kin(robj, T_obj);
-%       [Q, converged] = inv_kin(robj, T_obj, mj);
-%       [Q, converged] = inv_kin(robj, T_obj, mj, endlink);
+%       [Q, converged] = inv_kin(robj, T_f_tool);
+%       [Q, converged] = inv_kin(robj, T_f_tool, mj);
+%       [Q, converged] = inv_kin(robj, T_f_tool, mj, endlink);
 %
 %   Description
 % 
@@ -48,6 +48,6 @@ if nargin < 4
     end
 end
 
-mat = mat_from_struct(robj);
+toMex = createStructForMex(robj);
 
-[Q, converged] = mex_inv_kin(mat, T_obj, mj, endlink);
+[Q, converged] = mex_inv_kin(toMex, T_base_EE, mj, endlink);
