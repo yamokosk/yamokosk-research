@@ -9,7 +9,7 @@ vx = 0.25 * ones(size(t));
 vy = zeros(size(t));%(0.075 * 2 * pi/0.75) * cos(2*pi*t/0.75);
 x = vx.*t - 0.75;
 y = zeros(size(t)); %0.075 * sin(2*pi*t/0.75);
-[r1,r2] = planar_load_robots();
+[r1,r2] = planar_load_robots(fullfile(cd, 'roboop', 'pa10_planar.conf'));
 
 %% Set up figure
 fig = figure(); hold on;

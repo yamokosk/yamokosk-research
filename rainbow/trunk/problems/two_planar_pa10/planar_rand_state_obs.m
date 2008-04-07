@@ -32,8 +32,8 @@ for n = 1:100
 
         % Robot #1
         P_wcs_dhat_X1 = P_wcs_dhat0 + T_wcs_dhat(1:3,1); % Point on the dhat, plus X-axis
-        C1 = udata.r1.T_0(1:2,4); % - [0; udata.r1.l0];
-        R1 = udata.r1.l1 + udata.r1.l2 + udata.r1.l3;
+        C1 = udata.r1.T_f_base(1:2,4); % - [0; udata.r1.l0];
+        R1 = 1.0;
         [t1,t2] = ray_circle_int(P_wcs_dhat0(1:2), P_wcs_dhat_X1(1:2), C1, R1);
         if isempty(t1)
             qr = [];
@@ -43,8 +43,8 @@ for n = 1:100
 
         % Robot #2
         P_wcs_dhat_X2 = P_wcs_dhat0 - T_wcs_dhat(1:3,1); % Point on the dhat, minus X-axis
-        C2 = udata.r2.T_0(1:2,4); % + [0; udata.r2.l0];
-        R2 = udata.r2.l1 + udata.r2.l2 + udata.r2.l3;
+        C2 = udata.r2.T_f_base(1:2,4); % + [0; udata.r2.l0];
+        R2 = 1.0;
         [t3,t4] = ray_circle_int(P_wcs_dhat0(1:2), P_wcs_dhat_X2(1:2), C2, R2);
         if isempty(t3)
             qr = [];
@@ -73,15 +73,17 @@ for n = 1:100
         T_wcs_src = T_wcs_dhat * transl(L, 0, 0) * rotz(pi); % Source frame in the WCS
 
         % Step 3. Use inverse kinematics to compute the robot joint angles
-        Qsrc = ikine_planar_pa10(T_wcs_src, udata.r1);
-        if (isempty(Qsrc))
+        %[Qsrc,converged] = ikine_planar_pa10(T_wcs_src, udata.r1);
+        [Qsrc,converged] = inv_kin(udata.r1, T_wcs_src);
+        if (~converged)
             qr = [];
             %fprintf('\trind: %d failed. No ikine solution for source\n', rind);
             continue;
         end
 
-        Qsen = ikine_planar_pa10(T_wcs_sen, udata.r2);
-        if (isempty(Qsen))
+        %[Qsen,converged] = ikine_planar_pa10(T_wcs_sen, udata.r2);
+        [Qsen,converged] = inv_kin(udata.r2, T_wcs_sen);
+        if (~converged)
             qr = [];
             %fprintf('\trind: %d failed. No ikine solution for sensor\n', rind);
             continue;

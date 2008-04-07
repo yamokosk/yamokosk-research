@@ -3,6 +3,8 @@ udata = Prob.userdata;
 N = size(x,2);
 fitness = zeros(N,1);
 
+mask = [1,2];
+
 for n = 1:N
     % Unwrap the state vector
     t = x(1,n);
@@ -22,7 +24,7 @@ for n = 1:N
 
     % Calculate relative velocity between target and sensor EE
     J_sen = jacobian_planar_pa10(qsen, udata.r2);
-    v_senEE = J_sen * qpsen;
+    v_senEE = J_sen * qpsen; v_senEE = v_senEE(mask,1);
     v_rel = v_t - v_senEE;
 
     % Calculate distance between target and a line formed by a line segment

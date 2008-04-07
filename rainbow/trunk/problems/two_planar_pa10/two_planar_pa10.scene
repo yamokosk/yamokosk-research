@@ -11,7 +11,7 @@
 				<rotation type="z" value="-pi/2"/>
 				<rotation type="y" value="pi/2"/>
 			</transform>
-			<!--<geometry type="mesh" name="src0_01">
+			<geometry type="mesh" name="src0_01">
 				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_01.obj"/>
 				<parameter type="color" value="200 200 200" />
 			</geometry>
@@ -34,13 +34,13 @@
 			<geometry type="mesh" name="src0_06">
 				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_06.obj"/>
 				<parameter type="color" value="73 185 255" />
-			</geometry>-->
+			</geometry>
 		</body>
 		
 		<!-- Link 01, Joint 1 -->
 		<body name="src1" parent="src0">
 			<transform>
-				<!--<translation value="0 0 317"/>-->
+				<translation value="0 0 317"/>
 				<translation value="0 0 0"/>
 				<rotation type="z" value="pi/2"/> <!-- Planar configuration - fixed joint -->
 			</transform>
@@ -221,7 +221,7 @@
 				<rotation type="z" value="pi/2"/>
 				<rotation type="y" value="pi/2"/>
 			</transform>
-			<!--<geometry type="mesh" name="sen0_01">
+			<geometry type="mesh" name="sen0_01">
 				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_01.obj"/>
 				<parameter type="color" value="200 200 200" />
 			</geometry>
@@ -244,13 +244,13 @@
 			<geometry type="mesh" name="sen0_06">
 				<parameter type="filename" value="D:/projects/rainbow/trunk/pa10_model/b0_06.obj"/>
 				<parameter type="color" value="73 185 255" />
-			</geometry>-->
+			</geometry>
 		</body>
 		
 		<!-- Link 01, Joint 1 -->
 		<body name="sen1" parent="sen0">
 			<transform>
-				<!--<translation value="0 0 317"/>-->
+				<translation value="0 0 317"/>
 				<translation value="0 0 0"/>
 				<rotation type="z" value="pi/2"/> <!-- Planar configuration - fixed joint -->
 			</transform>

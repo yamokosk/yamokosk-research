@@ -22,8 +22,12 @@ if ( ~ischar( conffile ) && ~ischar( robotname ) )
     error('Arguments must be strings!');
 end
 
-fullconfname = fullfile(cd, conffile);
+fid = fopen(conffile);
+if (fid < 0)
+    error([conffile ' does not seem to exist. Please check the path and filename.']);
+end
+fclose(fid);
 
-robj = mex_roboop(fullconfname, robotname);
+robj = mex_roboop(conffile, robotname);
 robj.T_f_base = T_f_base;
 robj.T_EE_tool = T_EE_tool;

@@ -38,6 +38,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		char* conffile = mxArrayToString(prhs[0]);
 		char* robotname = mxArrayToString(prhs[1]);
         
+		mexPrintf("conffile = %s", conffile);
 		Robot robj(conffile, robotname);
 
 		// Create link structure

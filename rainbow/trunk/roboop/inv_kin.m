@@ -1,9 +1,9 @@
-function [Q, converged] = inv_kin(robj, T_f_tool, mj, endlink);
+function [Q, converged] = inv_kin(robj, T_base_EE, mj, endlink);
 %   Syntax
 %       
-%       [Q, converged] = inv_kin(robj, T_f_tool);
-%       [Q, converged] = inv_kin(robj, T_f_tool, mj);
-%       [Q, converged] = inv_kin(robj, T_f_tool, mj, endlink);
+%       [Q, converged] = inv_kin(robj, T_base_EE);
+%       [Q, converged] = inv_kin(robj, T_base_EE, mj);
+%       [Q, converged] = inv_kin(robj, T_base_EE, mj, endlink);
 %
 %   Description
 % 
