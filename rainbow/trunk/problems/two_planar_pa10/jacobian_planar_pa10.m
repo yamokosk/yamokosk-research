@@ -3,7 +3,8 @@ function [J,Jinv] = jacobian_planar_pa10(q, rs)
 J = jacobian(rs, q);
 
 if nargout > 1
-    Jinv = jacobian_DLS_inv(rs, q);
+    %Jinv = jacobian_DLS_inv(rs, q);
+    Jinv = J' * pinv( J * J' );
 end
 
 % % Map v -> qp

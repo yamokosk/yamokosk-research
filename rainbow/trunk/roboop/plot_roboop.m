@@ -1,4 +1,4 @@
-function h = plot(varargin)
+function h = plot_roboop(varargin)
 % plot
 %  
 %   Overloaded plot function for RoboOp objects

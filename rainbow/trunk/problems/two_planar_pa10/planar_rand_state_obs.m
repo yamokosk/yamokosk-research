@@ -90,40 +90,58 @@ for n = 1:100
         end
 
         % Step 4. Count results
-        nsrc = size(Qsrc,1);
-        nsen = size(Qsen,1);
-        ncol = nsrc * nsen;
-        Xr = zeros(12+1,ncol); % 12 states + 1 for time
-        counter = 1;
+        nsrc = size(Qsrc,2);
+        nsen = size(Qsen,2);
+%         ncol = nsrc * nsen;
+%         Xr = zeros(12+1,ncol); % 12 states + 1 for time
+%         counter = 1;
 
         % Step 5. Generate a perturbed task space velocity
-        V_desired = repmat([udata.traj.vx(rind); udata.traj.vy(rind)], 1, ncol);
-        V_task = V_desired + 0.1/3.*randn(2, ncol);
+        %V_desired = repmat([udata.traj.vx(rind); udata.traj.vy(rind)], 1, ncol);
+        V_desired = [udata.traj.vx(rind); udata.traj.vy(rind)];
+        %V_task = V_desired + 0.1/3.*randn(2, ncol);
+        V_task = V_desired + 0.1/3.*randn(2, 1);
 
         % Step 6. Put results into single column style matrix
-        for src = 1:nsrc
-            [Jsrc,Jinv_src] = jacobian_planar_pa10(Qsrc(src,:), udata.r1);
-            for sen = 1:nsen
-                qr(1,1) = udata.traj.t(rind);
-                qr(2:4,1) = Qsrc(src,:)';
-                qr(5:7,1) = Jinv_src * V_task(:,counter);
-
-                [Jsen,Jinv_sen] = jacobian_planar_pa10(Qsen(sen,:), udata.r2);
-                qr(8:10,1) = Qsen(sen,:)';
-                qr(11:13,1) = Jinv_sen * V_task(:,counter);
-
-                qsrc = qr(2:4,1); qsen = qr(8:10,1);
-                sceneSetVars(names, [qsrc; qsen]);
-                if (~sceneCollisionState)
-                    Xr(:,counter) = qr;
-                    counter = counter + 1;
-                end
-            end
-        end
+        qr(1,1) = udata.traj.t(rind);
+        qr(2:4,1) = Qsrc;
         
-        if (counter > 0)
+        [Jsrc,Jinv_src] = jacobian_planar_pa10(Qsrc, udata.r1);
+        qr(5:7,1) = Jinv_src(:,1:2) * V_task;
+        
+        [Jsen,Jinv_sen] = jacobian_planar_pa10(Qsen, udata.r2);
+        qr(8:10,1) = Qsen;
+        qr(11:13,1) = Jinv_sen(:,1:2) * V_task;
+        
+        sceneSetVars(names, [Qsrc; Qsen]);
+        if (~sceneCollisionState)
+            Xr = qr;
             return;
         end
+
+%         for src = 1:nsrc
+%             [Jsrc,Jinv_src] = jacobian_planar_pa10(Qsrc(src,:), udata.r1);
+%             for sen = 1:nsen
+%                 qr(1,1) = udata.traj.t(rind);
+%                 qr(2:4,1) = Qsrc(src,:)';
+%                 qr(5:7,1) = Jinv_src * V_task(:,counter);
+% 
+%                 [Jsen,Jinv_sen] = jacobian_planar_pa10(Qsen(sen,:), udata.r2);
+%                 qr(8:10,1) = Qsen(sen,:)';
+%                 qr(11:13,1) = Jinv_sen * V_task(:,counter);
+% 
+%                 qsrc = qr(2:4,1); qsen = qr(8:10,1);
+%                 sceneSetVars(names, [qsrc; qsen]);
+%                 if (~sceneCollisionState)
+%                     Xr(:,counter) = qr;
+%                     counter = counter + 1;
+%                 end
+%             end
+%         end
+        
+%         if (counter > 0)
+%             return;
+%         end
 
     else
         xr = Prob.x_range;

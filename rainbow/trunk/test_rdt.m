@@ -12,7 +12,8 @@ y = zeros(size(t)); %0.075 * sin(2*pi*t/0.75);
 [r1,r2] = planar_load_robots(fullfile(cd, 'roboop', 'pa10_planar.conf'));
 
 %% Set up figure
-fig = figure(); hold on;
+fig = plot_roboop(r1);
+plot_roboop(r2); hold on;
 plot(x,y, 'o-');
 set(gca, 'DataAspectRatio',   [1, 1, 1]);
 p = [-.1, -.2]

@@ -1,4 +1,4 @@
-function [Ni,We,exitflag,exitmsg] = planar_local_planner(Ne, Nr, Prob)
+function [Ni,We,exitflag,exitmsg] = planar_local_planner_obs(Ne, Nr, Prob)
 % Connect algorithm - finds time optimal path and consideres joint angle
 % and torque limits
 %t0 = Ne(1); x0_src = Ne(2:7); x0_sen = Ne(8:13);
@@ -48,6 +48,9 @@ for n = 1:size(X,2)
     qsrc = X(2:4,n); qsen = X(8:10,n);
     sceneSetVars(names, [qsrc; qsen]);
     if (sceneCollisionState)
+        plot_roboop(Prob.userdata.r1,qsrc,Prob.userdata.r2,qsen);
+        sceneRender();
+        pause;
         break;
     else
         Ni(:,n) = [T(n); X(:,n)];
