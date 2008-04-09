@@ -21,13 +21,13 @@ src_check = find( abs(qpsrc) > Prob.x_ub(5:7) );
 qpsen = (qsenf - qsen0) ./ (tf - t0);
 sen_check = find( abs(qpsen) > Prob.x_ub(5:7) );
 
-if ( ~isempty(src_check) || ~isempty(sen_check) )
-    exitflag = 1;
-    exitmsg = ['Avg joint velocity exceeded joint limits'];
-    Ni = [];
-    We = [];
-    return;
-end
+% if ( ~isempty(src_check) || ~isempty(sen_check) )
+%     exitflag = 1;
+%     exitmsg = ['Avg joint velocity exceeded joint limits'];
+%     Ni = [];
+%     We = [];
+%     return;
+% end
 
 % Attempt to connect states
 % [T, U, X, exitflag, exitmsg] = ...
@@ -38,7 +38,6 @@ end
      connect_shortest_dist(tspan, x0, xf, Prob.x_lb(2:end), Prob.x_ub(2:end), ...
      Prob.u_lb, Prob.u_ub, N, Prob.odefun, @planar_cost);
  
-%vars = sceneGetVars();
 names = {'q_src_2'; 'q_src_3'; 'q_src_5'; 'q_sen_2'; 'q_sen_3'; 'q_sen_5'};
 Ni = [];
 We = [];
@@ -48,9 +47,6 @@ for n = 1:size(X,2)
     qsrc = X(2:4,n); qsen = X(8:10,n);
     sceneSetVars(names, [qsrc; qsen]);
     if (sceneCollisionState)
-        plot_roboop(Prob.userdata.r1,qsrc,Prob.userdata.r2,qsen);
-        sceneRender();
-        pause;
         break;
     else
         Ni(:,n) = [T(n); X(:,n)];

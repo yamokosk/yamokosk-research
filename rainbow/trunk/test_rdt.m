@@ -35,32 +35,19 @@ udata.r2 = r2;
 Prob.userdata = udata;
 
 %% Generate a bunch of points to find the left most starting point
-% counter = 1;
-% x0 = []; smallest_rind = inf;
-% while counter < 200
-%     [xr,rind] = planar_rand_state(Prob);
-%     
-%     if (~isempty(xr))
-%         if (rind < smallest_rind)
-%             smallest_rind = rind;
-%             x0 = xr;
-%         end
-%         counter = counter + 1;
-%     end
-% end
-x0 = [0.6000,    0.6000; ...
-   -0.2902,   -0.2902; ...
-   -0.9122,   -0.9122; ...
-    1.1529,    1.1529; ...
-    0.3956,    0.3274; ...
-   -0.5264,   -0.4485; ...
-    0.6172,    0.5202; ...
-    0.3920,    1.3074; ...
-    0.8849,   -0.8849; ...
-   -1.3263,   -0.4720; ...
-   -0.3396,    0.0919; ...
-    0.4477,   -0.3595; ...
-   -0.7035,   -0.2012];
+counter = 1;
+x0 = []; smallest_rind = inf;
+while counter < 200
+    [xr,rind] = planar_rand_state_obs(Prob);
+    
+    if (~isempty(xr))
+        if (rind < smallest_rind)
+            smallest_rind = rind;
+            x0 = xr;
+        end
+        counter = counter + 1;
+    end
+end
    
 %% Call rdtAssign
 x_lb = [t(1); r1.qmin'; -r1.qpmax'; r2.qmin'; -r2.qpmax'];

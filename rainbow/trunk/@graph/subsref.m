@@ -13,13 +13,13 @@ switch (index(1).type)
                 if ( length(index) == 1 )
                     b = G.connectivity;
                 else
-                    b = G.node_data(index(2).subs{1}, index(2).subs{1});
+                    b = G.connectivity(index(2).subs{1}, index(2).subs{1});
                 end
             case 'Wv'
                 if ( length(index) == 1 )
                     b = G.node_weights;
                 else
-                    b = G.node_data(index(2).subs{1}, index(2).subs{1});
+                    b = G.node_weights(index(2).subs{1});
                 end
             otherwise
                 error('Invalid field name.');

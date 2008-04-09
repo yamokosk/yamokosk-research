@@ -41,6 +41,7 @@ using namespace RBD_LIBRARIES;
 #include <sstream>
 #include <stdexcept>
 
+// Local includes
 #include "mex_error.h"
 
 // DEFINES
@@ -104,9 +105,8 @@ using namespace RBD_LIBRARIES;
 			Robot robj( initrobot );												\
 																					\
 			mxArray *mxBaseTrans = mxGetFieldByNumber(prhs[0], 0, baseTransFieldNum);	\
-			robj.T_f_base = NMArrayFromMxArray(mxBaseTrans);						\
-			mxArray *mxToolTrans = mxGetFieldByNumber(prhs[0], 0, toolTransFieldNum);	\
-			robj.T_6_tool = NMArrayFromMxArray(mxToolTrans);						\
+			Matrix T_f_base = NMArrayFromMxArray(mxBaseTrans);						\
+			robj.setBaseTransform( T_f_base );  									\
 																					\
 			for (int nji=1; nji <= robj.get_dof(); ++nji) {							\
 				if ( robj.links[nji].get_immobile() ) {								\

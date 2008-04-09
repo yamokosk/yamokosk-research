@@ -6,30 +6,8 @@ rindm = randint(100,1,[1,udata.traj.n],sum(50*clock));
 % if (test)
 
     for n = 1:100
-        %test = binornd(1,0.5);
         rind = rindm(n);
-        %fprintf('Trying new rind: %d\n', rind);
-        % if test > 0.5
-        %     % Generate completely random joint configuration
-        %     q1 = (udata.r1.qmax - udata.r1.qmin).*rand(1,3) + udata.r1.qmin;
-        %     q2 = (udata.r2.qmax - udata.r2.qmin).*rand(1,3) + udata.r2.qmin;
-        %
-        %     % Now generate random task space velocity vector in the left to right
-        %     % direction
-        %     theta = (pi/(3*3)) * randn;
-        %     speed = 0.8*rand;
-        %     v = [speed*cos(theta); speed*sin(theta)];
-        %
-        %     % Get the corresponding joint speeds
-        %     [Jsrc, Jinv_src] = jacobian_planar_pa10(q1, udata.r1);
-        %     qp1 = Jinv_src * v;
-        %
-        %     [Jsen, Jinv_sen] = jacobian_planar_pa10(q2, udata.r2);
-        %     qp2 = Jinv_sen * v;
-        %
-        %     % Report the new point
-        %     qr = [udata.traj.t(rind); q1'; qp1; q2'; qp2];
-        % else
+        
         % Random state generator for planar robot environment
 
         % Step 0. Randomly select desired target point

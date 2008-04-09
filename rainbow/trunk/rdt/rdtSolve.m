@@ -83,10 +83,13 @@ NewNodeWeights = Prob.node_evaluate(NewNodes, Prob);
 
 % Next make an edge between existing node in the tree and our first new
 % node.
-G_new = add_edge(G_new, ID, NewNodeIDs(1), EdgeWeights(1));
+%G_new = add_edge(G_new, ID, NewNodeIDs(1), EdgeWeights(1));
+IDWeight = G_new.Wv(ID);
+G_new = add_edge(G_new, ID, NewNodeIDs(1), (IDWeight + NewNodeWeights(1))/2 );
 
 % Then use a for loop to add the rest of the edges
 nedges = length(NewNodeIDs);
 for i = 2:nedges
-    G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), EdgeWeights(i));
+    %G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), EdgeWeights(i));
+    G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), (NewNodeWeights(i) + NewNodeWeights(i-1))/2 );
 end 
