@@ -21,15 +21,19 @@ for i = 1:iter
     
     % Node expansion
     for j = 1:nconnects
-        [Path, EdgeWeights, ExitFlag, ExitMsg] = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
+        % branch.root = node_id
+        % branch.terminal = node_id
+        % branch.path = [node_ids]
+        branch = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
     
         status = 'Failed';
-        if ((ExitFlag == 0) && (size(Path,2) > 1))
+        if ((branch.ExitFlag == 0) && (size(branch.Path,2) > 1))
             % Evaluation
             status = 'Complete';
-            G_new = node_evaluation(ID(j), Path, EdgeWeights, G_new, Prob);
+            q_branch = branch_evaluation(branch);
         end
         
+        % If q_branch > q_current, replace
         % Iteration output
         if ( Prob.output_fcn('Connect', status, Path, ExitMsg, 'connect', Prob) ) break; end
     end
@@ -73,7 +77,16 @@ error('Gave up selecting a new node for expansion after five attempts.');
 % often for connection to the goal configuration. Additionally, the new
 % branch may be subdivided into multiple segments, thus adding several
 % new nodes to the existing tree.
-function G_new = node_evaluation(ID, Path, EdgeWeights, G_new, Prob)
+function q_branch = branch_evaluation(branch)
+
+% Compute impact this branch has on all targets
+for i = 1:num_targets
+    q_branch(i) = effectiveness_metric(target(i),branch);
+end
+
+
+
+
 
 % The first node should already be in the tree. So first evaluate and add
 % the new nodes
