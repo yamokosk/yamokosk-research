@@ -15,7 +15,7 @@ end
 % The RDT loop
 iter = Prob.iter;
 for i = 1:iter
-    % Node selection
+    % Branch selection not node selection.. need to change this.
     [Neighbors, ID, QueryStates, G_new] = node_selection(G_new, Prob);
     [nstates, nconnects] = size(QueryStates);
     
@@ -24,8 +24,17 @@ for i = 1:iter
         % branch.root = node_id
         % branch.terminal = node_id
         % branch.path = [node_ids]
-        branch = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
+        [branch,exitflag,exitmsg] = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
     
+        % Evaluate new branch
+        
+        % Collision check is delayed now. So need to add infrastucture to
+        % load SceneML file and check collision of best path. In fact the
+        % way to do this is check the new branches score and determine if
+        % the addition of this new branch results in a better path. If so
+        % its going to now be our current best solution. Before we accept
+        % it as the better solution, perform the delayed collision
+        % detection.
         status = 'Failed';
         if ((branch.ExitFlag == 0) && (size(branch.Path,2) > 1))
             % Evaluation
