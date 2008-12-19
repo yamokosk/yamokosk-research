@@ -119,14 +119,14 @@ else
 end
 Prob.odefun = odefun;
 
-% node_generator
+% node_generate
 if isfhandle(ngen)
     fname = func2str(ngen);
     if ( nargin(ngen) ~= 1 ) error([fname ' must accept 1 arguments.']); end
 else
-    error('Argument node_generator must be a function handle.');
+    error('Argument node_generate must be a function handle.');
 end
-Prob.node_generator = ngen;
+Prob.node_generate = ngen;
 
 % node_evaluate
 if isfhandle(neval)

@@ -15,8 +15,8 @@ end
 % The RDT loop
 iter = Prob.iter;
 for i = 1:iter
-    % Branch selection not node selection.. need to change this.
-    [Neighbors, ID, QueryStates, G_new] = node_selection(G_new, Prob);
+    % Select a node (direction) to grow the tree towards
+    [Neighbors, ID, QueryStates, G_new] = node_select(G_new, Prob);
     [nstates, nconnects] = size(QueryStates);
     
     % Node expansion
@@ -39,7 +39,7 @@ for i = 1:iter
         if ((branch.ExitFlag == 0) && (size(branch.Path,2) > 1))
             % Evaluation
             status = 'Complete';
-            q_branch = branch_evaluation(branch);
+            q_branch = branch_evaluate(branch);
         end
         
         % If q_branch > q_current, replace
@@ -61,11 +61,11 @@ Prob.output_fcn(0, [], [], [], 'done', Prob);
 % branch. Selection of a particular node is usually based on
 % probabilistic criteria that may require use of a valid distance
 % metric
-function [Neighbors,ID,QueryStates,G] = node_selection(G, Prob)
+function [Neighbors,ID,QueryStates,G] = node_select(G, Prob)
 
 for ii = 1:5
     % Generate random nodes
-    Xr = Prob.node_generator(Prob);
+    Xr = Prob.node_generate(Prob);
     
     % Get the nearest neighbors to the randomly generated states from
     % the existing tree.
@@ -86,16 +86,12 @@ error('Gave up selecting a new node for expansion after five attempts.');
 % often for connection to the goal configuration. Additionally, the new
 % branch may be subdivided into multiple segments, thus adding several
 % new nodes to the existing tree.
-function q_branch = branch_evaluation(branch)
+function q_branch = branch_evaluate(branch)
 
 % Compute impact this branch has on all targets
 for i = 1:num_targets
     q_branch(i) = effectiveness_metric(target(i),branch);
 end
-
-
-
-
 
 % The first node should already be in the tree. So first evaluate and add
 % the new nodes
