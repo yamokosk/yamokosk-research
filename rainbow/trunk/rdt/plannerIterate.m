@@ -1,103 +1,67 @@
-function Prob = plannerIterate(Prob)
+function Prob = plannerIterate(pathLengthBound, Prob)
 % plannerIterate - Performs one iteration of the vantage point planning
 % algorithm.
 %
 %   Note! This function should never be called by the user directly. It is
 %   meant to be called by the function plannerSolve.
 
-% Select a node (direction) to grow the tree towards
-[Neighbors, ID, QueryStates, G_new] = node_select(G_new, Prob);
-[nstates, nconnects] = size(QueryStates);
+% Get copy of current solution
+solution = Prob.solution;
 
-% Node expansion
-for j = 1:nconnects
-    % branch.root = node_id
-    % branch.terminal = node_id
-    % branch.path = [node_ids]
-    [branch,exitflag,exitmsg] = Prob.local_planner(Neighbors(:,j), QueryStates(:,j), Prob);
+% Generate a set of vantage points for target j
+Vp = Prob.f.ngen(i, Prob);
+numVantagePts = size(Vp,2);
 
-    % Evaluate new branch
+% Find the nearest neighbors associated with those vantage points
+ID = Prob.f.nsel(Vp, G.V, G.Wv, Prob);
+ind = find(ID > 0);
+Xi = G.V(ID);
+Vp = Xr(:,ind);
 
-    % Collision check is delayed now. So need to add infrastucture to
-    % load SceneML file and check collision of best path. In fact the
-    % way to do this is check the new branches score and determine if
-    % the addition of this new branch results in a better path. If so
-    % its going to now be our current best solution. Before we accept
-    % it as the better solution, perform the delayed collision
-    % detection.
-    status = 'Failed';
-    if ((branch.ExitFlag == 0) && (size(branch.Path,2) > 1))
-        % Evaluation
-        status = 'Complete';
-        q_branch = branch_evaluate(branch);
-    end
-
-    % If q_branch > q_current, replace
-    % Iteration output
-    if ( Prob.output_fcn('Connect', status, Path, ExitMsg, 'connect', Prob) ) break; end
-end
-
-
-% =========================================================================
-% node_select(G, Prob)
-%
-% A node from the existing tree is selected as a location to add a
-% branch. Selection of a particular node is usually based on
-% probabilistic criteria that may require use of a valid distance
-% metric
-% =========================================================================
-function [Neighbors,ID,QueryStates,G] = node_select(G, Prob)
-
-for ii = 1:5
-    % Generate random nodes
-    Xr = Prob.node_generate(Prob);
+% Create a branch from the currNode to all the generated vantage points
+raw_scores = zeros(numVantagePts, Prob.number_targets);
+for v = 1:numVantagePts
+    % Determine if a feasable path exists.
+    [path,flag,msg] = Prob.f.lp(Xi(:,v), Vp(:,v), Prob);
     
-    % Get the nearest neighbors to the randomly generated states from
-    % the existing tree.
-    ID = Prob.node_select(Xr, G.V, G.Wv, Prob);
-    ind = find(ID > 0);
-    
-    if ( ~isempty(ind) )
-        ID = ID(ind);
-        Neighbors = G.V(ID);
-        QueryStates = Xr(:,ind);
-        return;
+    if ( ~isempty(path) )
+        % For each intermediate node returned by the planner, evaluate its
+        % sensing performance. Returns a Ni x K matrix of scores
+        path_scores = f.neval( path(:,2:end-1), Prob );
+        raw_scores(v,:) = mean( path_scores );
     end
 end
-error('Gave up selecting a new node for expansion after five attempts.');
 
-
-
-% =========================================================================
-% branch_evaluate(branch)
-%
-% The new branch is evaluated according to performance criteria and
-% often for connection to the goal configuration. Additionally, the new
-% branch may be subdivided into multiple segments, thus adding several
-% new nodes to the existing tree.
-% =========================================================================
-function q_branch = branch_evaluate(branch)
-
-% Compute impact this branch has on all targets
-for i = 1:num_targets
-    q_branch(i) = effectiveness_metric(target(i),branch);
+% Sort the sum of the raw scores from highest to lowest. Then starting with
+% the best path do collision detection until we find a collision free path
+% that is collision free.
+[path_scores_sorted, path_index] = sort( sum(path_scores, 2), 1, 'descend' );
+best_branch = 0;
+for ind=path_index
+    if ( isPathCollisionFree( branches(:,2:end, ind), Prob ) )
+        best_branch = ind;
+        break;
+    end
 end
 
-% The first node should already be in the tree. So first evaluate and add
-% the new nodes
-NewNodes = Path(:,2:end);
-NewNodeWeights = Prob.node_evaluate(NewNodes, Prob);
-[G_new,NewNodeIDs] = add_node(G_new, NewNodes, NewNodeWeights);
+if (best_branch ~= 0)
+    % We have a good, new branch. Add it to the solution.
+    % The first node should already be in the tree. So first evaluate and add
+    % the new nodes
+    NewNodes = Path(:,2:end);
+    NewNodeWeights = Prob.node_evaluate(NewNodes, Prob);
+    [G_new,NewNodeIDs] = add_node(G_new, NewNodes, NewNodeWeights);
 
-% Next make an edge between existing node in the tree and our first new
-% node.
-%G_new = add_edge(G_new, ID, NewNodeIDs(1), EdgeWeights(1));
-IDWeight = G_new.Wv(ID);
-G_new = add_edge(G_new, ID, NewNodeIDs(1), (IDWeight + NewNodeWeights(1))/2 );
+    % Next make an edge between existing node in the tree and our first new
+    % node.
+    %G_new = add_edge(G_new, ID, NewNodeIDs(1), EdgeWeights(1));
+    IDWeight = G_new.Wv(ID);
+    G_new = add_edge(G_new, ID, NewNodeIDs(1), (IDWeight + NewNodeWeights(1))/2 );
 
-% Then use a for loop to add the rest of the edges
-nedges = length(NewNodeIDs);
-for i = 2:nedges
-    %G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), EdgeWeights(i));
-    G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), (NewNodeWeights(i) + NewNodeWeights(i-1))/2 );
-end 
+    % Then use a for loop to add the rest of the edges
+    nedges = length(NewNodeIDs);
+    for i = 2:nedges
+        %G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), EdgeWeights(i));
+        G_new = add_edge(G_new, NewNodeIDs(i-1), NewNodeIDs(i), (NewNodeWeights(i) + NewNodeWeights(i-1))/2 );
+    end 
+end

@@ -46,10 +46,10 @@ function Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
 %                       colID = nsel(xq, V, Wv)
 %
 %       f.lp        Function handle which computes a local plan between two
-%                   system states. It can return any number N intermediate
+%                   system states. It can return any number k intermediate
 %                   nodes in column format, Ni, and the associate edge 
 %                   weights between those intermediate nodes. The total 
-%                   path is a NS x (N+2) matrix [Ne, Ni, Nr] with edge 
+%                   path is a Nx(k+2) matrix [Ne, Ni, Nr] with edge 
 %                   weights a row vector of length N+1. If no feasible path 
 %                   exists then Ni must be empty.
 %
