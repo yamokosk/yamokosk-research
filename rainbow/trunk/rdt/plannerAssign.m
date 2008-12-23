@@ -1,174 +1,191 @@
-function Prob = plannerAssign(x0, x_lb, x_ub, u_lb, u_ub, iter, ...
-                              name, old_tree, userdata, ...
-                              odefun, ngen, neval, nsel, lp, goalfun, 
-                              outfun)
-% plannerAssign - Defines the problem structure for the planning algorithm
+function Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
+% plannerAssign - Defines the problem structure for the vantage point
+%   planning problem.
 %
-%   Prob = plannerAssign(x0, xf, lb, ub, odefun, ngen, neval, nsel, lp) 
-%   creates a structure containing all the necessary information for the 
+%   Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, fhandles) 
+%   creates a structure containing all the required information for the 
 %   vantage point planning algorithm in Matlab. The inputs are described 
 %   below:
 %
-%       x0      Known initial state of the system.
-%       x_lb    Lower bound on system states
-%       x_ub    Upper bound on system states
-%       u_lb    Lower bound on system's control inputs
-%       u_ub    Upper bound on system's control inputs
+%       K       Total number of sensing targets. (Scalar) 
+%       x0      Desired initial states of the system or dimension of the
+%               system. (Scalar or NxM initial conditions)
+%       x_lb    Lower bound on system states. (Nx1 vector)
+%       x_ub    Upper bound on system states. (Nx1 vector)
+%       u_lb    Lower bound on system's control inputs. (Px1 vector)
+%       u_ub    Upper bound on system's control inputs. (Px1 vector)
 %       iter    Specifies how many expansion steps the planner should make. 
 %               The default is 30.
-%       name    Name of problem. Used to archive and log results.
-%       udata   User data to be passed to user-defined functions.    
-%       odefun  Function handle which computes the dynamic constrains of 
-%               system in question. The syntax of odefun must be:
+%       f       Structure of function handles:
+%       f.odefun    Function handle which computes the dynamic constrains 
+%                   of system in question. The syntax of odefun must be:
 %
-%                   x_dot = odefun(x,u,t,Prob)
+%                       x_dot = odefun(x,u,t,Prob)
 %
-%       ngen    Function handle which randomly generates a system state.
-%               Syntax for ngen must be:
+%       f.ngen      Function handle to generate vantage points for 
+%                   target i. Syntax for ngen must be:
 %
-%                   xr = ngen(Prob)
+%                       xr = ngen(i, Prob)
 %
-%       neval   Function handle which evaluates a system state and returns
-%               a scalar value indicating its relative fitness.
+%       f.neval     Function handle which computes the sensing performance
+%                   of a system state for a given target indices. It should
+%                   returns a scalar value between 0 and 1 for each target
+%                   index.
 %
-%                   fitness = neval(x, Prob)
+%                       fitness = neval(indices, x, Prob)
 %
-%       nsel    Function handle which typically returns the closest system
-%               state to a given query state. This could be closest in the
-%               euclidean sense or more complex for systems with holonomic
-%               constraints. Inputs to this function are the query state,
-%               xq, a matrix of nodes, V, in column format to test 
-%               distances, and a row vector, Wv, of the associated node 
-%               fitnesses. nsel must return the columnID from V of the
-%               closest node.
+%       f.nsel      Function handle which typically returns the closest 
+%                   system state to a given query state. This could be 
+%                   closest in the euclidean sense or more complex for 
+%                   systems with holonomic constraints. Inputs to this 
+%                   function are the query state, xq, a matrix of nodes, V, 
+%                   in column format to test distances, and a row vector, 
+%                   Wv, of the associated node fitnesses. nsel must return 
+%                   the columnID from V of the closest node.
 %
-%                   colID = nsel(xq, V, Wv)
+%                       colID = nsel(xq, V, Wv)
 %
-%       lp      Function handle which computes a local plan between two
-%               system states. It can return any number N intermediate
-%               nodes in column format, Ni, and the associate edge weights 
-%               between those intermediate nodes. The total path is a 
-%               NS x (N+2) matrix [Ne, Ni, Nr] with edge weights a row
-%               vector of length N+1. If no feasible path exists then Ni
-%               must be empty.
+%       f.lp        Function handle which computes a local plan between two
+%                   system states. It can return any number N intermediate
+%                   nodes in column format, Ni, and the associate edge 
+%                   weights between those intermediate nodes. The total 
+%                   path is a NS x (N+2) matrix [Ne, Ni, Nr] with edge 
+%                   weights a row vector of length N+1. If no feasible path 
+%                   exists then Ni must be empty.
 %
-%                   [Ni,We] = lp(Ne, Nr, Prob);
+%                       [Ni,We] = lp(Ne, Nr, Prob);
 %
-%       goalfun Function handle which informs the planner whether the all
-%               goal criteria have been statisfied.
+%       f.goalfun   Function handle which informs the planner whether the 
+%                   all goal criteria have been statisfied.
 %
-%                   boolean = goalfun(Solution);
+%                       boolean = goalfun(Prob);
 %
+%   plannerAssign(..., name) Will give the problem/solution a user defined
+%   name. It is used in archiving and logging the results.
+%
+%   plannerAssign(..., name, udata) allows one to pass user-defined data to
+%   any of the user-specified function handles.
+%
+%   plannerAssign(..., name, udata, outfun) specifies an output function
+%   handle. See documentation on the ODE output function handle for more
+%   information.
 
-% if nargin < 16
-%     OutputFcn = @rdtOutput;
-%     if nargin < 15
-%         userdata = [];
-%         if nargin < 14
-%             old_tree = [];
-%             if nargin < 13
-%                 name = 'Default';
-%                 if nargin < 12
-%                     iter=20;
-%                     if nargin < 11
-%                         error('At minimum, the first 7 arguments must be specified');
-%                     end
-%                 end
-%             end
-%         end
-%     end
-% end
+min_num_args = 8;
 
-Prob.name = name;
-Prob.ns = length(x0);
+% Check that we have at least the required minimum inputs
+if (nargin < min_num_args)
+    error([num2str(min_num_args) ' arguments is a minumum requirement']);
+end
+    
+% Generate defaults for the variable inputs
+name = ['default_' datestr(now, 30)];
+udata = [];
+f.outfun = @plannerOutput;
 
-if (isempty(x_lb)) Prob.x_lb = -inf*ones(size(x0));
-else Prob.x_lb = x_lb; end
+% Get variable inputs if they exist
+if (nargin > min_num_args) name = [varargin{1}];end
+if (nargin > min_num_args+1) udata = varargin{2}; end
+if (nargin > min_num_args+2) f.outfun = varargin{3};end
 
-if (isempty(x_ub)) Prob.x_ub = inf*ones(size(x0));
-else Prob.x_ub = x_ub; end
-
-Prob.x_range = x_ub - x_lb;
-Prob.iter = iter;
-Prob.G = old_tree;
-Prob.userdata = userdata;
-
-Prob.u_lb = u_lb;
-Prob.u_ub = u_ub;
-
-% % Scale x0 and xf between -1 and 1
-% Prob.x0 = (2*x0 - (ub + lb)) ./ Prob.x_range;
-% if (isempty(xf)) Prob.xf = NaN*ones(size(x0));
-% else
-%     Prob.xf = (2*xf - (ub + lb)) ./ Prob.x_range;; 
-% end
-
-% Don't pre-scale states...
-Prob.x0 = x0;
-if (isempty(xf)) Prob.xf = NaN*ones(size(x0));
+% Now check we have valid values for the required inputs.
+% Initial condition can be any of the following:
+%   1. Scalar indicating number of states of the system
+%   2. Column vector or matrix of initial conditions of the system.
+x0_int = []; N = 1;
+if ( isScalar(x0) )
+    N = x0;
+    x0_int = zeros(N, 1);
 else
-    Prob.xf = xf; 
+    x0_int = x0;
+    N = size(x0_int,1);
 end
 
-% Function checker
-isfhandle = @(fun)(isa(fun, 'function_handle'));
+% State lower and upper bounds can be either be empty or column vectors
+x_lb_int = x_lb;
+if (isempty(x_lb)) x_lb_int = -inf*ones(N,1); end
+if ( size(x_lb_int,1) ~= N )
+    error('State lower bound must be same dimension as system');
+end
+
+x_ub_int = x_ub;
+if (isempty(x_ub)) x_ub_int = inf*ones(N,1); end
+if ( size(x_ub_int,1) ~= N )
+    error('State upper bound must be same dimension as system');
+end
+
+% Control lower and upper bounds must be column vectors.
+u_lb_int = u_lb;
+if (isempty(u_lb_int)) 
+    error('Control lower bound was empty.');
+end
+
+u_ub_int = u_ub;
+if (isempty(u_ub_int)) 
+    error('Control upper bound was empty.');
+end
+
+% Iterations
+if (isempty(iter)) iter = 30; end
 
 % odefun
-if isfhandle(odefun)
-    fname = func2str(odefun);
-    if ( nargin(odefun) ~= 1 ) error([fname ' must accept 1 arguments.']); end
-else
-    error('Argument odefun must be a function handle.');
-end
-Prob.odefun = odefun;
+checkFunction(f, 'odefun', 4);
 
 % node_generate
-if isfhandle(ngen)
-    fname = func2str(ngen);
-    if ( nargin(ngen) ~= 1 ) error([fname ' must accept 1 arguments.']); end
-else
-    error('Argument node_generate must be a function handle.');
-end
-Prob.node_generate = ngen;
+checkFunction(f, 'ngen', 2);
 
 % node_evaluate
-if isfhandle(neval)
-    fname = func2str(neval);
-    if ( nargin(neval) ~= 2 ) error([fname ' must accept 2 arguments.']); end
-else
-    error('Argument node_evaluate must be a function handle.');
-end
-Prob.node_evaluate = neval;
+checkFunction(f, 'neval', 3);
 
 % node_select
-if isfhandle(nsel)
-    fname = func2str(nsel);
-    if ( nargin(nsel) ~= 4 ) error([fname ' must accept 3 arguments.']); end
-else
-    error('Argument node_select must be a function handle.');
-end
-Prob.node_select = nsel;
+checkFunction(f, 'nsel', 3);
 
 % local_planner
-if isfhandle(lp)
-    fname = func2str(lp);
-    if ( nargin(lp) ~= 3 ) error([fname ' must accept 3 arguments.']); end
-else
-    error('Argument local_planner must be a function handle.');
-end
-Prob.local_planner = lp;
+checkFunction(f, 'lp', 3);
+
+% goalfun
+checkFunction(f, 'goalfun', 1);
 
 % Output function
-if isfhandle(OutputFcn)
-    fname = func2str(OutputFcn);
-    if ( nargin(OutputFcn) ~= 6 ) error([fname ' must accept 6 arguments.']); end
-else
-    error('Argument OutputFcn must be a function handle.');
-end
-Prob.output_fcn = OutputFcn;
+checkFunction(f, 'outfun', 6);
 
 % Create problem structure
-Prob = struct();
+Prob = struct('name',               name, ...
+              'system_dimension',   N, ...
+              'number_targets',     K, ...
+              'iterations',         iter, ...
+              'x0',                 x0_int, ...
+              'x_range',            x_ub_int - x_lb_int, ...
+              'x_lb',               x_lb_int, ...
+              'x_ub',               x_ub_int, ...
+              'u_range',            u_ub_int - u_lb_int, ...
+              'u_lb',               u_lb_int, ...
+              'u_ub',               u_ub_int, ...
+              'func_handles',       f, ...
+              'solution',           [], ...
+              'userdata',           udata);
+                        
 % Reset random generators
 rand('state',sum(200*clock))
 randn('state',sum(100*clock))
+end
+
+function ret = isScalar(value)
+ret = true;
+if (max(size(value)) > 1)
+    ret = false;
+end
+end
+
+function checkFunction(f, fname, num_req_args)
+% Function checker
+isfhandle = @(fun)(isa(fun, 'function_handle'));
+
+if ( isfield(f,fname))
+    if isfhandle(f.(fname))
+        fname_user = func2str(f.(fname));
+        if ( nargin(f.(fname)) ~= num_req_args ) error([fname_user ' must accept ' num2str(num_req_args) ' arguments.']); end
+    end
+else
+    error([fname ' function handle was not specified.']);
+end
+end 
