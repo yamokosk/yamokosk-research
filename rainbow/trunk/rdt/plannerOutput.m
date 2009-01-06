@@ -1,4 +1,4 @@
-function stop = plannerOutput(iter, status, path, message, flag, Prob)
+function stop = plannerOutput(flag, message, Prob)
 % rdtOutput - Generic RDT output function
 %
 %   rdtOutput(Prob) creates 
@@ -12,8 +12,6 @@ switch (flag)
     case 'init'
         fprintf('Iteration     Status     Comment\n');
         fprintf('---------     ------     -------\n');
-%         figure(2); set(2,'Position',[50,50,560,420]); grid on; view(45,45);
-%         figure(3); set(3,'Position',[620,50,560,420]); grid on; view(45,45);
     case 'done'
         fprintf('RDT complete.\n');
     case 'iter'

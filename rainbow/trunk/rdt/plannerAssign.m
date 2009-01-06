@@ -1,4 +1,4 @@
-function Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
+function Prob = plannerAssign(targets, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
 % plannerAssign - Defines the problem structure for the vantage point
 %   planning problem.
 %
@@ -7,7 +7,7 @@ function Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
 %   vantage point planning algorithm in Matlab. The inputs are described 
 %   below:
 %
-%       K       Total number of sensing targets. (Scalar) 
+%       targets Sensing targets. 
 %       x0      Desired initial states of the system or dimension of the
 %               system. (Scalar or NxM initial conditions)
 %       x_lb    Lower bound on system states. (Nx1 vector)
@@ -17,22 +17,16 @@ function Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
 %       iter    Specifies how many expansion steps the planner should make. 
 %               The default is 30.
 %       f       Structure of function handles:
-%       f.odefun    Function handle which computes the dynamic constrains 
-%                   of system in question. The syntax of odefun must be:
-%
-%                       x_dot = odefun(x,u,t,Prob)
-%
 %       f.ngen      Function handle to generate vantage points for 
-%                   target i. Syntax for ngen must be:
+%                   target. Syntax for ngen must be:
 %
-%                       xr = ngen(i, Prob)
+%                       xr = ngen(target, udata)
 %
 %       f.neval     Function handle which computes the sensing performance
-%                   of a system state for a given target indices. It should
-%                   returns a scalar value between 0 and 1 for each target
-%                   index.
+%                   of a system state for a given set of targets. It should
+%                   return a scalar value between 0 and 1.
 %
-%                       fitness = neval(indices, x, Prob)
+%                       fitness = neval(state, targets, udata)
 %
 %       f.nsel      Function handle which typically returns the closest 
 %                   system state to a given query state. This could be 
@@ -53,7 +47,7 @@ function Prob = plannerAssign(K, x0, x_lb, x_ub, u_lb, u_ub, iter, f, varargin)
 %                   weights a row vector of length N+1. If no feasible path 
 %                   exists then Ni must be empty.
 %
-%                       [Ni,We] = lp(Ne, Nr, Prob);
+%                       xi = lp(x0, xf, udata);
 %
 %       f.goalfun   Function handle which informs the planner whether the 
 %                   all goal criteria have been statisfied.
@@ -128,7 +122,7 @@ end
 if (isempty(iter)) iter = 30; end
 
 % odefun
-checkFunction(f, 'odefun', 4);
+%checkFunction(f, 'odefun', 4);
 
 % node_generate
 checkFunction(f, 'ngen', 2);
@@ -146,12 +140,12 @@ checkFunction(f, 'lp', 3);
 checkFunction(f, 'goalfun', 1);
 
 % Output function
-checkFunction(f, 'outfun', 6);
+checkFunction(f, 'outfun', 3);
 
 % Create problem structure
 Prob = struct('name',               name, ...
               'system_dimension',   N, ...
-              'number_targets',     K, ...
+              'targets',            targets, ...
               'iterations',         iter, ...
               'x0',                 x0_int, ...
               'x_range',            x_ub_int - x_lb_int, ...

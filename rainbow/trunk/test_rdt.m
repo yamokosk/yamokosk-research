@@ -1,15 +1,37 @@
 %% Setup problem
 clear;
 
-%% Generate desired trajectory
-freq = 15;
+%% Generate target trajectory
+freq = 5;
 dt = 1/freq;
-t = 0:dt:6;
+t = 0:dt:6; numTargets = length(t);
 vx = 0.25 * ones(size(t));
-vy = zeros(size(t));%(0.075 * 2 * pi/0.75) * cos(2*pi*t/0.75);
+vy = (0.075 * 2 * pi/0.75) * cos(2*pi*t/0.75);
+
+% Target positions
 x = vx.*t - 0.75;
-y = zeros(size(t)); %0.075 * sin(2*pi*t/0.75);
-[r1,r2] = planar_load_robots(fullfile(cd, 'roboop', 'pa10_planar.conf'));
+y = 0.075 * sin(2*pi*t/0.75);
+
+% Desired vantage points for targets
+ux = zeros(1,numTargets);
+uy = ones(1,numTargets);
+
+targets = [x; y; ux; uy];
+
+%% Define problem
+path(path,'problems/two_dof_system');
+f = struct('ngen',  @ngen, ...
+           'neval', @neval, ...
+           'nsel',  @nsel, ...
+           'lp',    @lp, ...
+           'goalfun', @goalfun);
+
+x0 = ngen(targets(:,1),[]);
+u_lb = -1*ones(2,1); u_ub = ones(2,1);
+Prob = plannerAssign(targets, x0, [], [], u_lb, u_ub, 30, f);       
+
+%% Solve
+Prob = plannerSolve(Prob);
 
 %% Set up figure
 fig = plot_roboop(r1);

@@ -13,7 +13,7 @@ Vp = Prob.f.ngen(i, Prob);
 numVantagePts = size(Vp,2);
 
 % Find the nearest neighbors associated with those vantage points
-ID = Prob.f.nsel(Vp, G.V, G.Wv, Prob);
+ID = Prob.f.nsel(Vp, G.V, G.Wv, Prob.userdata);
 ind = find(ID > 0);
 Xi = G.V(ID);
 Vp = Xr(:,ind);
