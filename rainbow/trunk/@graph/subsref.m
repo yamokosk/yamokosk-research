@@ -17,9 +17,9 @@ switch (index(1).type)
                 end
             case 'Wv'
                 if ( length(index) == 1 )
-                    b = G.node_weights;
+                    b = G.edge_weights;
                 else
-                    b = G.node_weights(index(2).subs{1});
+                    b = G.edge_weights(index(2).subs{1}, index(2).subs{1});
                 end
             otherwise
                 error('Invalid field name.');

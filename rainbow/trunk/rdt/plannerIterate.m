@@ -1,4 +1,4 @@
-function Prob = plannerIterate(pathLengthBound, Prob)
+function Prob = plannerIterate(Prob, Ti, pathLengthBound)
 % plannerIterate - Performs one iteration of the vantage point planning
 % algorithm.
 %
@@ -22,7 +22,7 @@ Vp = Xr(:,ind);
 raw_scores = zeros(numVantagePts, Prob.number_targets);
 for v = 1:numVantagePts
     % Determine if a feasable path exists.
-    [path,flag,msg] = Prob.f.lp(Xi(:,v), Vp(:,v), Prob);
+    xi = Prob.f.lp(Xi(:,v), Vp(:,v), Prob.userdata);
     
     if ( ~isempty(path) )
         % For each intermediate node returned by the planner, evaluate its

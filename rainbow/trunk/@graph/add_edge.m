@@ -4,4 +4,5 @@ function G = add_edge(G,node_from_id,node_to_id,edge_weight)
 if (node_from_id == node_to_id)
     warning('Self-referencing edge being added to graph.');
 end
-G.connectivity(node_from_id,node_to_id) = edge_weight;
+G.connectivity(node_from_id,node_to_id) = 1;
+G.edge_weights(node_from_id,node_to_id) = edge_weight;
