@@ -1,4 +1,4 @@
-function [G,ind] = add_node(G,nodes)
+function [G,ind] = add_node(G,nodes,eff)
 % add_node(G,N) adds the nodes stored in N to the graph G. It returns the
 % new graph as well as the indicies of the new nodes. N is assumed to be a
 % matrix where the nodes are stored in a column format.
@@ -9,6 +9,8 @@ nnodes = size(nodes,2);
 M = size(G.node_data,2);
 ind = [1:nnodes] + M;
 G.node_data = [G.node_data, nodes];
+G.node_weights = [G.node_weights, 0];
+G.node_effectiveness = [G.node_effectiveness; eff];
 
 % Deal with the connectivity and weight matrices
 [i,j,s] = find(G.connectivity);

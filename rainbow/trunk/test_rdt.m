@@ -16,19 +16,11 @@ y = 0.075 * sin(2*pi*t/0.75);
 ux = zeros(1,numTargets);
 uy = ones(1,numTargets);
 
-targets = [x; y; ux; uy];
+targets = [x; y; ux; uy; t];
 
 %% Define problem
-path(path,'problems/two_dof_system');
-f = struct('ngen',  @ngen, ...
-           'neval', @neval, ...
-           'nsel',  @nsel, ...
-           'lp',    @lp, ...
-           'goalfun', @goalfun);
-
-x0 = ngen(targets(:,1),[]);
-u_lb = -1*ones(2,1); u_ub = ones(2,1);
-Prob = plannerAssign(targets, x0, [], [], u_lb, u_ub, 30, f);       
+Prob = plannerAssign( fullfile(pwd,'problems','two_dof_system') );
+Prob.x0 = Prob.func_handles.ngen(targets(:,1), Prob.userdata);
 
 %% Solve
 Prob = plannerSolve(Prob);

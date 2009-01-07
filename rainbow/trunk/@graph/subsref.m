@@ -15,11 +15,23 @@ switch (index(1).type)
                 else
                     b = G.connectivity(index(2).subs{1}, index(2).subs{1});
                 end
-            case 'Wv'
+            case 'Vw'
+                if ( length(index) == 1 )
+                    b = G.node_weights;
+                else
+                    b = G.node_weights(:,index(2).subs{1});
+                end
+            case 'Ew'
                 if ( length(index) == 1 )
                     b = G.edge_weights;
                 else
                     b = G.edge_weights(index(2).subs{1}, index(2).subs{1});
+                end
+            case 'Seff'
+                if ( length(index) == 1 )
+                    b = G.node_effectiveness;
+                else
+                    b = G.node_effectiveness(index(2).subs{1},:);
                 end
             otherwise
                 error('Invalid field name.');

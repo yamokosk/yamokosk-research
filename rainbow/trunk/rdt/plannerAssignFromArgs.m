@@ -137,7 +137,7 @@ checkFunction(f, 'nsel', 3);
 checkFunction(f, 'lp', 3);
 
 % goalfun
-checkFunction(f, 'goalfun', 1);
+%checkFunction(f, 'goalfun', 1);
 
 % Output function
 checkFunction(f, 'outfun', 3);

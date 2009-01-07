@@ -12,4 +12,4 @@ sigma_dist = 1/6;
 del_dist = 1 + sigma_dist*rand(1,1);
 
 % Generate deviant
-xr = target(1:2,:) + del_dist*du;
+xr = [target(1:2,:) + del_dist*du; target(5)];
