@@ -15,6 +15,9 @@ u_ub	1
 # Number of iterations
 iterations	30
 
+# Use collision checking?
+collision_check 0
+
 # Functions to use
 #	ode_function - Computes x_dot = f(x,u,t)
 ode_function	odefun

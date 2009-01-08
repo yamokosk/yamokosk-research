@@ -23,8 +23,81 @@ Prob = plannerAssign( fullfile(pwd,'problems','two_dof_system') );
 Prob.x0 = Prob.func_handles.ngen(targets(:,1), Prob.userdata);
 
 %% Solve
-Prob = plannerSolve(Prob);
 
+for i = 1:5
+    Prob = plannerSolve(Prob, targets);
+end
+
+%% Print results
+% Plot targets
+% fig = figure(1);
+% title('X');
+% plot(targets(end,:), targets(1,:), 'kx');
+% hold on;
+% 
+% fig = figure(2);
+% title('Y');
+% plot(targets(end,:), targets(2,:), 'kx');
+% hold on;
+
+fig = figure(3);
+title('Y');
+plot(targets(1,:), targets(2,:), 'kx');
+hold on;
+
+if ( ~isempty(Prob.solution.completeNodes) )
+    G = Prob.solution.connectivityGraph;
+    [ignore Ishortest] = sort(Prob.solution.completeLengths,1,'descend');
+    shortestNodeID = Prob.solution.completeNodes(Ishortest(1));
+    [d pred] = shortest_paths(G.E, 1, 'edge_weight', edge_weight_vector(G.E, G.Ew), 'target', shortestNodeID);
+    shortest_path = path_from_pred(pred,shortestNodeID);
+    node_data = G.V(shortest_path);
+%     figure(1)
+%     plot(node_data(end,:), node_data(1,:), 'ko:');
+%     figure(2)
+%     plot(node_data(end,:), node_data(2,:), 'ko:');
+    figure(3)
+    plot(node_data(1,:), node_data(2,:), 'ko:');
+
+    [ignore Iscore] = sort(Prob.solution.completeScores,1,'ascend');
+    bestScoreID = Prob.solution.completeNodes(Iscore(1));
+    if (bestScoreID ~= shortestNodeID)
+        [d pred] = shortest_paths(G.E, 1, 'edge_weight', edge_weight_vector(G.E, G.Ew), 'target', bestScoreID);
+        best_path = path_from_pred(pred,bestScoreID);
+        node_data = G.V(best_path);
+%         figure(1)
+%         plot(node_data(end,:), node_data(1,:), 'ko--');
+%         figure(2)
+%         plot(node_data(end,:), node_data(2,:), 'ko--');
+        figure(3)
+        plot(node_data(1,:), node_data(2,:), 'ko--');
+    end
+
+end
+
+%% Reality check
+target = targets(:,10);
+figure(3)
+plot(target(end),target(1), 'ko');
+hold on;
+figure(4)
+plot(target(end),target(2), 'ko');
+hold on;
+figure(5)
+plot(target(1), target(2), 'ko');
+hold on;
+
+xr = zeros(3,1000);
+for n = 1:1000
+    xr(:,n) = Prob.func_handles.ngen(target,[]);
+end
+figure(3)
+plot(xr(end,:), xr(1,:), '.');
+figure(4)
+plot(xr(end,:), xr(2,:), '.');
+figure(5)
+plot(xr(1,:), xr(2,:), 'k.');
+    
 %% Set up figure
 fig = plot_roboop(r1);
 plot_roboop(r2); hold on;

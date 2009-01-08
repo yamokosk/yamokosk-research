@@ -10,12 +10,12 @@ function stop = plannerOutput(flag, message, Prob)
 stop = false;
 switch (flag)
     case 'init'
-        fprintf('Iteration     Status     Comment\n');
-        fprintf('---------     ------     -------\n');
+        fprintf('Iteration     Status\n');
+        fprintf('---------     ------\n');
     case 'done'
         fprintf('RDT complete.\n');
     case 'iter'
-        fprintf('%s     %s    %s\n', iter, status, message);
+        fprintf('%s\n', message);
     case 'connect'
         fprintf('%s       %s    %s\n', iter, status, message);
         % Print info about this iteration

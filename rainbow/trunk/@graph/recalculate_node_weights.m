@@ -8,7 +8,6 @@ dmax = max(max(d),1e-6);
 numTargets = size(G.node_effectiveness,2);
 for id = 1:length(d)
     path = path_from_pred(pred,id);
-	%pathEff = [];
     if ( length(path) > 1 )
         pathEff = max(G.node_effectiveness(path,:));
     else

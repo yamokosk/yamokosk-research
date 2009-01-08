@@ -14,8 +14,12 @@ f = struct( 'ngen', def.node_generator, ...
             'goalfun', def.goal_function);
 udata = struct( 'odefun', def.ode_function );
 
-if ( isfield(def, 'output_function') )
-    Prob = plannerAssignFromArgs(def.x0, def.x_lb, def.x_ub, def.u_lb, def.u_ub, def.iter, f, def.name, udata, def.output_function );
+if (def.collision_check)
+    f.collisionCheck = def.collision_test_function;
+end
+
+if ( def.output_function ~= 0 )
+    Prob = plannerAssignFromArgs(def.x0, def.x_lb, def.x_ub, def.u_lb, def.u_ub, def.iterations, f, def.name, def.collision_check, udata, def.output_function );
 else
-    Prob = plannerAssignFromArgs(def.x0, def.x_lb, def.x_ub, def.u_lb, def.u_ub, def.iter, f, def.name, udata );
+    Prob = plannerAssignFromArgs(def.x0, def.x_lb, def.x_ub, def.u_lb, def.u_ub, def.iterations, f, def.name, def.collision_check, udata );
 end

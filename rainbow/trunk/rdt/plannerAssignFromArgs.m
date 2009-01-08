@@ -57,12 +57,16 @@ function Prob = plannerAssignFromArgs(x0, x_lb, x_ub, u_lb, u_ub, iter, f, varar
 %   plannerAssign(..., name) Will give the problem/solution a user defined
 %   name. It is used in archiving and logging the results.
 %
-%   plannerAssign(..., name, udata) allows one to pass user-defined data to
-%   any of the user-specified function handles.
+%   plannerAssign(..., name, check) If check == true, the solver will
+%   perform collision checks with the provided function handle. Default is
+%   false.
 %
-%   plannerAssign(..., name, udata, outfun) specifies an output function
-%   handle. See documentation on the ODE output function handle for more
-%   information.
+%   plannerAssign(..., name, check, udata) allows one to pass user-defined 
+%   data to any of the user-specified function handles.
+%
+%   plannerAssign(..., name, check, udata, outfun) specifies an output 
+%   function handle. See documentation on the ODE output function handle 
+%   for more information.
 
 min_num_args = 7;
 
@@ -73,13 +77,15 @@ end
     
 % Generate defaults for the variable inputs
 name = ['default_' datestr(now, 30)];
+collisionCheck = false;
 udata = [];
 f.outfun = @plannerOutput;
 
 % Get variable inputs if they exist
 if (nargin > min_num_args) name = [varargin{1}];end
-if (nargin > min_num_args+1) udata = varargin{2}; end
-if (nargin > min_num_args+2) f.outfun = varargin{3};end
+if (nargin > min_num_args+1) collisionCheck = [varargin{2}];end
+if (nargin > min_num_args+2) udata = varargin{3}; end
+if (nargin > min_num_args+3) f.outfun = varargin{4};end
 
 % Now check we have valid values for the required inputs.
 % Initial condition can be any of the following:
@@ -136,8 +142,10 @@ checkFunction(f, 'nsel', 3);
 % local_planner
 checkFunction(f, 'lp', 3);
 
-% goalfun
-%checkFunction(f, 'goalfun', 1);
+% collision_check
+if (collisionCheck)
+    checkFunction(f, 'collisionCheck', 2);
+end
 
 % Output function
 checkFunction(f, 'outfun', 3);
@@ -153,6 +161,7 @@ Prob = struct('name',               name, ...
               'u_range',            u_ub_int - u_lb_int, ...
               'u_lb',               u_lb_int, ...
               'u_ub',               u_ub_int, ...
+              'doCollisionCheck',   collisionCheck, ...
               'func_handles',       f, ...
               'solution',           [], ...
               'userdata',           udata);
