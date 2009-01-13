@@ -9,6 +9,9 @@ if nargin == 0
     G.node_effectiveness = [];
     G.edge_weights = sparse(1,1);
 	G.connectivity = sparse(1,1);
+    G.pathsInvalid = true;
+    G.pathDistances = [];
+    G.pathPredecessors = []; 
 	G = class(G,'graph');
 elseif nargin == 1
     if ( isa(N,'graph') )
@@ -18,6 +21,9 @@ elseif nargin == 1
         G.node_effectiveness = [];
         G.connectivity = sparse(1,1);
         G.edge_weights = spares(1,1);
+        G.pathDistances = [];
+        G.pathPredecessors = []; 
+        G.shortestPaths = [];
     	G = class(G,'graph');
     end
 else

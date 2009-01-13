@@ -1,4 +1,4 @@
-function xi = lp(x0, xf, udata)
+function xi = lp(x0, xf)
 
 Ni = 5;
 xi = zeros(size(x0,1),Ni);

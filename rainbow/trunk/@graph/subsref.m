@@ -33,6 +33,18 @@ switch (index(1).type)
                 else
                     b = G.node_effectiveness(index(2).subs{1},:);
                 end
+            case 'pathDist'
+                if ( length(index) == 1 )
+                    b = G.pathDistances;
+                else
+                    b = G.pathDistances(:,index(2).subs{1});
+                end
+            case 'pathPred'
+                if ( length(index) == 1 )
+                    b = G.pathPredecessors;
+                else
+                    b = G.pathPredecessors(:,index(2).subs{1});
+                end                    
             otherwise
                 error('Invalid field name.');
         end

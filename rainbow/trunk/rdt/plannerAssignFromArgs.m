@@ -14,8 +14,6 @@ function Prob = plannerAssignFromArgs(x0, x_lb, x_ub, u_lb, u_ub, iter, f, varar
 %       x_ub    Upper bound on system states. (Nx1 vector)
 %       u_lb    Lower bound on system's control inputs. (Px1 vector)
 %       u_ub    Upper bound on system's control inputs. (Px1 vector)
-%       iter    Specifies how many expansion steps the planner should make. 
-%               The default is 30.
 %       f       Structure of function handles:
 %       f.ngen      Function handle to generate vantage points for 
 %                   target. Syntax for ngen must be:
@@ -28,17 +26,6 @@ function Prob = plannerAssignFromArgs(x0, x_lb, x_ub, u_lb, u_ub, iter, f, varar
 %
 %                       fitness = neval(state, targets, udata)
 %
-%       f.nsel      Function handle which typically returns the closest 
-%                   system state to a given query state. This could be 
-%                   closest in the euclidean sense or more complex for 
-%                   systems with holonomic constraints. Inputs to this 
-%                   function are the query state, xq, a matrix of nodes, V, 
-%                   in column format to test distances, and a row vector, 
-%                   Wv, of the associated node fitnesses. nsel must return 
-%                   the columnID from V of the closest node.
-%
-%                       colID = nsel(xq, V, Wv)
-%
 %       f.lp        Function handle which computes a local plan between two
 %                   system states. It can return any number k intermediate
 %                   nodes in column format, Ni, and the associate edge 
@@ -49,7 +36,7 @@ function Prob = plannerAssignFromArgs(x0, x_lb, x_ub, u_lb, u_ub, iter, f, varar
 %
 %                       xi = lp(x0, xf, udata);
 %
-%       f.goalfun   Function handle which informs the planner whether the 
+%       f.ccheck   Function handle which informs the planner whether the 
 %                   all goal criteria have been statisfied.
 %
 %                       boolean = goalfun(Prob);

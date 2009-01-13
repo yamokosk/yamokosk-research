@@ -1,19 +1,27 @@
-function G = recalculate_node_weights(G)
-sig = -31;
-minEff = 0.85;
+function G = recalculate_node_weights(G, minEff, sig)
+% Recompute all shortest paths
+G = compute_shortest_paths(G);
 
-[d pred] = shortest_paths(G.connectivity, 1, 'edge_weight', edge_weight_vector(G.connectivity, G.edge_weights));
-dmax = max(max(d),1e-6);
+% Get max path distance
+dmax = max(max(G.pathDistances),1e-6);
 
+% Get some size information
 numTargets = size(G.node_effectiveness,2);
-for id = 1:length(d)
-    path = path_from_pred(pred,id);
-    if ( length(path) > 1 )
-        pathEff = max(G.node_effectiveness(path,:));
-    else
-        pathEff = G.node_effectiveness(id,:);
-    end
+numNodes = size(G.node_data,2);
+
+% Reset graph weights
+G.node_weights = zeros(1, numNodes);
+
+% Recompute weights
+for id = 1:numNodes
+    % Get path information
+    [path, pathDist, pathEff] = get_shortest_path(G, id);
+    
+    % Number of sensed targets are those with an effectiveness greater than
+    % the minimum allowable.
     numSensed = length( find( pathEff > minEff ) );
-    Wsquared = numSensed^2 + (numTargets * ((d(id)/dmax) - 1) - sig)^2;
+    
+    % From Kehoe's thesis. Proposed node weight calculation:
+    Wsquared = numSensed^2 + (numTargets * ((pathDist/dmax) - 1) - sig)^2;
     G.node_weights(id) = sqrt(Wsquared);
 end

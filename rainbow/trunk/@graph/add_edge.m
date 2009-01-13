@@ -8,10 +8,9 @@ G.connectivity(node_from_id,node_to_id) = 1;
 
 % Edge weight is the length of time the from node to the to node
 dt = G.node_data(end,node_to_id) - G.node_data(end,node_from_id);
+
 G.edge_weights(node_from_id,node_to_id) = dt;
 %G.edge_weights(node_to_id,node_from_id) = dt;
 
-% Update the node's effectiveness because we now know who the parent is
-%Feff = G.node_effectiveness(:,node_from_id);
-%Teff = G.node_effectiveness(:,node_to_id);
-%G.node_effectiveness(:, node_to_id) = max(Feff, Teff);
+% Invalidate the shortest paths.. new edge means new paths.
+G.pathsInvalid = true;

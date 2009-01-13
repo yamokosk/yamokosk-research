@@ -1,4 +1,4 @@
-function xr = ngen(target, udata)
+function xr = ngen(target)
 
 % Generate random deviant using the target's prefered viewing angle
 sigma_theta = (45*pi/180)/6;
