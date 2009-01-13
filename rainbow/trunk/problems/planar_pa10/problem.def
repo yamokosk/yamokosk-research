@@ -1,0 +1,38 @@
+# Problem name
+name	DubinsCar
+
+# State upper and lower bounds. Format:
+#	x = [t, q_src_1, q_src_2, q_src_3, u_src_1, u_src_2, u_src_3, q_sen_1, q_sen_2, q_sen_3, u_sen_1, u_sen_2, u_sen_3]
+x0      0 0
+x_lb	-inf -inf
+x_ub	inf inf
+
+# Control upper and lower bounds. Format:
+#	u = [tau_src_1, tau_src_2, tau_src_3, tau_sen_1, tau_sen_2, tau_sen_3] 
+u_lb	-1
+u_ub	1
+
+# Number of iterations
+iterations	30
+
+# Use collision checking?
+collision_check 0
+
+# Functions to use
+#	ode_function - Computes x_dot = f(x,u,t)
+ode_function	odefun
+
+#	node_generator - Returns a randomly generated state
+node_generator	ngen
+
+#	node_evaluator - Returns a scalar fitness for the given state
+node_evaluator	neval
+
+#	node_selector - Returns a state, usually closest, to another given state y
+node_selector	nsel
+
+#	local_planner - Given two states x and y return a valid path between the two
+local_planner	lp
+
+#   goal_function - Notifies planner when we have arrived at the goal location
+goal_function   goalfun
