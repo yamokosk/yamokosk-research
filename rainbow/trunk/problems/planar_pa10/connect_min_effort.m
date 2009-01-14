@@ -1,4 +1,4 @@
-function [T, U, X, exitflag, exitmsg] = connect_min_effort(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, N, odefun, costfun)
+function [T, U, X, exitflag, exitmsg] = connect_min_effort(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, N)
 
 direction = 'increasing';
 if (tspan(2) < tspan(1))
@@ -31,7 +31,7 @@ guess = struct( 'time',     [tspan(1); tspan(2)], ...
                 'states',	[x0'; xf'], ...
                 'controls',	uguess );
 
-problem = struct( 'FUNCS',                  struct('ode', func2str(odefun), 'cost', func2str(costfun)), ...
+problem = struct( 'FUNCS',                  struct('ode', func2str(@planar_robot_ode), 'cost', func2str(@planar_cost)), ...
                   'name',                   'CONNECT_MIN_EFFORT', ...
                   'independent_variable',   direction, ...
                   'autoscale',              'on', ...
@@ -46,11 +46,11 @@ try
 %       something about cross-over state identified.
     problem = gpocs('snopt7',problem,0);
 catch
-   err = lasterror;
-   T = []; U = []; X = [];
-   exitflag = 999;
-   exitmsg = err.message;
-   return;
+    err = lasterror;
+    T = []; U = []; X = [];
+    exitflag = 999;
+    exitmsg = err.message;
+    return;
 end
 solution = problem.solution;
 

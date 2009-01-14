@@ -19,14 +19,15 @@ uy = ones(1,numTargets);
 targets = [x; y; ux; uy; t];
 
 %% Define problem
-Prob = plannerAssign( fullfile(pwd,'problems','two_dof_system') );
-Prob.x0 = Prob.func_handles.ngen(targets(:,1), Prob.userdata);
+filename = fullfile(pwd,'problems','two_dof_system');
+def = readProblemDef( fullfile(filename, 'problem.def') );
+x0 = def.ngen(targets(:,1));
+
+opts = plannerSolve('defaults');
+opts.Display = 'iter';
 
 %% Solve
-
-for i = 1:5
-    Prob = plannerSolve(Prob, targets);
-end
+searchTree = plannerSolve(x0, targets, funcs, opts);
 
 %% Print results
 % Plot targets
