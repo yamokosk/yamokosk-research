@@ -149,53 +149,54 @@ for itercount = 1:maxiter
     % Generate a set of vantage points for target j
     Vj = generate(Tj, numberOfVantagePts, ngen);
     
-    try
-        % Extend the tree to one of the generated nodes
-        branch_candidates = extend(Xsel, Vj, lp);
-        if ( isempty(branch_candidates) )
-            % Notify user that this iteration was a failure.
-            error('PLANNER:plannerSolve:ExtendFailed', 'Extension failed.');
+    % Extend the tree to one of the generated nodes
+    branch_candidates = extend(Xsel, Vj, lp);
+    if ( isempty(branch_candidates) )
+        % Notify user that this iteration was a failure.
+        disp(sprintf(iterformat, itercount, best_path_length, best_path_score, 'Extension failed.'));
+        continue;
+    end
+
+    % Evaluate the branch candidates. If there is a valid branch amongst
+    % the candidates, add the best one to the tree.
+    [bestBranch, bestBranchEff] = evaluate(branch_candidates, targets, neval, doCollisionCheck, ccheck);
+
+    % Its possible no feasible branch was found amongst the
+    % candidates. Really only a possibility if we are doing collision
+    % checking.
+    if ( isempty(bestBranch) )
+        % Notify user we failed at this point.
+        disp(sprintf(iterformat, itercount, best_path_length, best_path_score, 'Evaluation failed.'));
+        continue;
+    end
+    [searchTree, branchIDs] = add_branch(searchTree, IDsel, bestBranch, bestBranchEff);
+
+    % Check to see if this new branch gives us a valid solution.
+    [path, pathEff, pathDist] = solution_check(searchTree, branchIDs, numberOfTargets, mineff);
+    msg = '';
+    if ( ~isempty(path) )
+        if ( pathDist < best_path_length )
+            best_path_length = pathDist;
         end
 
-        % Evaluate the branch candidates. If there is a valid branch amongst
-        % the candidates, add the best one to the tree.
-        [bestBranch, bestBranchEff] = evaluate(branch_candidates, targets, neval, doCollisionCheck, ccheck);
-
-        % Its possible no feasible branch was found amongst the
-        % candidates. Really only a possibility if we are doing collision
-        % checking.
-        if ( isempty(bestBranch) )
-            % Notify user we failed at this point.
-            error('PLANNER:plannerSolve:EvaluateFailed', 'Evaluation failed.');
+        pathScore = mean(pathEff);
+        if ( pathScore > best_path_score )
+            best_path_score = pathScore;
         end
-        [searchTree, branchIDs] = add_branch(searchTree, IDsel, bestBranch, bestBranchEff);
-        
-        % Check to see if this new branch gives us a valid solution.
-        [path, pathEff, pathDist] = solution_check(searchTree, branchIDs, numberOfTargets, mineff);
-        msg = '';
-        if ( ~isempty(path) )
-            if ( pathDist < best_path_length )
-                best_path_length = pathDist;
-            end
 
-            pathScore = mean(pathEff);
-            if ( pathScore > best_path_score )
-                best_path_score = pathScore;
-            end
+        goodPathEndpoints(goodPathIndex) = path(end);
+        goodPathDistances(goodPathIndex) = pathDist;
+        goodPathScores(goodPathIndex) = pathScore;
+        goodPathIndex = goodPathIndex + 1;
 
-            goodPathEndpoints(goodPathIndex) = path(end);
-            goodPathDistances(goodPathIndex) = pathDist;
-            goodPathScores(goodPathIndex) = pathScore;
-            goodPathIndex = goodPathIndex + 1;
+        msg = 'New solution found!';
+    else
+        msg = 'Search tree extended.';
+    end
 
-            msg = 'New solution found!';
-        else
-            msg = 'Search tree extended.';
-        end
-        
-        if prnt == 3
-            disp(sprintf(iterformat, itercount, best_path_length, best_path_score, msg));
-        end
+    if prnt == 3
+        disp(sprintf(iterformat, itercount, best_path_length, best_path_score, msg));
+    end
 %         if (haveoutputfcn)
 %             stop = callOutputFcn(outputfcn, 'iter', searchTree, best_path_length, best_path_score, itercount, msg, varargin{:});
 %             if stop
@@ -205,26 +206,6 @@ for itercount = 1:maxiter
 %                 return;
 %             end
 %         end        
-    catch
-        errorDetails = lasterror;
-        ind = strfind(errorDetails.identifier, 'PLANNERSOLVE');
-        if ( ~isempty(ind) )
-            if prnt == 3
-                disp(sprintf(iterformat, itercount, best_path_length, best_path_score, errorDetails.message));
-            end
-%             if (haveoutputfcn)
-%                 stop = callOutputFcn(outputfcn, 'iter', searchTree, best_path_length, best_path_score, itercount, msg, varargin{:});
-%                 if stop
-%                     if  prnt > 0
-%                         disp(output.message)
-%                     end
-%                     return;
-%                 end
-%             end 
-        else
-            rethrow(lasterror);
-        end
-    end
 end
 
 % Notify output function we are done
@@ -323,11 +304,13 @@ end
 %   function to do all the heavy lifting.
 % =========================================================================
 function Vj = generate(Tj, N, ngen)
-Vtemp = ngen(Tj);
-Vj = zeros(length(Vtemp),N);
-Vj(:,1) = Vtemp;
-for n = 2:N
-    Vj(:,n) = ngen(Tj);
+n = 1;
+while (n <= N)
+    Vtemp = ngen(Tj);
+    if ( ~isempty(Vtemp) )
+        Vj(:,n) = Vtemp;
+        n = n + 1;
+    end
 end
 
 % =========================================================================

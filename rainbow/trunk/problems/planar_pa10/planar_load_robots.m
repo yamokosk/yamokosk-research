@@ -8,6 +8,7 @@ src.qmin = [-64, -107, -165] * (pi/180);
 src.qmax = [124, 158, 165] * (pi/180);
 src.qpmax = [57, 114, 360] * (pi/180);
 src.umax = [4.64, 2.0, 0.29]*50;
+src.ghandles = [];
 
 T_f_base = transl(0,-1.317,0) * rotz(pi/2) * roty(pi/2);
 sen = roboop(filename, 'PA10_DH', T_f_base);
@@ -17,7 +18,7 @@ sen.qmin = [-64, -107, -165] * (pi/180);
 sen.qmax = [124, 158, 165] * (pi/180);
 sen.qpmax = [57, 114, 360] * (pi/180);
 sen.umax = [4.64, 2.0, 0.29]*50;
-
+sen.ghandles = [];
 
 % function r = planar_load_robot(name,filename)
 % r = roboop(filename,'PA10_DH');

@@ -14,15 +14,15 @@ qp_sen_0 = x0(10:12); qp_sen_f = xf(10:12); % Sensor robot's joing velocities
 
 %% Check #1: Mean velocity can't exceed robot's joint velocity limits
 qp_src_bar = (q_src_f - q_src_0) ./ (tf - t0);
-src_check = find( (qp_src_bar > x_ub(4:6)) || (qp_src_bar < x_lb(4:6)) );
+src_check = find( (qp_src_bar > udata.x_ub(4:6)) | (qp_src_bar < udata.x_lb(4:6)) );
 if ( ~isempty( src_check ) )
     xi = [];
     return;
 end
 
 qp_sen_bar = (q_sen_f - q_sen_0) ./ (tf - t0);
-src_check = find( (qp_sen_bar > x_ub(4:6)) || (qp_sen_bar < x_lb(4:6)) );
-if ( ~isempty( src_check ) )
+sen_check = find( (qp_sen_bar > udata.x_ub(4:6)) | (qp_sen_bar < udata.x_lb(4:6)) );
+if ( ~isempty( sen_check ) )
     xi = [];
     return;
 end
@@ -35,7 +35,7 @@ if ( ~isempty( src_check ) )
 end
 
 sen_check = find( sign(q_sen_f - q_sen_0) ~= sign(qp_sen_f - qp_sen_0) );
-if ( ~isempty( src_check ) )
+if ( ~isempty( sen_check ) )
     xi = [];
     return;
 end
@@ -44,11 +44,12 @@ end
 t_span = [t0, tf];
 N = 10;
 if (udata.UseGPOCS)
+    [x0 xf]
     [T, U, xi, exitflag, exitmsg] = ...
-         connect_min_effort(tspan, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
+         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
             udata.u_lb, udata.u_ub, N);
 else
     [T, U, xi, exitflag, exitmsg] = ...
-         connect_min_effort(tspan, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
+         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
             udata.u_lb, udata.u_ub, N);
 end

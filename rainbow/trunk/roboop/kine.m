@@ -16,7 +16,7 @@ function T = kine(robj, q, link)
 %       Thomo = kine(robj, q, 2);
 
 if nargin < 3
-	link = robj.dof;
+	link = robj.available_dof;
 end
 
 toMex = createStructForMex(robj);

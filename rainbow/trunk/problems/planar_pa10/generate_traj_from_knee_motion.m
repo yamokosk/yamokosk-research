@@ -4,6 +4,7 @@ function generate_traj_from_knee_motion()
 data = load('kneemotion.txt');
 
 Ts_original = 0.0056;    % Sample time of original data in seconds
+Ts_original = 10*Ts_original;
 
 x = data(47:139,2);
 y = data(47:139,1);
@@ -17,7 +18,7 @@ vy = [0; diff(y)]/Ts_original;
 
 %% Down sample towards 25 Hz
 fs_original = 1/Ts_original;
-fs_desired = 30;
+fs_desired = 1;
 r = round(fs_original/fs_desired);
 fs_actual = fs_original/r;
 

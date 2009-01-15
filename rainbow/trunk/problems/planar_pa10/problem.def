@@ -23,6 +23,3 @@ node_evaluator	neval
 
 #	local_planner - Given two states x and y return a valid path between the two
 local_planner	lp
-
-#	output_function - Used to display algorithm status information
-output_function
