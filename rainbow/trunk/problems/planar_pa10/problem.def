@@ -22,4 +22,4 @@ node_generator	ngen
 node_evaluator	neval
 
 #	local_planner - Given two states x and y return a valid path between the two
-local_planner	lp
+local_planner	lp2

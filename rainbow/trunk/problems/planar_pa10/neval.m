@@ -51,8 +51,8 @@ R_hat = (pi/4)*( (D_ref * d)/(S_width*r*ct) )^2;
 
 % My image area metric
 f_A = gompertz(1, -8, -8, R_hat);
-fitness = f_phi*f_A;
-
+%fitness = f_phi*f_A;
+fitness = f_phi;
 
 
 function test = isabout(val, tval, eps)

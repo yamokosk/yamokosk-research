@@ -3,11 +3,14 @@ function G = recalculate_node_weights(G, minEff, sig)
 G = compute_shortest_paths(G);
 
 % Get max path distance
-dmax = max(max(G.pathDistances),1e-6);
+numRootNodes = length(G.root_ids);
+[ignore, numNodes] = size(G.node_data);
+D = reshape(G.pathDistances, numRootNodes*numNodes, 1);
+ind = find( isfinite(D) );
+dmax = max( max(D(ind)), 1e-6);
 
 % Get some size information
 numTargets = size(G.node_effectiveness,2);
-numNodes = size(G.node_data,2);
 
 % Reset graph weights
 G.node_weights = zeros(1, numNodes);

@@ -26,8 +26,10 @@ Revision_history:
 
 #include "mex_common.h"
 
-#define NUM_ROBOT_FIELDS 5
-const char *robot_field_names[] = {"name", "DH", "dof", "available_dof", "links"};
+#include <vector>
+
+#define NUM_ROBOT_FIELDS 6
+const char *robot_field_names[] = {"name", "DH", "dof", "available_dof", "immobile_joints", "links"};
 #define NUM_LINK_FIELDS 18
 const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q", "theta_min", "theta_max",
                                   "joint_offset", "r", "p", "m", "Im", "Gr", "B", "Cf", "I", "immobile"};
@@ -45,6 +47,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		mxArray *links = mxCreateStructMatrix(robj.get_dof(), 1, NUM_LINK_FIELDS, link_field_names);
 		double *ptr = NULL;
 		Link *rlinks = robj.links;
+		std::vector<double> immobileID;
 		for (int i=1; i <= robj.get_dof(); ++i) 
 		{
 			// Return the joint type.
@@ -112,6 +115,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             
 			// Return immobile.
 			mxSetField(links, i-1, "immobile", mxCreateLogicalScalar( rlinks[i].get_immobile() ));
+			if ( rlinks[i].get_immobile() )
+			{
+				immobileID.push_back((double)i);
+			}
 		}
         
 		// Create robot structure
@@ -129,9 +136,20 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		// Return available DOF
 		mxSetField(LHS_ARG_1, 0, "available_dof", mxCreateDoubleScalar( robj.get_available_dof() ));
         
+		// Return IDs of immobile joints
+		int nImmobileJnts = (int)immobileID.size();
+		if ( nImmobileJnts > 0 )
+		{
+			mxArray *tempArray = mxCreateDoubleMatrix(1,nImmobileJnts,mxREAL);
+			memcpy( mxGetPr(tempArray), &immobileID[0], nImmobileJnts*sizeof(double) );
+			mxSetField(LHS_ARG_1, 0, "immobile_joints", tempArray);
+		} else {
+			mxSetField(LHS_ARG_1, 0, "immobile_joints", mxCreateDoubleMatrix(0,0, mxREAL));
+		}
+		
 		// Return links
 		mxSetField(LHS_ARG_1, 0, "links", links);
-        
+		
 		// Free allocated stuff
 		mxFree( conffile );
 		mxFree( robotname );

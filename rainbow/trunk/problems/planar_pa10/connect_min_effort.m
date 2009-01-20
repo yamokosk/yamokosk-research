@@ -1,25 +1,32 @@
-function [T, U, X, exitflag, exitmsg] = connect_min_effort(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, N)
+function [T, U, X, exitflag, exitmsg] = connect_min_effort(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, N, udata)
 
 direction = 'increasing';
 if (tspan(2) < tspan(1))
     direction = 'decreasing';
 end
 
+% See if I can do a better job generating an initial guess
+dt = tspan(2) - tspan(1);
+ind = [2, 3, 5];
+
+qpp_src = (xf(4:6,1) - x0(4:6,1))/dt;
+tau_src_0 = torque(udata.rsrc, x0(1:3,1), x0(4:6,1), qpp_src);
+tau_src_f = torque(udata.rsrc, xf(1:3,1), xf(4:6,1), qpp_src);
+
+qpp_sen = (xf(10:12,1) - x0(10:12,1))/dt;
+tau_sen_0 = torque(udata.rsen, x0(7:9,1), x0(10:12,1), qpp_sen);
+tau_sen_f = torque(udata.rsen, xf(7:9,1), xf(10:12,1), qpp_sen);
+
+xguess = [x0'; xf'];
+uguess = [tau_src_0(ind)', tau_sen_0(ind)'; ...
+          tau_src_f(ind)', tau_sen_f(ind)'];
+
+% Compute 
 % Define bounds and guess
 tmin = [tspan(1), tspan(1)];
-tmax = [tspan(2), tspan(2)];
+tmax = [tspan(1), tspan(2)];
 xmin = [x0, x_lb, xf];
 xmax = [x0, x_ub, xf];
-
-alpha = linspace(0,1,N);
-xguess = [x0'; xf'];
-uguess = zeros(2, length(u_lb));
-% xguess = zeros(N, length(x0));
-% uguess = zeros(N, length(u_lb));
-
-% for n = 1:N
-%     xguess(n,:) = (x0 + alpha(n) * (xf - x0))';
-% end
 
 % Create the structs required by GPOCS
 phases = struct( 'nodes',       N, ...
@@ -64,7 +71,6 @@ while ( ~feof(fid) )
     if ( ~isempty(ind) )
         fclose(fid);
         ind = strfind(line, '0 -- finished successfully');
-        line
         if ( ~isempty(ind) )
             exitflag = 0;
             exitmsg = 'finished successfully';

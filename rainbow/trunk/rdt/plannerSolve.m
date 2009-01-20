@@ -12,8 +12,8 @@ function [searchTree,exitflag] = plannerSolve(x0, targets, func_handles, options
 defaultopt = struct('Display', 'notify', ...
                     'MaxIter', '2*numberOfTargets', ...
                     'MinSenEff', 0.85, ...
-                    'SkewFactor', -1, ...
-                    'NumVantagePts', 5, ...
+                    'SkewFactor', 0, ...
+                    'NumVantagePts', 4, ...
                     'DoCollisionCheck', false, ...
                     'PriorSearchTree', 'none', ...
                     'OutputFcn', []);
@@ -63,15 +63,13 @@ end
 
 if ischar(maxiter)
     if isequal(maxiter, '2*numberOfTargets')
-        maxiter = 100*numberOfTargets;
+        maxiter = 10000*numberOfTargets;
     end
 end
 
 if (ischar(searchTree))
     if ( isequal(searchTree, 'none') )
-        searchTree = graph();
-        eff = nodeSensingEffectiveness(x0, targets, neval);
-        searchTree = add_node(searchTree, x0, eff);
+        searchTree = initializeSearchTree(x0, targets, neval);
         best_path_length = inf;
         best_path_score = 0;
     end
@@ -150,7 +148,7 @@ for itercount = 1:maxiter
     Vj = generate(Tj, numberOfVantagePts, ngen);
     
     % Extend the tree to one of the generated nodes
-    branch_candidates = extend(Xsel, Vj, lp);
+    [branch_candidates, branch_weights] = extend(Xsel, Vj, lp);
     if ( isempty(branch_candidates) )
         % Notify user that this iteration was a failure.
         disp(sprintf(iterformat, itercount, best_path_length, best_path_score, 'Extension failed.'));
@@ -159,7 +157,7 @@ for itercount = 1:maxiter
 
     % Evaluate the branch candidates. If there is a valid branch amongst
     % the candidates, add the best one to the tree.
-    [bestBranch, bestBranchEff] = evaluate(branch_candidates, targets, neval, doCollisionCheck, ccheck);
+    [bestBranch, bestBranchWeights, bestBranchEff] = evaluate(branch_candidates, branch_weights, targets, neval, doCollisionCheck, ccheck);
 
     % Its possible no feasible branch was found amongst the
     % candidates. Really only a possibility if we are doing collision
@@ -169,7 +167,7 @@ for itercount = 1:maxiter
         disp(sprintf(iterformat, itercount, best_path_length, best_path_score, 'Evaluation failed.'));
         continue;
     end
-    [searchTree, branchIDs] = add_branch(searchTree, IDsel, bestBranch, bestBranchEff);
+    [searchTree, branchIDs] = add_branch(searchTree, IDsel, bestBranch, bestBranchWeights, bestBranchEff);
 
     % Check to see if this new branch gives us a valid solution.
     [path, pathEff, pathDist] = solution_check(searchTree, branchIDs, numberOfTargets, mineff);
@@ -226,21 +224,19 @@ exitflag = 1;
 
 
 % =========================================================================
-% initialize(Prob)
+% initializeSearchTree(x0, targets, neval)
 %
 %   Performs some simple initialization steps for the planner, including:
 %       * Initialize output function
 %       * Initialize solution data structure, if needed
 % =========================================================================
-function sol = initialize(Prob, targets)
+function G = initializeSearchTree(x0, targets, neval)
 G = graph();
-eff = nodeEffectiveness(Prob.func_handles.neval, Prob.x0, targets, Prob.userdata);
-G = add_node(G, Prob.x0, eff);
-sol = struct('connectivityGraph', G, ...
-             'bestPathLength', inf, ...
-             'completeNodes', [], ...
-             'completeLengths', [], ...
-             'completeScores', []);
+[dof, numStartingNodes] = size(x0);
+for n = 1:numStartingNodes
+    eff = nodeSensingEffectiveness(x0(:,n), targets, neval);
+    G = add_node(G, x0(:,n), eff, true);
+end
 
 % =========================================================================
 % select(G, targets, minEff)
@@ -320,16 +316,18 @@ end
 %   generated vantage points, Vj. Employs a user supplied local planning
 %   function to determine if a feasible path exists.
 % =========================================================================
-function path_candidates = extend(X, Vj, lp);
+function [path_candidates, path_weights] = extend(X, Vj, lp);
 numVantagePts = size(Vj,2);
 path_candidates = [];
+path_weights = [];
 c = 1;
 for n = 1:numVantagePts
     % Determine if a feasable path exists.
-    xi = lp(X, Vj(:,n));
+    path = lp(X, Vj(:,n));
     
-    if ( ~isempty(xi) )
-        path_candidates(:,:,c) = [X, xi, Vj(:,n)];
+    if ( ~isempty(path.xi) )
+        path_candidates(:,:,c) = path.xi;
+        path_weights(c,:) = path.ew;
         c = c + 1;
     end
 end
@@ -344,7 +342,7 @@ end
 %   calculated. This is done in hopes of reducing the number of collision
 %   checks we need to actually perform.
 % =========================================================================
-function [bestBranch, bestBranchEff, bestBranchScore] = evaluate(branches, targets, neval, doCollisionCheck, ccheck)
+function [bestBranch, bestBranchWeights, bestBranchEff, bestBranchScore] = evaluate(branches, weights, targets, neval, doCollisionCheck, ccheck)
 % Get the sizes of things and allocate some space
 numCandidates = size(branches, 3);
 numNodes = size(branches, 2) - 1;
@@ -401,6 +399,7 @@ if (doCollisionCheck)
             bestBranch = branch;
             bestBranchEff = allBranchEff(:,:,c);
             bestBranchScore = avgBranchEff(c);
+            bestBranchWeights = weights(c,:);
             break;
         end
     end
@@ -408,6 +407,7 @@ else
     bestBranch = branches(:,2:end,ind(1));
     bestBranchEff = allBranchEff(:,:,ind(1));
     bestBranchScore = avgBranchEff(ind(1));
+    bestBranchWeights = weights(ind(1),:);
 end
 
 % =========================================================================
@@ -441,7 +441,7 @@ end
 %   nodes to the tree. The nodes are assumed to be in the order which they
 %   should be connected.
 % =========================================================================
-function [G, new_ids] = add_branch(G, rootID, newBranch, branchEff)
+function [G, new_ids] = add_branch(G, rootID, newBranch, branchWeights, branchEff)
 numNewNodes = size(newBranch,2);
 
 % Add the nodes to the graph
@@ -451,9 +451,9 @@ for n = 1:numNewNodes
 end
 
 % Make all the new connections
-G = add_edge(G, rootID, new_ids(1));
+G = add_edge(G, rootID, new_ids(1), branchWeights(1));
 for n = 2:numNewNodes
-    G = add_edge(G,new_ids(n-1),new_ids(n));
+    G = add_edge(G,new_ids(n-1),new_ids(n), branchWeights(n));
 end
 
 % Force a recomputation of all shortest paths since we have just added a

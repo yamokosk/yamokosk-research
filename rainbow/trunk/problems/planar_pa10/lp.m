@@ -1,5 +1,51 @@
-function xi = lp(X0, Xf, udata)
+function path = lp(X0, Xf, udata)
 % Local planner for 3DOF planar robots
+
+[valid, t0, tf, ...
+    q_src_0, qp_src_0, q_src_f, qp_src_f, ...
+    q_sen_0, qp_sen_0, q_sen_f, qp_sen_f] = checkBoundaryConditions(X0, Xf, udata.x_lb, udata.x_ub);
+
+if ( ~valid )
+    path = struct('xi',[],'ew',[]);
+    return;
+end
+
+% Attempt to connect initial and final states
+t_span = [t0, tf];
+N = 10;
+path = struct('xi',[],'ew',[]);
+if (udata.UseGPOCS)
+    [T, U, X, exitflag, exitmsg] = ...
+         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
+            udata.u_lb, udata.u_ub, N, udata);
+    path.xi = [X'; T'];
+    if isempty(U)
+        path.ew = [];
+    else
+        u_squared = U * U';
+        temp = sqrt( diag(u_squared) );
+        path.ew = temp(1:end-1);
+    end
+else
+    [T, U, X, exitflag, exitmsg] = ...
+         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
+            udata.u_lb, udata.u_ub, N, udata);
+    path.xi = [X'; T'];
+    if isempty(U)
+        path.ew = [];
+    else
+        u_squared = U * U';
+        temp = sqrt( diag(u_squared) );
+        path.ew = temp(1:end-1);
+    end
+end
+
+
+function [valid, t0, tf, ...
+    q_src_0, qp_src_0, q_src_f, qp_src_f, ...
+    q_sen_0, qp_sen_0, q_sen_f, qp_sen_f] = checkBoundaryConditions(X0, Xf, x_lb, x_ub)
+
+valid = false; 
 
 % X0 and Xf are generic representations of the problems state space. Unpack
 % the major variables to make it more human readable.
@@ -12,44 +58,28 @@ qp_src_0 = x0(4:6); qp_src_f = xf(4:6); % Source robot's joint velocities
 q_sen_0 = x0(7:9); q_sen_f = xf(7:9);   % Sensor robot's joint angles
 qp_sen_0 = x0(10:12); qp_sen_f = xf(10:12); % Sensor robot's joing velocities
 
-%% Check #1: Mean velocity can't exceed robot's joint velocity limits
+% Check #1: Mean velocity can't exceed robot's joint velocity limits
 qp_src_bar = (q_src_f - q_src_0) ./ (tf - t0);
-src_check = find( (qp_src_bar > udata.x_ub(4:6)) | (qp_src_bar < udata.x_lb(4:6)) );
+src_check = find( (qp_src_bar > x_ub(4:6)) | (qp_src_bar < x_lb(4:6)) );
 if ( ~isempty( src_check ) )
-    xi = [];
     return;
 end
 
 qp_sen_bar = (q_sen_f - q_sen_0) ./ (tf - t0);
-sen_check = find( (qp_sen_bar > udata.x_ub(4:6)) | (qp_sen_bar < udata.x_lb(4:6)) );
+sen_check = find( (qp_sen_bar > x_ub(10:12)) | (qp_sen_bar < x_lb(10:12)) );
 if ( ~isempty( sen_check ) )
-    xi = [];
     return;
 end
 
-%% Check #2: Sign of q0 and qf should be the same
-src_check = find( sign(q_src_f - q_src_0) ~= sign(qp_src_f - qp_src_0) );
-if ( ~isempty( src_check ) )
-    xi = [];
-    return;
-end
+% % Check #2: Sign of q0 and qf should be the same
+% src_check = find( sign(q_src_f - q_src_0) ~= sign(qp_src_f - qp_src_0) );
+% if ( ~isempty( src_check ) )
+%     return;
+% end
+% 
+% sen_check = find( sign(q_sen_f - q_sen_0) ~= sign(qp_sen_f - qp_sen_0) );
+% if ( ~isempty( sen_check ) )
+%     return;
+% end
 
-sen_check = find( sign(q_sen_f - q_sen_0) ~= sign(qp_sen_f - qp_sen_0) );
-if ( ~isempty( sen_check ) )
-    xi = [];
-    return;
-end
-
-%% Attempt to connect initial and final states
-t_span = [t0, tf];
-N = 10;
-if (udata.UseGPOCS)
-    [x0 xf]
-    [T, U, xi, exitflag, exitmsg] = ...
-         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
-            udata.u_lb, udata.u_ub, N);
-else
-    [T, U, xi, exitflag, exitmsg] = ...
-         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
-            udata.u_lb, udata.u_ub, N);
-end
+valid = true;

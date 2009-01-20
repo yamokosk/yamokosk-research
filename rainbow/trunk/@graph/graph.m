@@ -4,6 +4,7 @@ function G = graph(N)
 %   G = graph(N)    Creates an empty graph where the nodes have degree N.
 %   G2 = graph(G1)  Copies G1 into G2.
 if nargin == 0
+    G.root_ids = [];
 	G.node_data = [];
     G.node_weights = [];
     G.node_effectiveness = [];
