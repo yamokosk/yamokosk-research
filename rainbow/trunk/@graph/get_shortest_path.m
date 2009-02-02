@@ -12,8 +12,8 @@ path = path_from_pred(G.pathPredecessors(:,ind(1)),id);
 
 if (nargout > 2)
     if ( length(path) > 1 )
-        eff = max(G.node_effectiveness(path,:));
+        eff = G.node_effectiveness(path);
     else
-        eff = G.node_effectiveness(id,:);
+        eff = G.node_effectiveness(id);
     end
 end

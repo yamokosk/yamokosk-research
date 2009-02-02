@@ -353,6 +353,7 @@ avgBranchEff = zeros(1,numCandidates);
 % Compute the average sensing effectiveness for each branch. I am purposely
 % delaying collision checking here since it is assumed that will be a
 % computationally intensive task.
+F = zeros(numCandidates,1);
 for c = 1:numCandidates
     % Select only the intermediate nodes and the generate vantage point. We
     % have already computed the sensing effectiveness of the root node in a
@@ -361,16 +362,27 @@ for c = 1:numCandidates
     
     % Get the number of nodes for this branch and allocate some temporary
     % storage.
-    tempEff = zeros(numNodes,numTargets);
-    for n = 1:numNodes
-        tempEff(n,:) = nodeSensingEffectiveness(branch(:,n), targets, neval);        
+    % OLD WAY - Based on fixed discretization of the path
+%     tempEff = zeros(numNodes,numTargets);
+%     for n = 1:numNodes
+%         tempEff(n,:) = nodeSensingEffectiveness(branch(:,n), targets, neval);        
+%     end
+%     avgBranchEff(c) = mean(max(tempEff));
+%     allBranchEff(:,:,c) = tempEff;
+    % NEW METHOD - Non-fixed discretization
+    % Essentially doing trapezoidal integration with unequal segments
+    t = branch(end,:);
+    f = zeros(numNodes);
+    f(1) = nodeSensingEffectiveness(branch(:,1), targets, neval);
+    for n = 2:numNodes
+        f(n) = nodeSensingEffectiveness(branch(:,n), targets, neval);
+        F(c) = F(c) + ( t(n) - t(n-1) ) * ( f(n) + f(n-1) )/2;
     end
-    avgBranchEff(c) = mean(max(tempEff));
-    allBranchEff(:,:,c) = tempEff;
 end
 
 % Sort candidates by their average branch effectiveness
-[ignore,ind] = sort(avgBranchEff, 2, 'descend');
+%[ignore,ind] = sort(avgBranchEff, 2, 'descend');
+[ignore,ind] = sort(F, 2, 'descend');
 
 % Default values are empty and 0 for the returned branch and score
 % respectively.
