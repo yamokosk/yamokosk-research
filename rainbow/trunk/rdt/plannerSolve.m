@@ -157,7 +157,7 @@ for itercount = 1:maxiter
 
     % Evaluate the branch candidates. If there is a valid branch amongst
     % the candidates, add the best one to the tree.
-    [bestBranch, bestBranchWeights, bestBranchEff] = evaluate(branch_candidates, branch_weights, targets, neval, doCollisionCheck, ccheck);
+    [bestBranch, bestBranchWeights, bestBranchEff] = evaluate(Wsel, branch_candidates, branch_weights, targets, neval, doCollisionCheck, ccheck);
 
     % Its possible no feasible branch was found amongst the
     % candidates. Really only a possibility if we are doing collision
@@ -342,7 +342,7 @@ end
 %   calculated. This is done in hopes of reducing the number of collision
 %   checks we need to actually perform.
 % =========================================================================
-function [bestBranch, bestBranchWeights, bestBranchEff, bestBranchScore] = evaluate(branches, weights, targets, neval, doCollisionCheck, ccheck)
+function [bestBranch, bestBranchWeights, bestBranchEff, bestBranchScore] = evaluate(Wsel, branches, weights, targets, neval, doCollisionCheck, ccheck)
 % Get the sizes of things and allocate some space
 numCandidates = size(branches, 3);
 numNodes = size(branches, 2) - 1;
@@ -354,6 +354,7 @@ avgBranchEff = zeros(1,numCandidates);
 % delaying collision checking here since it is assumed that will be a
 % computationally intensive task.
 F = zeros(numCandidates,1);
+f = zeros(numNodes,numCandidates);
 for c = 1:numCandidates
     % Select only the intermediate nodes and the generate vantage point. We
     % have already computed the sensing effectiveness of the root node in a
@@ -371,18 +372,16 @@ for c = 1:numCandidates
 %     allBranchEff(:,:,c) = tempEff;
     % NEW METHOD - Non-fixed discretization
     % Essentially doing trapezoidal integration with unequal segments
-    t = branch(end,:);
-    f = zeros(numNodes);
-    f(1) = nodeSensingEffectiveness(branch(:,1), targets, neval);
-    for n = 2:numNodes
-        f(n) = nodeSensingEffectiveness(branch(:,n), targets, neval);
-        F(c) = F(c) + ( t(n) - t(n-1) ) * ( f(n) + f(n-1) )/2;
+    t = branch(end,:)';
+    for n = 1:numNodes
+        f(n,c) = nodeSensingEffectiveness(branch(:,n), targets, neval);
     end
+    F(c) = trapz(t,f(:,c));
 end
 
 % Sort candidates by their average branch effectiveness
 %[ignore,ind] = sort(avgBranchEff, 2, 'descend');
-[ignore,ind] = sort(F, 2, 'descend');
+[ignore,ind] = sort(F, 1, 'descend');
 
 % Default values are empty and 0 for the returned branch and score
 % respectively.
@@ -417,7 +416,8 @@ if (doCollisionCheck)
     end
 else
     bestBranch = branches(:,2:end,ind(1));
-    bestBranchEff = allBranchEff(:,:,ind(1));
+    %bestBranchEff = allBranchEff(:,:,ind(1));
+    bestBranchEff = f(:,ind(1))';
     bestBranchScore = avgBranchEff(ind(1));
     bestBranchWeights = weights(ind(1),:);
 end
@@ -459,7 +459,7 @@ numNewNodes = size(newBranch,2);
 % Add the nodes to the graph
 new_ids = zeros(1,numNewNodes);
 for n = 1:numNewNodes
-    [G,new_ids(n)] = add_node(G, newBranch(:,n), branchEff(n,:));
+    [G,new_ids(n)] = add_node(G, newBranch(:,n), branchEff(n));
 end
 
 % Make all the new connections

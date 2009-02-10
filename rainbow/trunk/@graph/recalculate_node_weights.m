@@ -1,4 +1,4 @@
-function G = recalculate_node_weights(G, minEff, sig)
+function G = recalculate_node_weights(G, minEff, alpha)
 % Recompute all shortest paths
 G = compute_shortest_paths(G);
 
@@ -29,10 +29,15 @@ for id = 1:numNodes
 %     Wsquared = numSensed^2 + (numTargets * ((pathDist/dmax) - 1) - sig)^2;
 
     % NEW WAY - Based on single target traveling in time
-    t = path(end,:);
-    F = trapz(t,pathEff);
-    Fmin = (t(end) - t(1)) * minEff;
-    w1 = (F/Fmin)^2;
+    w1 = 0;
+    if (length(path) == 1)
+        w1 = (pathEff/minEff)^2;
+    else
+        t = path(end,:);
+        F = trapz(t,pathEff);
+        Fmin = (t(end) - t(1)) * minEff;
+        w1 = (F/Fmin)^2;
+    end
     w2 = (1 - (pathDist/dmax))^2;
-    G.node_weights(id) = sqrt(w1 + w2);
+    G.node_weights(id) = sqrt(alpha*w1 + (1-alpha)*w2);
 end
