@@ -50,14 +50,6 @@ tau_rms = sqrt( diag( Tau_opt * Tau_opt' ) );
 X = [q_opt(:,1:3)'; qp_opt(:,1:3)'; q_opt(:,4:6)'; qp_opt(:,4:6)'; time];
 path = struct('xi',X,'ew',tau_rms(1:end-1));
 
-% XNodes = OptNodes(1:refData.numNodes,1);
-% YNodes = OptNodes(refData.numNodes+1:refData.numNodes*2,1);
-% ThetaNodes = OptNodes(refData.numNodes*2+1:refData.numNodes*3,1);
-% 
-% XOpt = NX*XNodes;
-% YOpt = NY*YNodes;
-% ThetaOpt = NTh*ThetaNodes;
-
     function fval = mycost(packed_nodes)
         % Unpack nodes
         unpacked_nodes = reshape(packed_nodes, num_b_nodes, 6);

@@ -34,12 +34,12 @@ Ts_actual = 1/fs_actual;
 t = (0:nFrames-1)*Ts_actual;
 
 %% Create desired view vectors which are normal to velocity
-u = zeros(2,nFrames);
-for n = 1:nFrames
-    ud = [-vy_dec(n); vx_dec(n)];
-    ud_hat = ud / norm(ud);
-    u(:,n) = ud_hat;
-end
+u = zeros(1,nFrames);
+% for n = 1:nFrames
+%     ud = [-vy_dec(n); vx_dec(n)];
+%     ud_hat = ud / norm(ud);
+%     u(:,n) = ud_hat;
+% end
 
 %% Plot to check this is what we want
 % figure(1)

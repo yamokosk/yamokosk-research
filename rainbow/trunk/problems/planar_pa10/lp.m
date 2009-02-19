@@ -11,34 +11,22 @@ if ( ~valid )
 end
 
 % Attempt to connect initial and final states
+x0 = X0(1:end-1,1);
+xf = Xf(1:end-1,1);
 t_span = [t0, tf];
-N = 10;
-path = struct('xi',[],'ew',[]);
-if (udata.UseGPOCS)
-    [T, U, X, exitflag, exitmsg] = ...
-         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
-            udata.u_lb, udata.u_ub, N, udata);
-    path.xi = [X'; T'];
-    if isempty(U)
-        path.ew = [];
-    else
-        u_squared = U * U';
-        temp = sqrt( diag(u_squared) );
-        path.ew = temp(1:end-1);
-    end
+N = 8;
+[T, U, X, exitflag, exitmsg] = ...
+     connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), udata.u_lb, udata.u_ub, N, udata);
+
+if (exitflag == 0)
+    u_squared = U * U';
+    tau_rms = sqrt( diag(u_squared) );
+    path = struct('xi',[X'; T'],'ew',tau_rms(1:end-1));
 else
-    [T, U, X, exitflag, exitmsg] = ...
-         connect_min_effort(t_span, x0, xf, udata.x_lb(1:end-1), udata.x_ub(1:end-1), ...
-            udata.u_lb, udata.u_ub, N, udata);
-    path.xi = [X'; T'];
-    if isempty(U)
-        path.ew = [];
-    else
-        u_squared = U * U';
-        temp = sqrt( diag(u_squared) );
-        path.ew = temp(1:end-1);
-    end
+    disp(exitmsg);
+    path = struct('xi',[],'ew',[]);
 end
+
 
 
 function [valid, t0, tf, ...

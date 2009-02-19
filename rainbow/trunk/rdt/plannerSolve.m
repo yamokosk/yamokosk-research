@@ -1,4 +1,4 @@
-function [searchTree,exitflag] = plannerSolve(x0, targets, func_handles, options, varargin)
+function [searchTree,exitflag] = plannerSolve(x0, target, func_handles, options, varargin)
 % plannerSolve - Solves the vantage point planning problem for my thesis!
 %
 %   Prob = plannerSolve(Prob) attempts to solve the vantage point planning
@@ -10,10 +10,12 @@ function [searchTree,exitflag] = plannerSolve(x0, targets, func_handles, options
 %   OutputFcnSpecify a user-defined function that the optimization function calls at each iteration.
 
 defaultopt = struct('Display', 'notify', ...
-                    'MaxIter', '2*numberOfTargets', ...
+                    'MaxIter', '100', ...
                     'MinSenEff', 0.85, ...
-                    'SkewFactor', 0, ...
+                    'SkewFactor', 0.5, ...
+                    'TimeStep', 0, ...
                     'NumVantagePts', 4, ...
+                    'NumExtensionAttempts', 3, ...
                     'DoCollisionCheck', false, ...
                     'PriorSearchTree', 'none', ...
                     'OutputFcn', []);
@@ -32,21 +34,23 @@ end
 if nargin < 4, options = []; end
 
 % Size some stuff up
-numberOfTargets = size(targets,2);
+%numberOfTargets = size(targets,2);
 numberUserArguments = length(varargin);
 
 % Get algorithm tuning parameters
 printtype = optget(options,'Display',defaultopt);
 maxiter = optget(options,'MaxIter',defaultopt);
 mineff = optget(options,'MinSenEff',defaultopt);
-skewfactor = optget(options,'SkewFactor',defaultopt) * numberOfTargets;
+skewfactor = optget(options,'SkewFactor',defaultopt);
+timestep = optget(options,'TimeStep',defaultopt);
 numberOfVantagePts = optget(options,'NumVantagePts',defaultopt);
+numberExtensionAttempts = optget(options, 'NumExtensionAttempts', defaultopt);
 doCollisionCheck = optget(options,'DoCollisionCheck',defaultopt);
 searchTree = optget(options,'PriorSearchTree',defaultopt);
 
 % Check and then create some function handles
-checkFunction(func_handles.ngen, 1+numberUserArguments);
-ngen = @(target) func_handles.ngen(target, varargin{:});
+checkFunction(func_handles.ngen, 2+numberUserArguments);
+ngen = @(t, target) func_handles.ngen(t, target, varargin{:});
 
 checkFunction(func_handles.lp, 2+numberUserArguments);
 lp = @(x1, x2) func_handles.lp(x1, x2, varargin{:});
@@ -62,16 +66,21 @@ else
 end
 
 if ischar(maxiter)
-    if isequal(maxiter, '2*numberOfTargets')
-        maxiter = 10000*numberOfTargets;
+    if isequal(maxiter, '100')
+        maxiter = 100;
     end
+end
+
+if (timestep == 0)
+    timestep = (target.tspan(2) - target.tspan(1))/20;
 end
 
 if (ischar(searchTree))
     if ( isequal(searchTree, 'none') )
-        searchTree = initializeSearchTree(x0, targets, neval);
-        best_path_length = inf;
-        best_path_score = 0;
+        searchTree = initializeSearchTree(x0, target, neval);
+        bestPathScore = 0;
+        bestLeafID = 0;
+        bestRootID = 0;
     end
 end
 
@@ -96,8 +105,8 @@ else
     haveoutputfcn = true;
 end
 
-header = ' Iteration       min L(G)       max S(G)         Result';
-iterformat = ' %5.0f%18.4f%15.4g          %s';
+header = ' Iteration       Score       Best score         Best path      Status';
+iterformat = ' %5.0f%18.4f%15.4f       (%4d,%4d)      %s';
 
 % Initialize the output function.
 if haveoutputfcn
@@ -114,27 +123,8 @@ end
 if prnt == 3
     disp(' ')
     disp(header)
-    disp(sprintf(iterformat, 0, best_path_length, best_path_score, 'Initialization'));
+    disp(sprintf(iterformat, 0, 0, 0, 0, 0, 'Initialization'));
 end
-
-% Do some initialization stuff
-% outfun('init', '', Prob);
-% sol = struct();
-% if isempty(Prob.solution)
-%     sol = initialize(Prob, targets);
-% else
-%     sol = Prob.solution;
-% end    
-
-% Create local solution variables
-% best_path_length = sol.bestPathLength;
-% G = sol.connectivityGraph;
-
-% Temporary storage for solutions found during this call.
-goodPathEndpoints = zeros(50,1);
-goodPathDistances = zeros(50,1);
-goodPathScores = zeros(50,1);
-goodPathIndex = 1;
 
 % Now just do the specified number of iterations
 for itercount = 1:maxiter
@@ -142,68 +132,66 @@ for itercount = 1:maxiter
     searchTree = recalculate_node_weights(searchTree, mineff, skewfactor);
     
     % Probabilistically select a node and target pair.
-    [Xsel, Wsel, IDsel, Tj] = select(searchTree, targets, mineff);
+    [Xi, Wi, i] = select(searchTree);
+    ti = Xi(end);
     
-    % Generate a set of vantage points for target j
-    Vj = generate(Tj, numberOfVantagePts, ngen);
+    % Based on the selected node, pick a average target to drive the search
+    % towards
+    if (ti >= target.tspan(2))
+        disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Selection failed.'));
+        continue;
+    end
+    t_step = min(target.tspan(2), ti + timestep);
+    Tbar = ppval(target.pp, t_step);
     
-    % Extend the tree to one of the generated nodes
-    [branch_candidates, branch_weights] = extend(Xsel, Vj, lp);
-    if ( isempty(branch_candidates) )
-        % Notify user that this iteration was a failure.
-        disp(sprintf(iterformat, itercount, best_path_length, best_path_score, 'Extension failed.'));
+    % Try a few times to extend the search tree from the selected node.
+    for extendcount = 1:numberExtensionAttempts
+        % Generate a set of vantage points for target j
+        Vj = generate(t_step, Tbar, numberOfVantagePts, ngen);
+
+        % Extend the tree to one of the generated nodes
+        [branch_candidates, branch_weights] = extend(Xi, Vj, lp);
+        if ( ~isempty(branch_candidates) )
+            break;
+        end
+    end
+    
+     % Notify user that this iteration was a failure.
+    if ( isempty( branch_candidates ) )
+        disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Extension failed.'));
         continue;
     end
 
     % Evaluate the branch candidates. If there is a valid branch amongst
     % the candidates, add the best one to the tree.
-    [bestBranch, bestBranchWeights, bestBranchEff] = evaluate(Wsel, branch_candidates, branch_weights, targets, neval, doCollisionCheck, ccheck);
+    [branchID,bestBranchEff] = evaluate(branch_candidates, target, neval);
 
     % Its possible no feasible branch was found amongst the
     % candidates. Really only a possibility if we are doing collision
     % checking.
-    if ( isempty(bestBranch) )
+    if ( branchID < 0 )
         % Notify user we failed at this point.
-        disp(sprintf(iterformat, itercount, best_path_length, best_path_score, 'Evaluation failed.'));
+        disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Evaluation failed.'));
         continue;
     end
-    [searchTree, branchIDs] = add_branch(searchTree, IDsel, bestBranch, bestBranchWeights, bestBranchEff);
+    
+    % Add branch to search tree
+    bestBranch = branch_candidates(:,2:end,branchID);
+    bestBranchWeights = branch_weights(branchID,:);
+    [searchTree, branchIDs] = add_branch(searchTree, i, bestBranch, bestBranchWeights, bestBranchEff);
 
     % Check to see if this new branch gives us a valid solution.
-    [path, pathEff, pathDist] = solution_check(searchTree, branchIDs, numberOfTargets, mineff);
-    msg = '';
-    if ( ~isempty(path) )
-        if ( pathDist < best_path_length )
-            best_path_length = pathDist;
-        end
-
-        pathScore = mean(pathEff);
-        if ( pathScore > best_path_score )
-            best_path_score = pathScore;
-        end
-
-        goodPathEndpoints(goodPathIndex) = path(end);
-        goodPathDistances(goodPathIndex) = pathDist;
-        goodPathScores(goodPathIndex) = pathScore;
-        goodPathIndex = goodPathIndex + 1;
-
-        msg = 'New solution found!';
-    else
-        msg = 'Search tree extended.';
+    [rootID, leafID, iterationScore] = solution_check(searchTree, branchIDs, target, mineff);
+    
+    if ( iterationScore > bestPathScore )
+        bestPathScore = iterationScore;
+        bestLeafID = leafID;
+        bestRootID = rootID;
     end
 
     if prnt == 3
-        disp(sprintf(iterformat, itercount, best_path_length, best_path_score, msg));
-    end
-%         if (haveoutputfcn)
-%             stop = callOutputFcn(outputfcn, 'iter', searchTree, best_path_length, best_path_score, itercount, msg, varargin{:});
-%             if stop
-%                 if  prnt > 0
-%                     disp(output.message)
-%                 end
-%                 return;
-%             end
-%         end        
+        disp(sprintf(iterformat, itercount, iterationScore, bestPathScore, bestRootID, bestLeafID, 'Search tree extended.'));
+    end 
 end
 
 % Notify output function we are done
@@ -213,14 +201,6 @@ if prnt > 1
 end
 exitflag = 1;
 
-% Copy things back into solution structure
-% sol.bestPathLength = best_path_length;
-% sol.connectivityGraph = searchTree;
-% sol.completeNodes = [sol.completeNodes; goodPathEndpoints(1:goodPathIndex-1)];
-% sol.completeLengths = [sol.completeLengths; goodPathDistances(1:goodPathIndex-1)];
-% sol.completeScores = [sol.completeScores; goodPathScores(1:goodPathIndex-1)];
-% 
-% Prob.solution = sol;
 
 
 % =========================================================================
@@ -230,11 +210,13 @@ exitflag = 1;
 %       * Initialize output function
 %       * Initialize solution data structure, if needed
 % =========================================================================
-function G = initializeSearchTree(x0, targets, neval)
+function G = initializeSearchTree(x0, target, neval)
 G = graph();
 [dof, numStartingNodes] = size(x0);
+Tvar=diag(target.variance);
 for n = 1:numStartingNodes
-    eff = nodeSensingEffectiveness(x0(:,n), targets, neval);
+    Tbar = ppval(target.pp, x0(end));
+    eff = nodeSensingEffectiveness(x0(:,n), Tbar, Tvar, neval);
     G = add_node(G, x0(:,n), eff, true);
 end
 
@@ -258,40 +240,14 @@ end
 %               OR
 %           IIb. Has the smallest effectiveness of all furutre targets.
 % =========================================================================
-function [Xcurr, Wcurr, IDcurr, Tj] = select(G, targets, minEff)
-% Potential speedup here. Targets is a static data stucture. So constantly
-% recalulating the max target time is kinda stupid.
-maxTargetTime = max(targets(end,:));
+function [Xsel, Wsel, IDsel] = select(G)
+
 allNodes = G.V;
 allNodeWeights = G.Vw;
 
-% Generate list of all possible nodes we could expand. Criteria is all
-% nodes with a time less than the most future target.
-origNodeID = find( allNodes(end, :) < maxTargetTime );
-if ( isempty(origNodeID) )
-    % Should not normally happen.. so throw an error!
-    error('No nodes with a time less than the most future target!');
-end
-candidateNodes = allNodes(:, origNodeID);
-candidateNodeWeights = allNodeWeights(:, origNodeID);
-
-% BIG PROBLEM! The first find is changing the underlying node IDs.. need to
-% translate between the different set of node IDs!
-
 % Probabilistically select the most fit node to expand
-[Xcurr,Wcurr,idCand] = selsus(candidateNodes,candidateNodeWeights,1);
+[Xsel,Wsel,IDsel] = selsus(allNodes,allNodeWeights,1);
 
-% Above picked from the subset of all possible nodes. So we need to
-% translate that back to the original full set of nodes.
-IDcurr = origNodeID(idCand);
-
-% Find either an unsensed target or target with min sensing
-% effectiveness.
-Tj = selectUnsensedTarget(G, IDcurr, targets, minEff);
-if ( isempty(Tj) )
-    % Should never get here..
-    error('Could not select an unsensed target!');
-end
 
 % =========================================================================
 % generate(Tj, N, ngen)
@@ -299,10 +255,10 @@ end
 %   Generate a set of nodes for target Tj. Employs the user's  generation 
 %   function to do all the heavy lifting.
 % =========================================================================
-function Vj = generate(Tj, N, ngen)
+function Vj = generate(t_step, Tbar, N, ngen)
 n = 1;
 while (n <= N)
-    Vtemp = ngen(Tj);
+    Vtemp = ngen(t_step, Tbar);
     if ( ~isempty(Vtemp) )
         Vj(:,n) = Vtemp;
         n = n + 1;
@@ -342,17 +298,18 @@ end
 %   calculated. This is done in hopes of reducing the number of collision
 %   checks we need to actually perform.
 % =========================================================================
-function [bestBranch, bestBranchWeights, bestBranchEff, bestBranchScore] = evaluate(Wsel, branches, weights, targets, neval, doCollisionCheck, ccheck)
+function [branchID,bestBranchEff,bestBranchScore] = evaluate(branches, target, neval)
+
 % Get the sizes of things and allocate some space
 numCandidates = size(branches, 3);
 numNodes = size(branches, 2) - 1;
-numTargets = size(targets,2);
-allBranchEff = zeros(numNodes, numTargets, numCandidates);
+%allBranchEff = zeros(numNodes, numTargets, numCandidates);
 avgBranchEff = zeros(1,numCandidates);
 
 % Compute the average sensing effectiveness for each branch. I am purposely
 % delaying collision checking here since it is assumed that will be a
 % computationally intensive task.
+Tvar=diag(target.variance);
 F = zeros(numCandidates,1);
 f = zeros(numNodes,numCandidates);
 for c = 1:numCandidates
@@ -361,66 +318,24 @@ for c = 1:numCandidates
     % prior iteration. No need to reinclude it here.
     branch = branches(:,2:end,c);
     
-    % Get the number of nodes for this branch and allocate some temporary
-    % storage.
-    % OLD WAY - Based on fixed discretization of the path
-%     tempEff = zeros(numNodes,numTargets);
-%     for n = 1:numNodes
-%         tempEff(n,:) = nodeSensingEffectiveness(branch(:,n), targets, neval);        
-%     end
-%     avgBranchEff(c) = mean(max(tempEff));
-%     allBranchEff(:,:,c) = tempEff;
-    % NEW METHOD - Non-fixed discretization
-    % Essentially doing trapezoidal integration with unequal segments
-    t = branch(end,:)';
+    % NEW NEW METHOD.. using unscented transform to estimate node
+    % evaluation statistics
+    t_branch = branch(end,:)';
+    Tbar = ppval(target.pp, t_branch)';
     for n = 1:numNodes
-        f(n,c) = nodeSensingEffectiveness(branch(:,n), targets, neval);
+        f(n,c) = nodeSensingEffectiveness(branch(:,n), Tbar(:,n), Tvar, neval);
     end
-    F(c) = trapz(t,f(:,c));
+    F(c) = trapz(t_branch,f(:,c));
 end
 
 % Sort candidates by their average branch effectiveness
 %[ignore,ind] = sort(avgBranchEff, 2, 'descend');
 [ignore,ind] = sort(F, 1, 'descend');
 
-% Default values are empty and 0 for the returned branch and score
-% respectively.
-new_branch = [];
-score = 0;
+branchID = ind(1);
+bestBranchEff = f(:,ind(1))';
+bestBranchScore = avgBranchEff(ind(1));
 
-% If we aren't doing collision checks, simply return the branch that has
-% the best mean score.
-if (doCollisionCheck)
-    % Start with the best branch and work to the worst. First branch
-    % that is collision free will be the one we go with. By delaying the
-    % collision check and doing it in this fashion, hopefully we will save
-    % a few CPU cycles.
-    for c = ind
-        branch = branches(:,2:end,c);
-        
-        isBranchCollisionFree = true; % Assume yes to start with.
-        for n = 1:numNodes
-            if ( ccheck(branch(:,n)) )
-                isBranchCollisionFree = false; % If collision function returns true, branch has a collision.
-                break;
-            end
-        end
-        
-        if (isBranchCollisionFree)
-            bestBranch = branch;
-            bestBranchEff = allBranchEff(:,:,c);
-            bestBranchScore = avgBranchEff(c);
-            bestBranchWeights = weights(c,:);
-            break;
-        end
-    end
-else
-    bestBranch = branches(:,2:end,ind(1));
-    %bestBranchEff = allBranchEff(:,:,ind(1));
-    bestBranchEff = f(:,ind(1))';
-    bestBranchScore = avgBranchEff(ind(1));
-    bestBranchWeights = weights(ind(1),:);
-end
 
 % =========================================================================
 % solution_check(G, branchIDs, numTargets, minEff)
@@ -429,22 +344,21 @@ end
 %   requirements. Again the requirement for success is simply whether we
 %   have achieved the minimum sensing requirements for all the targets.
 % =========================================================================
-function [path, pathEff, pathDist] = solution_check(G, branchIDs, numTargets, minEff)
+function [rootID, leafID, score] = solution_check(G, branchIDs, target, minEff)
+
+leafID = branchIDs(end);
 
 % Check to see if the recently added branch results in a successful path to
 % the goal.
-[pathCandidate, pathCandidateDist, pathCandidateEff] = get_shortest_path(G, branchIDs(end));
-numSensed = length( find( pathCandidateEff > minEff ) );
+[candPathIDs, candDist, candEff] = get_shortest_path(G, leafID);
+rootID = candPathIDs(1);
+candPath = G.V(candPathIDs);
 
-if (numTargets == numSensed)
-    path = pathCandidate;
-    pathDist = pathCandidateDist;
-    pathEff = pathCandidateEff;
-else
-    path = [];
-    pathDist = inf;
-    pathEff = [];
-end
+t = candPath(end,:);
+F = trapz(t, candEff);
+Fmin = (target.tspan(2) - target.tspan(1)) * minEff;
+score = F/Fmin;
+
 
 % =========================================================================
 % add_branch(G, rootID, newBranch, branchEff)

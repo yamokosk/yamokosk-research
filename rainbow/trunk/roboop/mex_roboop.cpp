@@ -28,8 +28,8 @@ Revision_history:
 
 #include <vector>
 
-#define NUM_ROBOT_FIELDS 6
-const char *robot_field_names[] = {"name", "DH", "dof", "available_dof", "immobile_joints", "links"};
+#define NUM_ROBOT_FIELDS 7
+const char *robot_field_names[] = {"name", "gravity", "DH", "dof", "available_dof", "immobile_joints", "links"};
 #define NUM_LINK_FIELDS 18
 const char *link_field_names[] = {"joint_type", "theta", "d", "a", "alpha", "q", "theta_min", "theta_max",
                                   "joint_offset", "r", "p", "m", "Im", "Gr", "B", "Cf", "I", "immobile"};
@@ -126,6 +126,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         
 		// Set name
 		mxSetField(LHS_ARG_1, 0, "name", mxCreateString(robotname) );
+		
+		// Set gravity
+		mxSetField(LHS_ARG_1, 0, "gravity", mxArrayFromNMArray( robj.gravity ) );
 		
 		// Return DH type
 		mxSetField(LHS_ARG_1, 0, "DH", mxCreateLogicalScalar( robj.get_DH() ));

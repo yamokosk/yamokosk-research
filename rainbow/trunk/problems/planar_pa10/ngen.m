@@ -1,4 +1,4 @@
-function xr = ngen(target, udata)
+function xr = ngen(t, target, udata)
 
 %% Constants and parameters used to tune metric
 phi_max = pi/4;     % Angle between desired target normal and sensor location.
@@ -17,12 +17,13 @@ d_min = ((r*2*S_width*ct)/D_ref) * sqrt(Rmin/pi);
 d_min = max(r+0.1, d_min);
 d_max = ((r*2*S_width*ct)/D_ref) * sqrt(Rmax/pi);
 d = (d_max-d_min)*rand(1) + d_min;
-
 phi = (2*rand(1)-1)*phi_max;
-%phi_d = phi * (180/pi);
+
 
 %% Rotate n_hat by phi which gives the direction of P_t2s
-n_hat = [target(5:6); 0];
+vt = [target(3); target(4); 0; 1];    % Target velocity
+n_hat_h = rotz((pi/2) + target(5)) * vt;      % Desired image-axis vector
+n_hat = [n_hat_h(1:2); 0]/norm(n_hat_h(1:2));
 T_phi = rotz(phi); R_phi = T_phi(1:3,1:3); % Should this be a negative rotation?
 n_s2t = R_phi * n_hat;
 P_src2t = r*n_s2t;
@@ -42,14 +43,14 @@ xaxis = cross(yaxis,s_hat);
 T_src_EE = [xaxis, yaxis, s_hat, P_src; 0, 0, 0, 1];
 
 % Now get the sensor's position. Construct it's full t-matrix
-z_sen_hat = -s_hat;
+z_sen_hat = -s_hat; 
 xaxis = cross(yaxis,z_sen_hat);
 P_sen = P_src + d*s_hat;
 T_sen_EE = [xaxis, yaxis, z_sen_hat, P_sen; 0, 0, 0, 1];
 
-% Plot to see if this is working correctly
+% % Plot to see if this is working correctly
 % figure(1)
-% hold on
+% hold on 
 % len = 0.1;
 % % Source
 % plot(udata.rsrc.T_f_base(1,4), udata.rsrc.T_f_base(2,4), 'ro');
@@ -77,7 +78,6 @@ T_sen_EE = [xaxis, yaxis, z_sen_hat, P_sen; 0, 0, 0, 1];
 % x = [ti(1); ti(1) + (len*n_hat(1))];
 % y = [ti(2); ti(2) + (len*n_hat(2))];
 % line(x,y,'Color','black');
-% axis square
 
 % Use inverse kinematics to compute src joint angles
 [Qsrc, converged] = inv_kin(udata.rsrc, T_src_EE);
@@ -108,4 +108,4 @@ qp_src = J_src_inv * vd;
 qp_sen = J_sen_inv * vd;
 
 % Finally.. new rand state
-xr = [Qsrc(:,1); qp_src; Qsen(:,1); qp_sen; target(end)];
+xr = [Qsrc(:,1); qp_src; Qsen(:,1); qp_sen; t];

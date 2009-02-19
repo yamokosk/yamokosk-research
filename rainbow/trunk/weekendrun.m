@@ -11,6 +11,11 @@ conffile = 'pa10_planar.conf';
 
 % load traj
 load( fullfile( probdir, 'traj.mat' ) );
+time = targets(end,:);
+data = targets(1:end-1,:);
+pp = interp1(time,data','spline','pp');
+var = ([0.01; 0.01; 0.05; 0.05; pi/6]/6).^2;
+target = struct('tspan',[time(1), time(end)], 'pp', pp, 'variance', var);
 
 % read prob def
 def = readProblemDef( fullfile(probdir, 'problem.def') );
@@ -32,11 +37,13 @@ udata = struct('rsrc', src, ...
 N = 30; c = 1;
 X0 = zeros(13,N*3);
 rand('state',sum(100*clock));
-
 for id = [1, 2, 3]
     for n = 1:N
-        X0(:,c) = f.ngen(targets(:,id), udata);
-        c = c+1;
+        Vtemp = f.ngen(time(id), targets(:,id), udata);
+        if ( ~isempty(Vtemp) )
+            X0(:,c) = Vtemp;
+            c = c+1;
+        end
     end
 end
 
@@ -46,7 +53,9 @@ X0(end,:) = 0;
 % Get and mess with options
 opts = plannerSolve('defaults');
 opts.Display = 'iter';
-opts.MaxIter = 1000;
+opts.MaxIter = 100;
+opts.TimeStep = 0.25;
+opts.SkewFactor = 0.5;
 
 % diary 'screencapture2.txt';
 % tic;

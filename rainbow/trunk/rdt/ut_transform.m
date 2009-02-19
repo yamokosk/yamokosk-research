@@ -102,14 +102,14 @@ function [mu,S,C,X,Y,w] = ut_transform(M,P,g,param,alpha,beta,kappa,mat,X,w)
   if isnumeric(g)
     Y = g*X;
   elseif isstr(g) | strcmp(class(g),'function_handle')
-    Y = zeros(size(X));
+    Y = [];
     for i=1:size(X,2)
-      Y(:,i) = feval(fhandle,X(:,i));
+      Y = [Y, feval(fhandle,X(:,i))];
     end
   else
-    Y = zeros(size(X));
+    Y = [];
     for i=1:size(X,2)
-      Y(:,i) = fhandle(X(:,i));
+      Y = [Y, fhandle(X(:,i))];
     end
   end
   

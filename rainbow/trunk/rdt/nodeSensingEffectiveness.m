@@ -1,9 +1,7 @@
-function neff = nodeSensingEffectiveness(node, targets, neval)
-t_node = node(end);
-t_targets = targets(end,:);
-target_interp = interp1(t_targets,targets(1:end-1,:)',t_node,'spline');
+function neff = nodeSensingEffectiveness(node, Tbar, Tvar, neval)
 
-neff = neval(node, [target_interp'; t_node]);
+fun = @(y)neval(node, y);
+neff = ut_transform(Tbar,Tvar,fun,[],[],[],[],1);
 
 % nt=size(targets,2); 
 % neff=zeros(1,nt); 

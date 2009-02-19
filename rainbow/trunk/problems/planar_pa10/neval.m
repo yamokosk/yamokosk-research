@@ -18,7 +18,9 @@ P_src = T_F_src(1:3,4);     % Vector to source EE
 P_sen = T_F_sen(1:3,4);     % Vector to sensor EE
 P_src2sen = P_sen - P_src;  % Vector from source to sensor EE
 P_t2src = P_src - ti;       % Vector from target to source
-n_hat = [target(5:6,1); 0]; % Desired view vector
+vt = [target(3); target(4); 0; 1];    % Target velocity
+n_hat_h = rotz((pi/2) + target(5)) * vt;      % Desired image-axis vector
+n_hat = [n_hat_h(1:2); 0]/norm(n_hat_h(1:2));
 s_hat = T_F_src(1:3,3);     % Actual view vector
 
 % Compute visibility parameters: r, d, theta, and phi
