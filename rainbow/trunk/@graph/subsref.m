@@ -44,7 +44,13 @@ switch (index(1).type)
                     b = G.pathPredecessors;
                 else
                     b = G.pathPredecessors(:,index(2).subs{1});
-                end                    
+                end
+            case 'bestPathScore'
+                b = G.bestPathScore;
+            case 'bestLeafID'
+                b = G.bestLeafID;
+            case 'bestRootID'
+                b = G.bestRootID;
             otherwise
                 error('Invalid field name.');
         end

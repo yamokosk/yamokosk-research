@@ -1,4 +1,7 @@
 function G = recalculate_node_weights(G, minEff, alpha)
+
+global tspan;
+
 % Recompute all shortest paths
 G = compute_shortest_paths(G);
 
@@ -8,6 +11,7 @@ numRootNodes = length(G.root_ids);
 D = reshape(G.pathDistances, numRootNodes*numNodes, 1);
 ind = find( isfinite(D) );
 dmax = max( max(D(ind)), 1e-6);
+dmean = mean( D(ind) );
 
 % Reset graph weights
 G.node_weights = zeros(1, numNodes);
@@ -18,15 +22,13 @@ for id = 1:numNodes
     [path, pathDist, pathEff] = get_shortest_path(G, id);
 
     % NEW WAY - Based on single target traveling in time
-    w1 = 0;
-    if (length(path) == 1)
-        w1 = (pathEff/minEff)^2;
-    else
+    if (length(path) > 1)
         t = path(end,:);
         F = trapz(t,pathEff);
-        Fmin = (t(end) - t(1)) * minEff;
-        w1 = (F/Fmin)^2;
+        Fmin = minEff * (tspan(2) - tspan(1));
+        
+        G.node_weights(id) = sqrt(alpha*(F/Fmin)^2 + (1-alpha)*((dmax - pathDist)/dmean)^2);
+    else
+        G.node_weights(id) = pathEff;
     end
-    w2 = (1 - (pathDist/dmax))^2;
-    G.node_weights(id) = sqrt(alpha*w1 + (1-alpha)*w2);
 end

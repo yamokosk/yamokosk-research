@@ -82,6 +82,11 @@ if (ischar(searchTree))
         bestLeafID = 0;
         bestRootID = 0;
     end
+else
+    searchTree = graph(searchTree);
+    bestPathScore = searchTree.bestPathScore;
+    bestLeafID = searchTree.bestLeafID;
+    bestRootID = searchTree.bestRootID;
 end
 
 switch printtype
@@ -123,7 +128,7 @@ end
 if prnt == 3
     disp(' ')
     disp(header)
-    disp(sprintf(iterformat, 0, 0, 0, 0, 0, 'Initialization'));
+    disp(sprintf(iterformat, 0, 0, bestPathScore, bestRootID, bestLeafID, 'Initialization'));
 end
 
 % Now just do the specified number of iterations
@@ -133,65 +138,72 @@ for itercount = 1:maxiter
     
     % Probabilistically select a node and target pair.
     [Xi, Wi, i] = select(searchTree);
-    ti = Xi(end);
+    numSelectedNodes = length(i);
+    for m = 1:numSelectedNodes
+        ti = Xi(end,m);
     
-    % Based on the selected node, pick a average target to drive the search
-    % towards
-    if (ti >= target.tspan(2))
-        disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Selection failed.'));
-        continue;
-    end
-    t_step = min(target.tspan(2), ti + timestep);
-    Tbar = ppval(target.pp, t_step);
-    
-    % Try a few times to extend the search tree from the selected node.
-    for extendcount = 1:numberExtensionAttempts
-        % Generate a set of vantage points for target j
-        Vj = generate(t_step, Tbar, numberOfVantagePts, ngen);
-
-        % Extend the tree to one of the generated nodes
-        [branch_candidates, branch_weights] = extend(Xi, Vj, lp);
-        if ( ~isempty(branch_candidates) )
-            break;
+        % Based on the selected node, pick a average target to drive the search
+        % towards
+        if (ti >= target.tspan(2))
+            disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Selection failed.'));
+            continue;
         end
-    end
-    
-     % Notify user that this iteration was a failure.
-    if ( isempty( branch_candidates ) )
-        disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Extension failed.'));
-        continue;
-    end
+        t_step = min(target.tspan(2), ti + timestep);
+        Tbar = ppval(target.pp, t_step);
 
-    % Evaluate the branch candidates. If there is a valid branch amongst
-    % the candidates, add the best one to the tree.
-    [branchID,bestBranchEff] = evaluate(branch_candidates, target, neval);
+        % Try a few times to extend the search tree from the selected node.
+        branch_candidates = [];
+        for extendcount = 1:numberExtensionAttempts
+            % Generate a set of vantage points for target j
+            Vj = generate(t_step, Tbar, numberOfVantagePts, ngen);
+            if (isempty(Vj))
+                break;
+            end
 
-    % Its possible no feasible branch was found amongst the
-    % candidates. Really only a possibility if we are doing collision
-    % checking.
-    if ( branchID < 0 )
-        % Notify user we failed at this point.
-        disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Evaluation failed.'));
-        continue;
-    end
-    
-    % Add branch to search tree
-    bestBranch = branch_candidates(:,2:end,branchID);
-    bestBranchWeights = branch_weights(branchID,:);
-    [searchTree, branchIDs] = add_branch(searchTree, i, bestBranch, bestBranchWeights, bestBranchEff);
+            % Extend the tree to one of the generated nodes
+            [branch_candidates, branch_weights] = extend(Xi(:,m), Vj, lp);
+            if ( ~isempty(branch_candidates) )
+                break;
+            end
+        end
 
-    % Check to see if this new branch gives us a valid solution.
-    [rootID, leafID, iterationScore] = solution_check(searchTree, branchIDs, target, mineff);
+         % Notify user that this iteration was a failure.
+        if ( isempty( branch_candidates ) )
+            disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Extension failed.'));
+            continue;
+        end
+
+        % Evaluate the branch candidates. If there is a valid branch amongst
+        % the candidates, add the best one to the tree.
+        [branchID,bestBranchEff] = evaluate(branch_candidates, target, neval);
+
+        % Its possible no feasible branch was found amongst the
+        % candidates. Really only a possibility if we are doing collision
+        % checking.
+        if ( branchID < 0 )
+            % Notify user we failed at this point.
+            disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Evaluation failed.'));
+            continue;
+        end
+
+        % Add branch to search tree
+        bestBranch = branch_candidates(:,2:end,branchID);
+        bestBranchWeights = branch_weights(branchID,:);
+        [searchTree, branchIDs] = add_branch(searchTree, i(m), bestBranch, bestBranchWeights, bestBranchEff);
     
-    if ( iterationScore > bestPathScore )
-        bestPathScore = iterationScore;
-        bestLeafID = leafID;
-        bestRootID = rootID;
+        % Check to see if this new branch gives us a valid solution.
+        [rootID, leafID, iterationScore] = solution_check(searchTree, branchIDs, target, mineff);
+
+        if ( iterationScore > bestPathScore )
+            bestPathScore = iterationScore;
+            bestLeafID = leafID;
+            bestRootID = rootID;
+        end
     end
 
     if prnt == 3
         disp(sprintf(iterformat, itercount, iterationScore, bestPathScore, bestRootID, bestLeafID, 'Search tree extended.'));
-    end 
+    end
 end
 
 % Notify output function we are done
@@ -199,6 +211,13 @@ if prnt > 1
     disp(' ')
     disp(['Search terminated.'])
 end
+
+% Recalculate node weights
+searchTree = recalculate_node_weights(searchTree, mineff, skewfactor);
+    
+searchTree.bestPathScore = bestPathScore;
+searchTree.bestLeafID = bestLeafID;
+searchTree.bestRootID = bestRootID;
 exitflag = 1;
 
 
@@ -246,7 +265,14 @@ allNodes = G.V;
 allNodeWeights = G.Vw;
 
 % Probabilistically select the most fit node to expand
-[Xsel,Wsel,IDsel] = selsus(allNodes,allNodeWeights,1);
+[Xsel,Wsel,IDsel] = selsus(allNodes,allNodeWeights,3);
+
+% % Take best two or three
+[junk, ind] = sort(Wsel,2,'descend');
+
+Xsel = Xsel(:,ind(1:2));
+Wsel = Wsel(ind(1:2));
+IDsel = IDsel(ind(1:2));
 
 
 % =========================================================================
@@ -256,12 +282,14 @@ allNodeWeights = G.Vw;
 %   function to do all the heavy lifting.
 % =========================================================================
 function Vj = generate(t_step, Tbar, N, ngen)
-n = 1;
-while (n <= N)
-    Vtemp = ngen(t_step, Tbar);
-    if ( ~isempty(Vtemp) )
-        Vj(:,n) = Vtemp;
-        n = n + 1;
+Vj = [];
+for n = 1:N
+    for m = 1:N
+        Vtemp = ngen(t_step, Tbar);
+        if ( ~isempty(Vtemp) )
+            Vj = [Vj, Vtemp];
+            break;
+        end
     end
 end
 
@@ -302,7 +330,7 @@ function [branchID,bestBranchEff,bestBranchScore] = evaluate(branches, target, n
 
 % Get the sizes of things and allocate some space
 numCandidates = size(branches, 3);
-numNodes = size(branches, 2) - 1;
+numNodes = size(branches, 2);
 %allBranchEff = zeros(numNodes, numTargets, numCandidates);
 avgBranchEff = zeros(1,numCandidates);
 
@@ -316,7 +344,7 @@ for c = 1:numCandidates
     % Select only the intermediate nodes and the generate vantage point. We
     % have already computed the sensing effectiveness of the root node in a
     % prior iteration. No need to reinclude it here.
-    branch = branches(:,2:end,c);
+    branch = branches(:,1:end,c);
     
     % NEW NEW METHOD.. using unscented transform to estimate node
     % evaluation statistics

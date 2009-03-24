@@ -1,4 +1,4 @@
-function [Q, converged] = inv_kin(robj, T_base_EE, mj, endlink);
+function [Q, converged] = inv_kin(robj, T_f_EE, mj, endlink);
 %   Syntax
 %       
 %       [Q, converged] = inv_kin(robj, T_base_EE);
@@ -50,4 +50,5 @@ end
 
 toMex = createStructForMex(robj);
 
-[Q, converged] = mex_inv_kin(toMex, T_base_EE, mj, endlink);
+%T_base_EE = inv_tmatrix(robj.T_f_base) * T_f_EE;
+[Q, converged] = mex_inv_kin(toMex, T_f_EE, mj, endlink);

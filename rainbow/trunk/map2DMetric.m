@@ -1,10 +1,8 @@
-function [Z_A,Z_phi,Z_theta] = map2DMetric(X,Y,target,neval,udata)
+function Z = map2DMetric(X,Y,zslice,target_mean,target_var,neval,udata)
 srcRbt = udata.rsrc;
 senRbt = udata.rsen;
 
-Z_A = zeros(size(X));
-Z_phi = zeros(size(X));
-Z_theta = zeros(size(X));
+Z = zeros(size(X));
 [N,N] = size(X);
 
 % Preliminaries
@@ -22,7 +20,7 @@ n_hat = [target(5:6); 0];
 for r = 1:N
     for c = 1:N
         % Calculations for source robot
-        P_srcEE = [X(r,c); Y(r,c); 0];
+        P_srcEE = [X(r,c); Y(r,c); zslice];
 
         % METHOD 1: Point src at target
 %         P_srcEE_target = P_target - P_srcEE;
@@ -55,7 +53,7 @@ for r = 1:N
         % If solution is found, evaluate it
         if (srcSolnFound && senSolnFound)
             xr = [Qsrc(1:3,1); zeros(3,1); Qsen(1:3,1); zeros(3,1); target(end)];
-            [junk, Z_A(r,c), Z_phi(r,c), Z_theta(r,c)] = neval(xr, target, udata);
+            Z(r,c) = nodeSensingEffectiveness(x, target_mean, target_var, neval);
         end
     end
 end

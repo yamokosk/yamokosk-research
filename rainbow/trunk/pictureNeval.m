@@ -1,10 +1,8 @@
-function pictureNeval(f,udata)
+function pictureNeval(target,f,udata)
 N=50;
 x = linspace(-.8,.8,N);
 y = linspace(0,1.5,N);
 [X,Y] = meshgrid(x,y);
-
-target = [0;0;0;0;0;-1];
 
 [Z_A,Z_phi,Z_theta] = map2DMetric(X,Y,target,f.neval,udata);
 
