@@ -14,7 +14,7 @@ target = struct('pp', pp, 'variance', var, 'tspan', [0,t(end)]);
 tspan = [0, t(end)];
 
 % create structures
-f = struct('lp',@straight_line_planner, ...
+f = struct('lp',@constrained_straight_line_planner, ...
             'ngen',@ngen, ...
             'neval',@neval);
 
@@ -42,8 +42,9 @@ opts.SkewFactor = 0.5;
 % generate initial guess           
 X0 = [];
 c=0;
+tgen = rand(100,1) * 0.25 * max(t);
 for n = 1:100
-    x = ppval(pp,0);
+    x = ppval(pp,tgen(n));
     Vtemp = f.ngen(0, x, udata);
     if ( ~isempty(Vtemp) )
         X0 = [X0, Vtemp];
