@@ -1,10 +1,17 @@
-function [T, U, X, exitflag, exitmsg] = connect_gpops_with_endpoint_unscaled(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, udata)
+function [T, U, X, exitflag, exitmsg] = connect_gpops_with_endpoint_unscaled(t0, tf, x0, xf, x_lb, x_ub, u_lb, u_ub, robot_model, testing)
 
 global CONSTANTS;
 
-CONSTANTS = struct('x0', x0, 'xf', xf);
+% Matrix use to normalize difference calculations during optimization
+Nx = diag( (x_ub - x_lb).^2 );
+Nx = inv(Nx);
+Nu = diag( (u_ub - u_lb).^2 );
+Nu = inv(Nu);
+
+CONSTANTS = struct('x0', x0, 'xf', xf, 'Nx', Nx, 'Nu', Nu);
 
 % Generate a nice guess
+tspan = [t0, tf];
 t_guess = tspan';
 x_guess = [x0'; xf'];
 u_guess = zeros(2,6);
@@ -20,7 +27,29 @@ T = sol.time;
 X = sol.state;
 U = sol.control;
 exitflag = output.SNOPT_info;
-exitmsg = [];    
+exitmsg = [];
+
+if (testing)
+	close all;
+	h = figure(1);
+	for n = 1:6
+		subplot(3,2,n);
+		plot(T,U(:,n));
+		line([t0; tf], [u_lb(n); u_lb(n)]);
+		line([t0; tf], [u_ub(n); u_ub(n)]);
+		title(['\tau_' num2str(n)]);
+	end
+	
+	h = figure(2);
+	for n = 1:6
+		subplot(3,2,n);
+		hold on;
+		plot(tf,xf(n),'*');
+		plot(T,X(:,n));
+		title(['q_' num2str(n)]);
+	end
+end
+
 
 
 function setup = setupGPOPS(tspan, x0, xf, x_lb, x_ub, u_lb, u_ub, t_guess, x_guess, u_guess);

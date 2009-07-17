@@ -4,18 +4,21 @@ function G = add_edge(G,node_from_id,node_to_id,edge_weight)
 if (node_from_id == node_to_id)
     warning('Self-referencing edge being added to graph.');
 end
-G.connectivity(node_from_id,node_to_id) = 1;
 
-% Edge weight is the length of time the from node to the to node
-dt = G.node_data(end,node_to_id) - G.node_data(end,node_from_id);
-
-if (nargin < 4)
-    G.edge_weights(node_from_id,node_to_id) = dt;
-    %G.edge_weights(node_to_id,node_from_id) = dt;
-else
-    G.edge_weights(node_from_id,node_to_id) = edge_weight;
-    %G.edge_weights(node_to_id,node_from_id) = edge_weight;
+if (edge_weight <= 0)
+    warning(['Illegal weight (' num2str(edge_weight) ') between ' num2str(node_from_id) ' and ' num2str(node_to_id) '. Weights must be strictly positive.']);
+    edge_weight = inf;
 end
 
+% Record connection in the sparse edge weight matrix
+G.EdgeWeights(node_from_id,node_to_id) = edge_weight;
+
+% Adjust the leaf IDs flags
+G.LeafIds(1,node_from_id) = 0;
+G.LeafIds(1,node_to_id) = 1;
+
+% Record that the from node was 'extended'
+G.NodeExtendedCount(1,node_from_id) = G.NodeExtendedCount(1,node_from_id) + 1;
+
 % Invalidate the shortest paths.. new edge means new paths.
-G.pathsInvalid = true;
+G.ShortestPathsInvalid = true;

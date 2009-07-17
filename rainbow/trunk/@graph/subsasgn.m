@@ -20,12 +20,12 @@ case '.'
         G.v_ptr = val;
     case 'e_ptr'
         G.e_ptr = val;
-    case 'bestPathScore'
-        G.bestPathScore = val;
-    case 'bestLeafID'
-        G.bestLeafID = val;
-    case 'bestRootID'
-        G.bestRootID = val;
+    case 'BestPathScore'
+        G.BestPathScore = val;
+    case 'BestLeafId'
+        G.BestLeafId = val;
+    case 'BestRootId'
+        G.BestRootId = val;
     otherwise
         error('Invalid field name')
     end

@@ -10,7 +10,7 @@ R = eye(6);
 S = diag([10;10;10;10;10;10;1;1;1;1;1;1]);
 
 tau0 = sol.initial.time;
-y0 = sol.initial.state;
+x0 = sol.initial.state;
 tauf = sol.terminal.time;
 yf = sol.terminal.state;    % Current scaled terminus conditions
 xf = descale(yf, bounds.x_lb, bounds.x_ub);

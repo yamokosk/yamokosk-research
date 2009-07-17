@@ -42,13 +42,28 @@ opts.SkewFactor = 0.5;
 % generate initial guess           
 X0 = [];
 c=0;
-tgen = rand(100,1) * 0.25 * max(t);
+% tgen = rand(100,1) * 0.5 * max(t);
+% for n = 1:10
+%     x = ppval(pp,tgen(n));
+%     Vtemp = f.ngen(0, x, udata);
+%     if ( ~isempty(Vtemp) )
+%         X0 = [X0, Vtemp];
+%         c = c+1;
+%     end
+% end
+tgen = 0.2;
+x = ppval(pp,tgen);
+best_score = -inf;
 for n = 1:100
-    x = ppval(pp,tgen(n));
     Vtemp = f.ngen(0, x, udata);
     if ( ~isempty(Vtemp) )
-        X0 = [X0, Vtemp];
-        c = c+1;
+        Vval = f.neval(Vtemp, x, udata);
+        if ( Vval > best_score )
+            X0 = Vtemp;
+            best_score = Vval;
+            c = 1;
+            fprintf(1, 'Best score: %f\n', best_score);
+        end
     end
 end
 fprintf(1,'Seeding with %d states\n',c);

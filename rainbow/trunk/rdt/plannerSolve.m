@@ -84,9 +84,9 @@ if (ischar(searchTree))
     end
 else
     searchTree = graph(searchTree);
-    bestPathScore = searchTree.bestPathScore;
-    bestLeafID = searchTree.bestLeafID;
-    bestRootID = searchTree.bestRootID;
+    bestPathScore = searchTree.BestPathScore;
+    bestLeafID = searchTree.BestLeafID;
+    bestRootID = searchTree.BestRootID;
 end
 
 switch printtype
@@ -140,6 +140,10 @@ for itercount = 1:maxiter
     [Xi, Wi, i] = select(searchTree);
     numSelectedNodes = length(i);
     for m = 1:numSelectedNodes
+        % Record that we are 'visiting' node i
+        searchTree = record_visit(searchTree, i(m));
+        
+        % Get time of node we are trying to connect to
         ti = Xi(end,m);
     
         % Based on the selected node, pick a average target to drive the search
@@ -147,9 +151,14 @@ for itercount = 1:maxiter
         if (ti >= target.tspan(2))
             disp(sprintf(iterformat, itercount, NaN, bestPathScore, bestRootID, bestLeafID, 'Selection failed.'));
             continue;
-        end
-        t_step = min(target.tspan(2), ti + timestep);
-        Tbar = ppval(target.pp, t_step);
+		end
+		% LAST THING TO TRY OUT - For each random time generate a random
+		% state. Right now its random time and N random states for that
+		% time.
+		t_rand = (0.2 - 0.04)*rand(1) + 0.04;
+		t_step = min(target.tspan(2), ti + t_rand);
+%         t_step = min(target.tspan(2), ti + timestep);
+		Tbar = ppval(target.pp, t_step);
 
         % Try a few times to extend the search tree from the selected node.
         branch_candidates = [];
@@ -175,7 +184,7 @@ for itercount = 1:maxiter
 
         % Evaluate the branch candidates. If there is a valid branch amongst
         % the candidates, add the best one to the tree.
-        [branchID,bestBranchEff] = evaluate(branch_candidates, target, neval);
+        [branchID,branchEff] = evaluate(branch_candidates, target, neval);
 
         % Its possible no feasible branch was found amongst the
         % candidates. Really only a possibility if we are doing collision
@@ -189,6 +198,7 @@ for itercount = 1:maxiter
         % Add branch to search tree
         bestBranch = branch_candidates(:,2:end,branchID);
         bestBranchWeights = branch_weights(branchID,:);
+        bestBranchEff = branchEff(:,2:end);
         [searchTree, branchIDs] = add_branch(searchTree, i(m), bestBranch, bestBranchWeights, bestBranchEff);
     
         % Check to see if this new branch gives us a valid solution.
@@ -215,204 +225,11 @@ end
 % Recalculate node weights
 searchTree = recalculate_node_weights(searchTree, mineff, skewfactor);
     
-searchTree.bestPathScore = bestPathScore;
-searchTree.bestLeafID = bestLeafID;
-searchTree.bestRootID = bestRootID;
+searchTree.BestPathScore = bestPathScore;
+searchTree.BestLeafId = bestLeafID;
+searchTree.BestRootId = bestRootID;
 exitflag = 1;
 
-
-
-% =========================================================================
-% initializeSearchTree(x0, targets, neval)
-%
-%   Performs some simple initialization steps for the planner, including:
-%       * Initialize output function
-%       * Initialize solution data structure, if needed
-% =========================================================================
-function G = initializeSearchTree(x0, target, neval)
-G = graph();
-[dof, numStartingNodes] = size(x0);
-Tvar=diag(target.variance);
-for n = 1:numStartingNodes
-    Tbar = ppval(target.pp, x0(end));
-    eff = nodeSensingEffectiveness(x0(:,n), Tbar, Tvar, neval);
-    G = add_node(G, x0(:,n), eff, true);
-end
-
-% =========================================================================
-% select(G, targets, minEff)
-%
-%   Probabilistically selects the next target to sense. Basic operation:
-%       1. Probabilistically select the next node to expand based on the
-%       node weights. Currently uses the stochastic universal sampling 
-%       algorithm from the GA communitiy. Reference:
-%            Baker, J.E., "Reducing bias and inefficiency in the selection 
-%               algorithm", Proceedings of the Second International 
-%               Conference on Genetic Algorithms and their application,
-%               pp.14-21, 1987.
-%       2. Then a target is selected which must meet the following
-%       criteria:
-%           I. Has a time greater than the selected node.
-%               AND
-%           IIa. Has a minimum effectiveness less than the required
-%           minimum.
-%               OR
-%           IIb. Has the smallest effectiveness of all furutre targets.
-% =========================================================================
-function [Xsel, Wsel, IDsel] = select(G)
-
-allNodes = G.V;
-allNodeWeights = G.Vw;
-
-% Probabilistically select the most fit node to expand
-[Xsel,Wsel,IDsel] = selsus(allNodes,allNodeWeights,3);
-
-% % Take best two or three
-[junk, ind] = sort(Wsel,2,'descend');
-
-Xsel = Xsel(:,ind(1:2));
-Wsel = Wsel(ind(1:2));
-IDsel = IDsel(ind(1:2));
-
-
-% =========================================================================
-% generate(Tj, N, ngen)
-%
-%   Generate a set of nodes for target Tj. Employs the user's  generation 
-%   function to do all the heavy lifting.
-% =========================================================================
-function Vj = generate(t_step, Tbar, N, ngen)
-Vj = [];
-for n = 1:N
-    for m = 1:N
-        Vtemp = ngen(t_step, Tbar);
-        if ( ~isempty(Vtemp) )
-            Vj = [Vj, Vtemp];
-            break;
-        end
-    end
-end
-
-% =========================================================================
-% extend(Vj, Xi, lp)
-%
-%   Computes paths from the currently selected node, X, to the set of 
-%   generated vantage points, Vj. Employs a user supplied local planning
-%   function to determine if a feasible path exists.
-% =========================================================================
-function [path_candidates, path_weights] = extend(X, Vj, lp);
-numVantagePts = size(Vj,2);
-path_candidates = [];
-path_weights = [];
-c = 1;
-for n = 1:numVantagePts
-    % Determine if a feasable path exists.
-    path = lp(X, Vj(:,n));
-    
-    if ( ~isempty(path.xi) )
-        path_candidates(:,:,c) = path.xi;
-        path_weights(c,:) = path.ew;
-        c = c + 1;
-    end
-end
-
-% =========================================================================
-% evaluate(branches, targets, doCollisionCheck, ccheck)
-%
-%   Evaluates the branch candidates and returns the branch which has the
-%   greatest mean sensing effectiveness and that is also collision free (if
-%   doCollisionCheck is true). Note that the collision check is actually
-%   delayed until after the mean sensing effectiveness scores are
-%   calculated. This is done in hopes of reducing the number of collision
-%   checks we need to actually perform.
-% =========================================================================
-function [branchID,bestBranchEff,bestBranchScore] = evaluate(branches, target, neval)
-
-% Get the sizes of things and allocate some space
-numCandidates = size(branches, 3);
-numNodes = size(branches, 2);
-%allBranchEff = zeros(numNodes, numTargets, numCandidates);
-avgBranchEff = zeros(1,numCandidates);
-
-% Compute the average sensing effectiveness for each branch. I am purposely
-% delaying collision checking here since it is assumed that will be a
-% computationally intensive task.
-Tvar=diag(target.variance);
-F = zeros(numCandidates,1);
-f = zeros(numNodes,numCandidates);
-for c = 1:numCandidates
-    % Select only the intermediate nodes and the generate vantage point. We
-    % have already computed the sensing effectiveness of the root node in a
-    % prior iteration. No need to reinclude it here.
-    branch = branches(:,1:end,c);
-    
-    % NEW NEW METHOD.. using unscented transform to estimate node
-    % evaluation statistics
-    t_branch = branch(end,:)';
-    Tbar = ppval(target.pp, t_branch)';
-    for n = 1:numNodes
-        f(n,c) = nodeSensingEffectiveness(branch(:,n), Tbar(:,n), Tvar, neval);
-    end
-    F(c) = trapz(t_branch,f(:,c));
-end
-
-% Sort candidates by their average branch effectiveness
-%[ignore,ind] = sort(avgBranchEff, 2, 'descend');
-[ignore,ind] = sort(F, 1, 'descend');
-
-branchID = ind(1);
-bestBranchEff = f(:,ind(1))';
-bestBranchScore = avgBranchEff(ind(1));
-
-
-% =========================================================================
-% solution_check(G, branchIDs, numTargets, minEff)
-%
-%   Checks the newly created branch to see if we have achieved the sensing
-%   requirements. Again the requirement for success is simply whether we
-%   have achieved the minimum sensing requirements for all the targets.
-% =========================================================================
-function [rootID, leafID, score] = solution_check(G, branchIDs, target, minEff)
-
-leafID = branchIDs(end);
-
-% Check to see if the recently added branch results in a successful path to
-% the goal.
-[candPathIDs, candDist, candEff] = get_shortest_path(G, leafID);
-rootID = candPathIDs(1);
-candPath = G.V(candPathIDs);
-
-t = candPath(end,:);
-F = trapz(t, candEff);
-Fmin = (target.tspan(2) - target.tspan(1)) * minEff;
-score = F/Fmin;
-
-
-% =========================================================================
-% add_branch(G, rootID, newBranch, branchEff)
-%
-%   Really a utility function to automate the addition of a collection of
-%   nodes to the tree. The nodes are assumed to be in the order which they
-%   should be connected.
-% =========================================================================
-function [G, new_ids] = add_branch(G, rootID, newBranch, branchWeights, branchEff)
-numNewNodes = size(newBranch,2);
-
-% Add the nodes to the graph
-new_ids = zeros(1,numNewNodes);
-for n = 1:numNewNodes
-    [G,new_ids(n)] = add_node(G, newBranch(:,n), branchEff(n));
-end
-
-% Make all the new connections
-G = add_edge(G, rootID, new_ids(1), branchWeights(1));
-for n = 2:numNewNodes
-    G = add_edge(G,new_ids(n-1),new_ids(n), branchWeights(n));
-end
-
-% Force a recomputation of all shortest paths since we have just added a
-% new branch.
-G = compute_shortest_paths(G);
 
 % =========================================================================
 % optget(options, fieldname, default)

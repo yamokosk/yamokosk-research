@@ -4,53 +4,65 @@ switch (index(1).type)
     case '.'
         switch (index(1).subs)
             case 'V'
-                if ( length(index) == 1 )
-                    b = G.node_data;
+                if ( G.NodeCount > 0 )
+                    if ( length(index) == 1 )
+                        b = G.NodeData(:, 1:G.NodeCount);
+                    else
+                        b = G.NodeData(:,index(2).subs{1});
+                    end
                 else
-                    b = G.node_data(:,index(2).subs{1});
+                    b = [];
                 end
             case 'E'
-                if ( length(index) == 1 )
-                    b = G.connectivity;
+                if ( G.NodeCount > 0 )
+                    if ( length(index) == 1 )
+                        b = G.Connectivity(1:G.NodeCount,1:G.NodeCount);
+                    else
+                        b = G.Connectivity(index(2).subs{1}, index(2).subs{1});
+                    end
                 else
-                    b = G.connectivity(index(2).subs{1}, index(2).subs{1});
+                    b = [];
                 end
-            case 'Vw'
-                if ( length(index) == 1 )
-                    b = G.node_weights;
+            case 'Wv'
+                if ( G.NodeCount > 0 )
+                    if ( length(index) == 1 )
+                        b = G.NodeWeights(1, 1:G.NodeCount);
+                    else
+                        b = G.NodeWeights(:,index(2).subs{1});
+                    end
                 else
-                    b = G.node_weights(:,index(2).subs{1});
+                    b = [];
                 end
-            case 'Ew'
-                if ( length(index) == 1 )
-                    b = G.edge_weights;
+            case 'We'
+                if ( G.NodeCount > 0 )
+                    if ( length(index) == 1 )
+                        b = G.EdgeWeights(1:G.NodeCount, 1:G.NodeCount);
+                    else
+                        b = G.EdgeWeights(index(2).subs{1}, index(2).subs{1});
+                    end
                 else
-                    b = G.edge_weights(index(2).subs{1}, index(2).subs{1});
+                    b = [];
                 end
             case 'Seff'
-                if ( length(index) == 1 )
-                    b = G.node_effectiveness;
+                if ( G.NodeCount > 0 )
+                    if ( length(index) == 1 )
+                        b = G.NodeEffectiveness(1,1:G.NodeCount);
+                    else
+                        b = G.NodeEffectiveness(index(2).subs{1},:);
+                    end
                 else
-                    b = G.node_effectiveness(index(2).subs{1},:);
+                    b = [];
                 end
-            case 'pathDist'
-                if ( length(index) == 1 )
-                    b = G.pathDistances;
-                else
-                    b = G.pathDistances(:,index(2).subs{1});
-                end
-            case 'pathPred'
-                if ( length(index) == 1 )
-                    b = G.pathPredecessors;
-                else
-                    b = G.pathPredecessors(:,index(2).subs{1});
-                end
-            case 'bestPathScore'
-                b = G.bestPathScore;
-            case 'bestLeafID'
-                b = G.bestLeafID;
-            case 'bestRootID'
-                b = G.bestRootID;
+            case 'BestPathScore'
+                b = G.BestPathScore;
+            case 'BestLeafID'
+                b = G.BestLeafId;
+            case 'BestRootID'
+                b = G.BestRootId;
+            case 'NodeVisitedCount'
+                b = G.NodeVisitedCount(1,1:G.NodeCount);
+            case 'NodeExtendedCount'
+                b = G.NodeExtendedCount(1,1:G.NodeCount);
             otherwise
                 error('Invalid field name.');
         end

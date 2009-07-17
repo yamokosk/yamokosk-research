@@ -10,20 +10,28 @@ if (nargin < 4)
     isRootNode = false;
 end
 
-nnodes = size(nodes,2);
-M = size(G.node_data,2);
-ind = [1:nnodes] + M;
-G.node_data = [G.node_data, nodes];
-G.node_weights = [G.node_weights, 0];
-G.node_effectiveness = [G.node_effectiveness; eff];
+% Check the incoming data to make sure its the same length.
+[dof,nodeCount] = size(nodes);
+[StoredDof,junk] = size(G.NodeData);
+if ( dof ~= StoredDof )
+    error( 'Nodes being added are not the same length as the existing nodes in the graph.' );
+end
 
-% Deal with the connectivity and weight matrices
-[i,j,s] = find(G.connectivity);
-G.connectivity = sparse(i,j,s,M+nnodes,M+nnodes);
+% Will smartly resize the internal storage. Resizing like this is done to
+% hopefully optimize the runtime of the planning algorithm.
+G = resize_internal_storage(G, nodeCount);
 
-[i,j,s] = find(G.edge_weights);
-G.edge_weights = sparse(i,j,s,M+nnodes,M+nnodes);
+% Add in the new data
+nc = G.NodeCount;
+ind = (nc+1):(nc+nodeCount);
+G.NodeData(:,ind) = nodes;
+G.NodeEffectiveness(1,ind) = eff;
+G.NodeCount = G.NodeCount + nodeCount;
+
+% By convention, all nodes start out as leaf nodes. Its not until edges are
+% added that a node's leaf status is updated.
+G.LeafIds(1,ind) = 1;
 
 if (isRootNode)
-    G.root_ids = [G.root_ids, ind];
+    G.RootIds(1,ind) = 1;
 end
