@@ -1,0 +1,6 @@
+[Force Data]
+NumberOfForcePlates=2
+SampleRate=2400.000000
+NumberOfSamples=1
+#Sample	FX1	FY1	FZ1	X1	Y1	Z1	MZ1	FX2	FY2	FZ2	X2	Y2	Z2	MZ2
+1	0.00	0.00	658.78	244.00	222.00	0.00	0.00	0.00	0.00	0.00	-455.00	162.00	0.00	0.00
