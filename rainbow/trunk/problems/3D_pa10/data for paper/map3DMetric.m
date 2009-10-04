@@ -14,18 +14,18 @@ for r = 1:N
         P_src = [X(r,c); Y(r,c); zslice];
         
         % Fixed orientation
-        k = [0; 1; 0] * -pi/2;
+%         k = [0; 1; 0] * -pi/2;
         
         % Orientation set to point towards target point
-%         P_target = target_mean(1:3,1);
-%         temp = P_target - P_src;
-%         z_axis = temp/norm(temp);
-%         x_axis = [0;0;1];           % x-axis of EE points in global +X
-%         y_axis = cross(z_axis,x_axis);
-%         y_axis = y_axis/norm(y_axis);
-%         T_EE = eye(4);
-%         T_EE(1:3,1:3) = [x_axis, y_axis, z_axis];
-%         k = irotk(T_EE);
+        P_target = target_mean(1:3,1);
+        temp = P_target - P_src;
+        z_axis = temp/norm(temp);
+        x_axis = [0;0;1];           % x-axis of EE points in global +X
+        y_axis = cross(z_axis,x_axis);
+        y_axis = y_axis/norm(y_axis);
+        T_EE = eye(4);
+        T_EE(1:3,1:3) = [x_axis, y_axis, z_axis];
+        k = irotk(T_EE);
         
         xr = [P_src; k; v; 1.3315; 0.5152]; % mean time and separation distance
         

@@ -28,13 +28,15 @@ Revision_history:
 
 ROBOOP_ROBOT_MEX_FUNC_START
     
-	if (nrhs != 3) ERROR_MSG(INVALID_NUM_ARGS, "Expecting three arguments.");
+	if (nrhs != 4) ERROR_MSG(INVALID_NUM_ARGS, "Expecting three arguments.");
 	
 	ColumnVector q = NMArrayFromMxArray( RHS_ARG_2 );
 	ColumnVector qp = NMArrayFromMxArray( RHS_ARG_3 );
+	ColumnVector pp = NMArrayFromMxArray( RHS_ARG_4 );
 	
 	robj.set_q(q);
-	ColumnVector C = robj.C(qp);
+	robj.set_qp(qp);
+	ColumnVector C = robj.C(pp);
 	
 	LHS_ARG_1 = mxArrayFromNMArray(C);
         
