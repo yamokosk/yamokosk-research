@@ -9,12 +9,13 @@ conffile = 'pa10_dh.conf';
 
 % load traj
 [t,pp] = generate_traj_from_knee_motion();
-var = ([0.05, 0.05, 0.05, 10*(pi/180), 10*(pi/180), 1e-6, 1e-6, 1e-6, 1e-6, 1e-6, 1e-6, 1e-6]').^2;
+var = ([0.01, 0.01, 0.01, 5*(pi/180), 5*(pi/180), 1e-6, 1e-6, 1e-6, 1e-6, 1e-6, 1e-6, 1e-6]').^2;
 target = struct('pp', pp, 'variance', var, 'tspan', [0,t(end)]);
 tspan = [0, t(end)];
 
 % create structures
-f = struct('lp',@constrained_straight_line_planner, ...
+% f = struct('lp',@constrained_straight_line_planner, ...
+f = struct('lp',@straight_line_planner, ...
             'ngen',@ngen, ...
             'neval',@neval);
 
@@ -87,21 +88,21 @@ fprintf(1,'Seeding with %d states\n',c);
 %     plotResults(G,N,false);
 % end
 
-% % Lets collect some stats on this algorithm!
-% M = 2;
-% N = 50;
-% meanWeight = zeros(M,N);
-% stdWeight = zeros(M,N);
-% maxWeight = zeros(M,N);
-% maxScore = zeros(M,N);
-% distOfBest = zeros(M,N);
-% for m = 1:M
-%     [meanWeight(m,:), maxWeight(m,:), stdWeight(m,:), maxScore(m,:), distOfBest(m,:)] = ...
-%         collectStatsOnPlanner(N,X0,target,f,opts,udata);
-% end
-% 
+% Lets collect some stats on this algorithm!
+M = 5;
+N = 100;
+meanWeight = zeros(M,N);
+stdWeight = zeros(M,N);
+maxWeight = zeros(M,N);
+maxScore = zeros(M,N);
+distOfBest = zeros(M,N);
+for m = 1:M
+    [G, meanWeight(m,:), maxWeight(m,:), stdWeight(m,:), maxScore(m,:), distOfBest(m,:)] = ...
+        collectStatsOnPlanner(N,X0,target,f,opts,udata);
+end
+
 % figure(1)
-% plot((1:N)*5, mean(meanWeight), 'k:', (1:N)*5, mean(maxWeight), 'k-', (1:N)*5, mean(stdWeight), 'k-.')
+% plot((1:N)*opts.MaxIter, mean(meanWeight), 'k:', (1:N)*opts.MaxIter, mean(maxWeight), 'k-', (1:N)*opts.MaxIter, mean(stdWeight), 'k-.')
 % title('Node weight statistics')
 % xlabel('Iterations')
 % ylabel('Node weight')
@@ -109,14 +110,14 @@ fprintf(1,'Seeding with %d states\n',c);
 % set(1,'Color',[1 1 1]);
 % 
 % figure(2)
-% plot((1:N)*5, mean(maxScore), 'k-')
+% plot((1:N)*opts.MaxIter, mean(maxScore), 'k-')
 % title('Max path efficiency')
 % xlabel('Iterations')
 % ylabel('Path sensing efficiency')
 % set(2,'Color',[1 1 1])
 % 
 % figure(3)
-% plot((1:N)*5, mean(distOfBest), 'k-')
+% plot((1:N)*opts.MaxIter, mean(distOfBest), 'k-')
 % title('Dist of best leaf node')
 % xlabel('Iterations')
 % ylabel('Distance')

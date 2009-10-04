@@ -40,5 +40,5 @@ f_A = gompertz(1, -8, -8, A_hat);
 f_phi = gaussian_rbf(phi,0,5);
 f_theta = gaussian_rbf(theta,0,5);
 f_psi = 1; %gaussian_rbf(psi,0,5);
-%fitness = f_phi*f_A*f_theta*f_psi;
-fitness = f_phi;
+fitness = f_phi*f_A*f_theta*f_psi;
+%fitness = f_phi;

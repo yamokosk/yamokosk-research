@@ -12,11 +12,11 @@ for n = 1:N
     G = plannerSolve(X0, target, f, opts, udata);
     opts.PriorSearchTree = G;
 
-    meanWeight(n) = mean(G.Vw);
-    maxWeight(n) = max(G.Vw);
-    stdWeight(n) = std(G.Vw);
-    maxScore(n) = G.bestPathScore;
+    meanWeight(n) = mean(G.Wv);
+    maxWeight(n) = max(G.Wv);
+    stdWeight(n) = std(G.Wv);
+    maxScore(n) = G.BestPathScore;
     
-    [path, dist, eff] = get_shortest_path(G, G.bestLeafID);
+    [path, dist, eff] = get_shortest_path(G, G.BestLeafID);
     distOfBest(n) = dist;
 end
