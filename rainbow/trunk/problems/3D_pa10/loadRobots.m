@@ -1,6 +1,6 @@
 function [src,sen] = loadRobots(filename)
 
-T_f_base = transl(1.343,0,0.601) * rotz(pi);
+T_f_base = transl(1.3,0,0.601) * rotz(pi);
 src = roboop(filename, 'PA10_DH', T_f_base);
 src.name = 'src';
 src.links(1).q = pi/2;
@@ -10,6 +10,7 @@ src.qpmax = [1, 1, 2, 2*pi, 2*pi, 2*pi];
 src.umax = [4.64, 4.64, 2.0, 0.29, 0.29, 0.29]*50;
 src.ghandles = [];
 
+%T_f_base = transl(-1,0,0.601);
 T_f_base = transl(-1,0,0.601);
 sen = roboop(filename, 'PA10_DH', T_f_base);
 sen.name = 'sen';

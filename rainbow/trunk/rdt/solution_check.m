@@ -5,7 +5,8 @@
 %   requirements. Again the requirement for success is simply whether we
 %   have achieved the minimum sensing requirements for all the targets.
 % =========================================================================
-function [rootID, leafID, score] = solution_check(G, branchIDs, target, minEff)
+function [score, solutionFound, G] = solution_check(G, branchIDs, target, minEff)
+solutionFound = false;
 
 leafID = branchIDs(end);
 
@@ -19,3 +20,13 @@ t = candPath(end,:);
 F = trapz(t, candEff);
 Fmin = (target.tspan(2) - target.tspan(1)) * minEff;
 score = F/Fmin;
+
+if (score >= 1)
+	% Update search tree with the best distance
+	if ( candDist < G.BestPathDist )
+        fprintf(1,'Old: %f, New: %f', G.BestPathDist, candDist);
+        G.BestPathDist = candDist;
+        G.Solution = candPathIDs;
+       	solutionFound = true;
+    end
+end

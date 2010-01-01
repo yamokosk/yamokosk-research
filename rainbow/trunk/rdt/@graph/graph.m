@@ -19,7 +19,10 @@ members = { 'RootIds', ...
             'NodeVisitedCount', ...
             'NodeExtendedCount', ...
             'NodeCount', ...
-            'MemSize'};
+            'MemSize', ...
+			'BestPathDist', ...
+            'Solution', ...
+            'UserSenEff'};
 
 for n = 1:size(members,2)
     name = members{1,n};
@@ -34,12 +37,15 @@ G = setfield(G, 'NodeEffectiveness', zeros(1,PreAllocation));
 G = setfield(G, 'EdgeWeights', sparse(PreAllocation,PreAllocation));
 G = setfield(G, 'ShortestPathsInvalid', true);
 G = setfield(G, 'BestPathScore', 0);
+G = setfield(G, 'BestPathDist', inf);
 G = setfield(G, 'BestLeafId', 0);
 G = setfield(G, 'BestRootId', 0);
 G = setfield(G, 'NodeVisitedCount', sparse(1, PreAllocation));
 G = setfield(G, 'NodeExtendedCount', sparse(1, PreAllocation));
 G = setfield(G, 'NodeCount', 0);
 G = setfield(G, 'MemSize', PreAllocation);
+G = setfield(G, 'Solution', []);
+G = setfield(G, 'UserSenEff', -1);
 
 if (nargin == 1)
     argin = varargin{1};

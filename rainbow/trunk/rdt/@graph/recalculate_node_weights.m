@@ -32,29 +32,25 @@ for id = 1:G.NodeCount
 		% single node. Or otherwise the node has no path attached to it. So
 		% to weight this we are going to just use the node's sensing
 		% effectiveness + 1 for the path length.
-		F_hat(1,id) = pathEff;
+		%F_hat(1,id) = pathEff;
+        F_hat(1,id) = 0;
 		d_hat(1,id) = 1;
 	end
 end
 
 F_hat_bar = mean(F_hat);
 F_hat_std = std(F_hat);
-if (F_hat_std == 0)
-	F_hat_std = 1;
+if ( F_hat_std == 0 )
+    F_hat_std = 1;
 end
-k1 = 0.5/F_hat_bar;
+w_F = (F_hat - F_hat_bar)/F_hat_std;
 
 d_hat_bar = mean(d_hat);
 d_hat_std = std(d_hat);
-if (d_hat_std == 0)
+if ( d_hat_std == 0 )
 	d_hat_std = 1;
 end
+w_d = (d_hat - d_hat_bar)/d_hat_std;
 
-k2 = 0.5/d_hat_bar;
-if ( isinf(k2) )
-	k2 = 1;
-end
-
-%w = sqrt( alpha*(k1*F_hat).^2 + (1-alpha)*(k2*d_hat).^2 );
-w = alpha*((F_hat-F_hat_bar)/F_hat_std) + (1-alpha)*((d_hat-d_hat_bar)/d_hat_std);
+w = alpha*w_F + (1-alpha)*w_d;
 G.NodeWeights(1,1:G.NodeCount) = w;

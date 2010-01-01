@@ -10,11 +10,12 @@ numVantagePts = size(Vj,2);
 path_candidates = [];
 path_weights = [];
 c = 1;
+
 for n = 1:numVantagePts
     % Determine if a feasable path exists.
     path = lp(X, Vj(:,n));
     
-    if ( ~isempty(path.xi) )
+    if ( ~isempty(path.ew) )
         path_candidates(:,:,c) = path.xi;
         path_weights(c,:) = path.ew;
         c = c + 1;

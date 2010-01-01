@@ -26,6 +26,12 @@ case '.'
         G.BestLeafId = val;
     case 'BestRootId'
         G.BestRootId = val;
+	case 'BestPathDist'
+		G.BestPathDist = val;
+    case 'Solution'
+        G.Solution = val;
+    case 'UserSenEff'
+        G.UserSenEff = val;
     otherwise
         error('Invalid field name')
     end

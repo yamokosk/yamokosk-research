@@ -59,10 +59,18 @@ switch (index(1).type)
                 b = G.BestLeafId;
             case 'BestRootID'
                 b = G.BestRootId;
+			case 'BestPathDist'
+				b = G.BestPathDist;
             case 'NodeVisitedCount'
                 b = G.NodeVisitedCount(1,1:G.NodeCount);
             case 'NodeExtendedCount'
                 b = G.NodeExtendedCount(1,1:G.NodeCount);
+            case 'ShortestPathDistances'
+                b = G.ShortestPathDistances;
+            case 'Solution'
+                b = G.Solution;
+            case 'UserSenEff'
+                b = G.UserSenEff;
             otherwise
                 error('Invalid field name.');
         end

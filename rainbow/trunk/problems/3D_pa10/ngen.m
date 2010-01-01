@@ -43,35 +43,21 @@ phi = phi_std*randn(1);
 %   2. Then walk along new local Z by r. This is the src2tg vector.
 %   3. Once at the src origin, again create a deviation 'cone' by rotating
 %   [-pi,pi] about the local Z and then by theta about the new local Y.
-a = rand(2,1)*2*pi - pi;
-T_src = T_wcs_t * rotz(a(1)) * rotx(phi) * transl(0,0,r) * rotz(a(2)) * roty(theta);
+%a = rand(2,1)*2*pi - pi;
+%T_src = T_wcs_t * rotz(a(1)) * rotx(phi) * transl(0,0,r) * rotz(a(2)) * roty(theta);
+T_src = T_wcs_t * rotx(phi) * transl(0,0,r) * roty(theta);
 T_src = T_src * roty(pi); % Final rotation needed because Z-axis points out of end-effector.
 
 k = irotk(T_src);
 xr = [T_src(1:3,4); k; v; d; t];
 
 % Plot to see if this is working correctly
-% checkPlot(xr,target,udata);
+%checkPlot(xr,target,udata);
 
 % Check feasibility
-if ( ~checkFeasibility(xr,udata) )
+[x_src, x_sen, feasible] = metricToJointSpaceMap(xr, udata);
+if ( ~feasible )
     xr = [];
-end
-
-
-function feasible = checkFeasibility(xr,udata)
-
-[x_src, x_sen] = metricToJointSpaceMap(xr, udata);
-
-if ( isempty(x_src) || isempty(x_sen) )
-    feasible = false;
-else
-    ind = find( [isnan(x_src); isnan(x_sen)] );
-    if ( ~isempty(ind) )
-        feasible = false;
-    else
-        feasible = true;
-    end
 end
 
 
@@ -126,3 +112,5 @@ z = [ti(3); ti(3) + (len*n_hat(3))];
 line(x,y,z,'Color','black');
 
 axis([-1.2 1.4 -0.7 0.7 0, 1]);
+
+pause;

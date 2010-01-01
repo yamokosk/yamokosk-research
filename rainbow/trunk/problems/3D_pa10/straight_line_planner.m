@@ -1,5 +1,41 @@
 function path = straight_line_planner(X0, Xf, udata)
 % Local planner for 3DOF planar robots
+% path = struct('xi',[],'ew',[]);
+% 
+% [x_src_0, x_sen_0, feasible] = metricToJointSpaceMap(X0, udata);
+% if ( ~feasible )
+%     return;
+% end
+% 
+% [x_src_f, x_sen_f] = metricToJointSpaceMap(Xf, udata);
+% 
+% N = 3;
+% alpha = linspace(0,1,N);
+% x_src_im1 = x_src_0;
+% x_sen_im1 = x_sen_0;
+% path.xi(:,1) = X0;
+% for n = 2:N
+%     x_src_i = x_src_0 + alpha(n)*(x_src_f-x_src_0);
+%     x_sen_i = x_sen_0 + alpha(n)*(x_sen_f-x_sen_0);
+%     ti = X0(end) + alpha(n)*(Xf(end)-X0(end));
+%     
+%     Xi = jointToMetricSpaceMap(x_src_i, x_sen_i, udata);
+%     [j1,j2,feasible] = metricToJointSpaceMap([Xi;ti], udata);
+%     if (~feasible)
+%         break;
+%     end
+%     
+%     d_src = x_src_i(1:6,1) - x_src_im1(1:6,1);
+%     d_sen = x_sen_i(1:6,1) - x_sen_im1(1:6,1);
+%     dist = sqrt( d_src' * d_src + d_sen' * d_sen );
+%     
+%     path.xi(:,n) = [Xi; ti];
+%     path.ew(n-1,1) = dist;
+%     
+%     x_src_im1 = x_src_i;
+%     x_sen_im1 = x_sen_i;
+% end
+
 
 % Get robot states
 [x_src_0, x_sen_0] = metricToJointSpaceMap(X0, udata);

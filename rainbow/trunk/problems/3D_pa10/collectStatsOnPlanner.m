@@ -15,7 +15,9 @@ for n = 1:N
     meanWeight(n) = mean(G.Wv);
     maxWeight(n) = max(G.Wv);
     stdWeight(n) = std(G.Wv);
-    maxScore(n) = G.BestPathScore;
+    
+    %bestLeafID = find( G.Wv == 
+    %maxScore(n) = G.BestPathScore;
     
     [path, dist, eff] = get_shortest_path(G, G.BestLeafID);
     distOfBest(n) = dist;
